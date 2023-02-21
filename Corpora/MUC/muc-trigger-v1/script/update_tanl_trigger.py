@@ -8,7 +8,7 @@ ps = PorterStemmer()
 
 new_triggered_gtt_muc1700_path = "../muc_1700_v1.1.1_GTT_style_triggered-test-dev-train.json"
 tanl_old_mucevent_path = "../../muc-trigger-v0/TANL_Style/"
-tanl_new_mucevent_path = "../TANL_Style_NEW"
+tanl_new_mucevent_path = "../TANL_Style"
 
 if __name__ == '__main__':
     examples = json.load(open(new_triggered_gtt_muc1700_path))
