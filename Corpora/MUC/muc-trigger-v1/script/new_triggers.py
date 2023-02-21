@@ -3,8 +3,8 @@
 import json
 from collections import Counter
 
-previous_triggered_version_muc1700_path = "../../muc-trigger-v0/muc_1700_v0_GTT_style_triggered-test-dev-train.json"
-new_muc1700_path = "muc_1700_v1.1_GTT_style_triggered-test-dev-train.json"
+old_triggered_muc1700_path = "../../muc-trigger-v0/muc_1700_v0_GTT_style_triggered-test-dev-train.json"
+new_muc1700_path = "muc_1700_v1.1.1_GTT_style_triggered-test-dev-train.json"
 
 selected_trigger = {
     'kidnapping': ["kidnap", "kidnapping", "kidnapped", "abducted", "forced", "forces", "hostage", "hostages",
@@ -45,7 +45,7 @@ def get_role_filler_positions(template):
 
 
 if __name__ == "__main__":
-    f = open(previous_triggered_version_muc1700_path)
+    f = open(old_triggered_muc1700_path)
 
     count_repeated_trigger = set()
     count_has_emptied = []
@@ -59,26 +59,26 @@ if __name__ == "__main__":
 
     for i, e in enumerate(examples):
         templates = e["templates"]
-
         text = e['doctext']
-
         types = [t["incident_type"] for t in templates]
-        for (type, freq) in Counter(types).most_common():
-            if freq >= 2:
-                # For each template that has a potentially shared trigger:
 
+        for (incident_type, freq) in Counter(types).most_common():
+
+            if freq >= 2:  # Only deal with multi-template example
+                # For each template that has a potentially shared trigger:
                 selected_trigger_indices = []
                 selected_trigger_e_word = []
                 for ii, template in enumerate(e["templates"]):
-                    if template['incident_type'] == type:
+                    if template['incident_type'] == incident_type:
                         # Heuristic to find the best trigger:
                         indices = get_role_filler_positions(template)
                         empty = len(indices) == 0
-
                         repeated_templates = -1
 
+                        # Should there be two templates of the same type sharing same role fillers, rule out them in
+                        # considering best trigger
                         for template2 in e["templates"]:
-                            if template2['incident_type'] == type and template2 != template:
+                            if template2['incident_type'] == incident_type and template2 != template:
                                 for id in get_role_filler_positions(template2):
                                     while id in indices:
                                         indices.remove(id)
@@ -91,7 +91,7 @@ if __name__ == "__main__":
                         best_distance = float('inf')
                         best_index = None if not selected_trigger_indices else selected_trigger_indices[-1]
 
-                        for trigger_candidate in selected_trigger[type]:
+                        for trigger_candidate in selected_trigger[incident_type]:
                             if trigger_candidate in e['doctext']:
                                 trigger_indices = find_all(text, trigger_candidate)
 
@@ -124,7 +124,7 @@ if __name__ == "__main__":
                         selected_trigger_e_word.append(best_trigger)
                         examples[i]['templates'][ii]['Trigger'] = best_trigger
                         examples[i]['templates'][ii]['TriggerIndex'] = best_index
-                        examples[i]['templates'][ii]['TriggerVersion'] = 'V1-UsingHeuristicForMultiTemplate'
+                        examples[i]['templates'][ii]['TriggerVersion'] = 'V1.1-UsingHeuristicForMultiTemplate'
 
                 if len(set(selected_trigger_indices)) < len(selected_trigger_indices):
                     count_repeated_trigger.add(i)
