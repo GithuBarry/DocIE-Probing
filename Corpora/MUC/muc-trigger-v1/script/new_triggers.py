@@ -4,7 +4,7 @@ import json
 from collections import Counter
 
 previous_triggered_version_muc1700_path = "../../muc-trigger-v0/muc_1700_v0_GTT_style_triggered-test-dev-train.json"
-new_muc1700_path = "New.json"
+new_muc1700_path = "muc_1700_v1.1_GTT_style_triggered-test-dev-train.json"
 
 selected_trigger = {
     'kidnapping': ["kidnap", "kidnapping", "kidnapped", "abducted", "forced", "forces", "hostage", "hostages",
