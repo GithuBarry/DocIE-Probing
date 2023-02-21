@@ -35,11 +35,13 @@ if __name__ == '__main__':
                 assert templates_dict[doc['docid']]['doctext'][char_index:char_index + trigger_len] == template[
                     'Trigger']
 
+                # Find the correct word index by converting all characters prior to the trigger to words
                 word_index = len(nltk.tokenize.word_tokenize(templates_dict[doc['docid']]['doctext'][:char_index]))
 
+                # if word index does not correspond to the right word, try surrounding words:
                 if ps.stem(file[i]['tokens'][word_index]) != ps.stem(template['Trigger']):
                     fixed = False
-                    for offset in [-3, -2, -1, 1, 2, 3]:
+                    for offset in [-3, -2, -1, 0, 1, 2, 3]:
                         if template['Trigger'] in file[i]['tokens'][word_index + offset]:
                             word_index += offset
                             fixed = True
