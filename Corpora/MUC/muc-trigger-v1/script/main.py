@@ -1,9 +1,10 @@
 # This script finds triggers in a GTT style MUC dataset
 
 import json
-import os
-
 from collections import Counter
+
+previous_triggered_version_muc1700_path = "../../muc-trigger-v0/muc_1700_v0_GTT_style_triggered-test-dev-train.json"
+new_muc1700_path = "New.json"
 
 selected_trigger = {
     'kidnapping': ["kidnap", "kidnapping", "kidnapped", "abducted", "forced", "forces", "hostage", "hostages",
@@ -44,8 +45,7 @@ def get_role_filler_positions(template):
 
 
 if __name__ == "__main__":
-    f = open(
-        "../../muc-trigger-v0/muc_1700_v0_GTT_style_triggered-test-dev-train.json")
+    f = open(previous_triggered_version_muc1700_path)
 
     count_repeated_trigger = set()
     count_has_emptied = []
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     examples = json.load(f)
     f.close()
 
-    d = dict()
+    templates_dict = dict()
 
     # Proved that the index data is auto generated (first occurrence) only
 
@@ -132,32 +132,10 @@ if __name__ == "__main__":
                 if None in selected_trigger_indices:
                     print("Bad")
     for i, e in enumerate(examples):
-        d[examples[i]['docid']] = examples[i]
+        templates_dict[examples[i]['docid']] = examples[i]
 
     print("count_repeated_trigger       ", len(count_repeated_trigger))
     print("count_no_role_filler_indices ", len(count_no_role_filler_indices))
     print("count_has_emptied            ", len(count_has_emptied))
-    fp = open("New.json", "w+")
+    fp = open(new_muc1700_path, "w+")
     json.dump(examples, fp)
-    for file_suffix in ["mucevent_dev.json", "mucevent_test.json", "mucevent_train.json"]:
-        fp = open(os.path.join("..","..", file_suffix))
-        file = json.load(fp)
-        fp.close()
-        for i, doc in enumerate(file):
-            triggers = []
-        file[i]['triggers'] = []
-        for template in d[doc['docid']]['templates']:
-            id = template['TriggerIndex'] if "TriggerIndex" in template else d[doc['docid']]['doctext'].index(
-                template['Trigger'])
-
-        trigger_len = len(template['Trigger'])
-
-        assert d[doc['docid']]['doctext'][id:id + trigger_len] == template['Trigger']
-
-        file[i]['triggers'].append({"type": template['incident_type'], "start": id, "end": id + 1})
-        fp = open(
-            "/Users/barry/Library/Mobile Documents/com~apple~CloudDocs/Cornell/Research/Fall 2022-IE/TANL/data/mucevent_original/new_" + file_suffix,
-            "w+")
-        json.dump(file, fp)
-
-        print("Finished")
