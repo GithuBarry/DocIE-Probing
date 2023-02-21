@@ -1,0 +1,25 @@
+attack_triggers = ["military", "armed", "forces", "army", "killed", "attack", "death", "murder", "guerrillas", "attacks", "wounded", "murdered", "war",
+                   "attacked", "guerrilla", "force", "terrorist", "soldiers", "crime", "troops", "assassination", "rebels", "violence", "defense", "terrorists",
+                   "shot", "offensive", "colonel", "fire", "bomb", "casualties", "killing", "destroyed", "commander", "criminal", "threats",
+                   "brigade", "died", "clashes", "weapons", "dead", "murders", "threatened", "gunned", "assassinated", "shots", "takeover"]
+
+arson_triggers = ["military", "fire", "armed", "killed", "attack", "army", "forces", "burned", "attacked", "guerrillas", "terrorists", "attacks", "terrorist",
+                  "destroyed", "wounded", "rebels", "soldiers", "troops", "damage", "injured", "guerrilla", "brigade", "patrol", "kill"]
+
+robbery_triggers = ["armed", "forces", "army", "military", "police", "weapons", "troops", "killed", "shot", "wounded", "officer", "attacked", "attack", "pillage", "stole", "stolen", "looted"]
+
+bombing_triggers = ["bomb", "police", "attack", "terrorist", "attacks", "armed", "damage", "military", "exploded", "explosions", "forces", "destroyed",
+                    "killed", "dynamite", "army", "injured", "wounded", "bombs", "terrorists", "guerrillas", "casualties", "damaged", "attacked", "explosion",
+                    "guerrilla", "war", "death", "fire", "violence", "rebels", "blew", "vehicle", "explosives", "incident", "troops", "arrested", "died",
+                    "soldiers", "force", "policemen", "threatened", "blown", "planted"]
+
+kidnapping_triggers = ["kidnapped", "army", "armed", "police", "kidnapping", "guerrillas", "military", "forces", "killed", "release", "hostages", "victims",
+                       "guerrilla", "kidnappers", "rebels", "death", "kidnappings", "operations", "troops", "holding", "murdered", "abducted", "war", "wounded",
+                       "terrorist", "murder", "missing", "rescue", "weapons", "attacks", "operation", "hostage"]
+
+
+best_arson_triggers = ["fire", "burned"]
+
+best_bombing_triggers = ["bomb", "exploded", "explosions", "destroyed", "dynamite", "bomb", "damaged", "explosion", "blew", "explosives", "blown"]
+
+best_kidnappping_triggers = ["kidnapped", "kidnapping", "release", "hostages", "kidnappers", "kidnappings", "holding", "abducted", "missing", "rescue", "hostage"]

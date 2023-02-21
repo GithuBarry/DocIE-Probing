@@ -2,7 +2,7 @@
 
 MUC 3/4 dataset came from 1990s and is available through [NIST](https://www-nlpir.nist.gov/related_projects/muc/muc_data/muc_data_index.html), is used throughout our research. We used a small part of it for template filling. Many different people has worked on this dataset.
 
-## muc_gtt
+## muc
 
 MUC GTT is the version used by Xinya Du in his work [Template Filling with Generative Transformers](https://github.com/xinyadu/gtt/) in 2020~2021
 
@@ -12,7 +12,9 @@ MUC GTT is the version used by Xinya Du in his work [Template Filling with Gener
 
 - Certain templates, after removing some role, can be empty or become duplicates of each other
 
-- Role filler indices of each role filler is merely the text.index(role_filler) (i.e. the first occurrence)
+- Role filler indices of each role filler is measured in offsets of characters, not words.
+
+- Role filler indicies of each role filler is merely the first occurrence of that word (merely the text.index(role_filler)), not the actual indices of the 
 
 - Role filler index is character-level
 
@@ -28,4 +30,4 @@ Barry later updated triggers to the muc gtt dataset so they are more adjacent to
 
 - Removed templates with "forced work stoppage" incident type as they are too rare
 
-- Role filler index is word*-level (Word as split by white space)
+- Role filler index is measured in offsets of words (as split by white space; sometimes `"` is a word too).
