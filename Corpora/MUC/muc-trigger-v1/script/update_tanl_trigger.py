@@ -48,6 +48,7 @@ if __name__ == '__main__':
                             break
 
                     if not fixed:
+                        # Print any failure, so I can manually see if I need to fix anything
                         print("Unmatched", doc['docid'], file[i]['tokens'][word_index], "<-->", template['Trigger'],
                               file[i]['tokens'][word_index - 5:word_index + 5])
 
