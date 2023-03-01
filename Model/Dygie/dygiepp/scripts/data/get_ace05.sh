@@ -14,7 +14,7 @@ zsh run.zsh
 python ace2json.py
 
 # Move all the intermediate files to the `raw-data` folder if the output path.
-cd $original_path
+cd "$original_path"
 for folder in corpus English fixed result text
 do
     mv $process_path/$folder $out_path/raw-data

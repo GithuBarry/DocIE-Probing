@@ -2,7 +2,7 @@ import json
 
 prefix = "../processed/"
 file_names = ["test.json", "dev.json", "train.json"]
-output_file_name = "muc_1700_GTT_style-test-dev-train.json"
+output_file_name = "../processed2/muc_1700_GTT_style-test-dev-train.json"
 
 result = []
 for name in file_names:
