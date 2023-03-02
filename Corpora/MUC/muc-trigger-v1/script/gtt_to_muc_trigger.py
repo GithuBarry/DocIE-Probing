@@ -37,7 +37,7 @@ if __name__ == '__main__':
             triggers.append(trigger_index_word_incidenttype)
 
         trigger_file.append({"doc_key": example['docid'],
-                             "dataset": "MUC3/4",
+                             "dataset": "MUC34",
                              "sentences": [full_casual_tokenized],
                              "ner": [[
                                  [index,
