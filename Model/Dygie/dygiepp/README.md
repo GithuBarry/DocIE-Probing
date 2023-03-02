@@ -10,10 +10,37 @@ To use debug tools rather than running via command lines, run `./scripts/train.p
 file, but basically just forking allennlp). Remember to pass in
 correct arguments.
 
+## Implementing Event Extraction in Dygie
+
+To have a fair comparison with other models, we use dygie in two steps:
+
+1. Label triggers
+2. Given a text (with a trigger surrounded by `[SEP]`), predict its rolefillers, assuming all predicted mentions are of
+   different entities.
+
+### Tokenizer used by dygie when using BERT:
+
+```
+<transformers.tokenization_bert.BertTokenizerFast object at ...>
+```
+
+wrapped in
+
+```
+<allennlp.data.tokenizers.pretrained_transformer_tokenizer.PretrainedTransformerTokenizer object at ...>
+```
+
+and its special tokens include `['[MASK]', '[SEP]', '[UNK]', '[CLS]', '[PAD]']`. In our case we use `[SEP]` in text to
+surround a trigger
+
+## Getting hidden layers
+
 We are trying to
-obtain `self._embedder._token_embedders['bert']._matched_embedder.transformer_model.encoder.layer` where self is the dygie object.
-The encoder is used in line `text_embeddings = self._embedder(text, num_wrapping_dims=1)` in `dygie.py` (line ~200)h
-To train:
+obtain `self._embedder._token_embedders['bert']._matched_embedder.transformer_model.encoder.layer` where self is the
+dygie object.
+The encoder is used in line `text_embeddings = self._embedder(text, num_wrapping_dims=1)` in `dygie.py` (line ~200)
+
+## To train:
 
 ```bash
 train "training_config/${config_name}.jsonnet" \
@@ -198,30 +225,30 @@ pip install -r scripts/data/chemprot/requirements.txt
 Then, follow these steps:
 
 - **Get the data**.
-  
-  - Run `bash ./scripts/data/get_chemprot.sh`. This will download the data and process it into the DyGIE input format.
-    
-    - NOTE: This is a quick-and-dirty script that skips entities whose character offsets don't align exactly with
-      the tokenization produced by SciSpacy. We lose about 10% of the named entities and 20% of the relations in the
-      dataset as a result.
-  
-  - Switch back to your DyGIE environment.
-  
-  - Collate the data:
-    
-    ```
-    mkdir -p data/chemprot/collated_data
-    
-    python scripts/data/shared/collate.py \
-      data/chemprot/processed_data \
-      data/chemprot/collated_data \
-      --train_name=training \
-      --dev_name=development
-    - For a quick spot-check to see how much of the data was lost, you can run:
-    ```
-    
-    python scripts/data/chemprot/03_spot_check.py
-    ```   ```
+
+    - Run `bash ./scripts/data/get_chemprot.sh`. This will download the data and process it into the DyGIE input format.
+
+        - NOTE: This is a quick-and-dirty script that skips entities whose character offsets don't align exactly with
+          the tokenization produced by SciSpacy. We lose about 10% of the named entities and 20% of the relations in the
+          dataset as a result.
+
+    - Switch back to your DyGIE environment.
+
+    - Collate the data:
+
+      ```
+      mkdir -p data/chemprot/collated_data
+      
+      python scripts/data/shared/collate.py \
+        data/chemprot/processed_data \
+        data/chemprot/collated_data \
+        --train_name=training \
+        --dev_name=development
+      - For a quick spot-check to see how much of the data was lost, you can run:
+      ```
+
+      python scripts/data/chemprot/03_spot_check.py
+      ```   ```
 
 - **Train the model**. Enter `bash scripts/train chemprot`.
 
@@ -323,7 +350,7 @@ follows:
 
 - Train a separate trigger detection model on each split. To do this, modify `training_config/ace05_event.jsonnet` by
   setting
-  
+
   ```jsonnet
   model +: {
     modules +: {
@@ -424,39 +451,39 @@ Below are links to the available models, followed by the name of the `dataset` t
 ### Performance of pretrained models
 
 - SciERC
-  
+
   ```
   "_scierc__ner_f1": 0.6846741045214326,
   "_scierc__relation_f1": 0.46236559139784944
   ```
 
 - SciERC lightweight
-  
+
   ```
   "_scierc__ner_f1": 0.6717245404143566,
   "_scierc__relation_f1": 0.4670588235294118
   ```
 
 - GENIA
-  
+
   ```
   "_genia__ner_f1": 0.7713070807912737
   ```
 
 - GENIA lightweight
   And the lightweight version:
-  
+
   ```
   "_genia__ner_f1": 0.7690401296349251
   ```
 
 - ChemProt
-  
+
   ```
   "_chemprot__ner_f1": 0.9059113300492612,
   "_chemprot__relation_f1": 0.5404867256637169
   ```
-  
+
   Note that we're doing span-level evaluation using predicted entities. We're also evaluating on all ChemProt relation
   classes, while the official task only evaluates on a subset (
   see [Liu et al.](https://www.semanticscholar.org/paper/Attention-based-Neural-Networks-for-Chemical-Liu-Shen/a6261b278d1c2155e8eab7ac12d924fc2207bd04)
@@ -465,14 +492,14 @@ Below are links to the available models, followed by the name of the `dataset` t
   where they use gold entities as inputs for relation prediction.
 
 - ACE05-Relation
-  
+
   ```
   "_ace05__ner_f1": 0.8634611855386309,
   "_ace05__relation_f1": 0.6484907497565725,
   ```
 
 - ACE05-Event
-  
+
   ```
   "_ace-event__ner_f1": 0.8927209418006965,
   "_ace-event_trig_class_f1": 0.6998813760379595,
@@ -537,7 +564,7 @@ To make predictions on a new, unlabeled dataset:
    for a pretrained model, use [print_label_namespaces.py](scripts/debug/print_label_namespaces.py).
 
 3. Make predictions the same way as with the [existing datasets](#making-predictions-on-existing-datasets):
-   
+
    ```
    allennlp predict pretrained/[name-of-pretrained-model].tar.gz \
     [input-path] \
@@ -552,7 +579,7 @@ A couple tricks to make things run smoothly:
 
 1. If you're predicting on a big dataset, you probably want to load it lazily rather than loading the whole thing in
    before predicting. To accomplish this, add the following flag to the above command:
-   
+
    ```
    --overrides "{'dataset_reader' +: {'lazy': true}}"
    ```

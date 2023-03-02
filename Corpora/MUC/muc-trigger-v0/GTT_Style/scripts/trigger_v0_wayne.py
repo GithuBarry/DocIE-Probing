@@ -1,3 +1,4 @@
+# by Wayne Chen
 def search_sublst(sublst, lst, start = 0):
     return_lst = []
     for idx in range(start, len(lst) - len(sublst) + 1):

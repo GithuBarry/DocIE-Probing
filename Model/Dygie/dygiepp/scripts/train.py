@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import logging
 import os
+import shutil
 import sys
 
 from allennlp.commands import main  # noqa
@@ -35,4 +36,5 @@ def run():
 
 
 if __name__ == "__main__":
+    shutil.rmtree("./models") # useful to restart (debugging) without errors, dangerous you plan to save the model
     run()

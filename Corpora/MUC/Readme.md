@@ -2,7 +2,7 @@
 
 MUC 3/4 dataset came from 1990s and is available
 through [NIST](https://www-nlpir.nist.gov/related_projects/muc/muc_data/muc_data_index.html), is used throughout our
-research. We used a small part of it for template filling. Many different people has worked on this dataset.
+research. We used a small part of it for template filling. Many people has worked on this dataset.
 
 ## muc
 
@@ -22,6 +22,8 @@ work [Template Filling with Generative Transformers](https://github.com/xinyadu/
 
 - Role filler index is character-level
 
+- Split into 200 test, 200 dev, 1300 training examples. That's why you might see "muc1700" I used around.
+
 ## muc-trigger
 
 Wayne Chen worked on converting the above GTT-compatible dataset to [TANL](https://github.com/amazon-science/tanl)
@@ -34,7 +36,7 @@ type (labeled V0).
 Barry later updated triggers to the muc gtt dataset so they are more adjacent to template role fillers (labeled V1).
 Script on updating the indices of triggers in the converted dataset is available.
 
-- Available for both TANL and GTT
+- Available for both GTT, TANL, and dygie++ (as two NER datasets).
 
 - Contains triggers
 
