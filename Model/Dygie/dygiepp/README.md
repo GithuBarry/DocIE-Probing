@@ -15,7 +15,7 @@ correct arguments.
 To have a fair comparison with other models, we use dygie in two steps:
 
 1. Label triggers
-2. Given a text (with a trigger surrounded by `[SEP]`), predict its rolefillers, assuming all predicted mentions are of
+2. Given a text (with a trigger surrounded by `TBD` [FIXME]), predict its rolefillers, assuming all predicted mentions are of
    different entities.
 
 ### Tokenizer used by dygie when using BERT:
@@ -30,7 +30,7 @@ wrapped in
 <allennlp.data.tokenizers.pretrained_transformer_tokenizer.PretrainedTransformerTokenizer object at ...>
 ```
 
-and its special tokens include `['[MASK]', '[SEP]', '[UNK]', '[CLS]', '[PAD]']`. In our case we use `[SEP]` in text to
+and its special tokens include `['[MASK]', '[SEP]', '[UNK]', '[CLS]', '[PAD]']`. In our case we use `TBD`[FIXME] in text to
 surround a trigger
 
 ## Getting hidden layers
