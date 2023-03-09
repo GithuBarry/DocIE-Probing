@@ -23,6 +23,10 @@ def find_word_index(text, word, char_i):
     return index
 
 
+def get_trigger_ner_tag(incident_type: str) -> str:
+    return incident_type + "Trigger"
+
+
 if __name__ == '__main__':
     f = open(path_gtt_style_muc_with_trigger)
     trigger_file = []
@@ -34,23 +38,28 @@ if __name__ == '__main__':
         full_casual_tokenized = nltk.casual_tokenize(example['doctext'])
         triggers = []
         events = []
+        all_ners_d = {}
+        doc_text = example['doctext']
         for template in example['templates']:
-            index = find_word_index(example['doctext'], template['Trigger'],
-                                    template['TriggerIndex'] if 'TriggerIndex' in template else example[
-                                        'doctext'].index(
-                                        template["Trigger"]))
+            trigger = template['Trigger']
             incident_type = template['incident_type']
+            trigger_char_index = template['TriggerIndex'] if 'TriggerIndex' in template else doc_text.index(
+                template["Trigger"])
+            trigger_word_index = find_word_index(doc_text, trigger, trigger_char_index)
 
-            trigger_index_word_incidenttype = index, \
-                template['Trigger'], \
-                incident_type
+            trigger_index_word_incidenttype = (trigger_word_index, trigger, incident_type)
 
             triggers.append(trigger_index_word_incidenttype)
-            event = [[index, incident_type + "Trigger"]]
+            all_ners_d[(trigger_word_index, trigger_word_index)] = [trigger_word_index,
+                                                                    trigger_word_index,
+                                                                    get_trigger_ner_tag(incident_type)]
+            event = [[trigger_word_index, incident_type + "Trigger"]]
             for key in ['PerpInd', 'PerpOrg', 'Target', 'Victim', 'Weapon']:
                 for mentions in template[key]:
-                    index = find_word_index(example['doctext'], mentions[0][0], mentions[0][1])
-                    event.append([index, -1 + index + len(nltk.casual_tokenize(mentions[0][0])), key])
+                    index = find_word_index(doc_text, mentions[0][0], mentions[0][1])
+                    end_index = -1 + index + len(nltk.casual_tokenize(mentions[0][0]))
+                    event.append([index, end_index, key])
+                    all_ners_d[(index, end_index)] = [index, end_index, key]
 
             events.append(event)
 
@@ -61,13 +70,13 @@ if __name__ == '__main__':
                                  [index,
                                   # dygie NER's is right hand inclusive hence -1
                                   -1 + index + len(nltk.casual_tokenize(word)),
-                                  incident_type + "Trigger"]
+                                  get_trigger_ner_tag(incident_type)]
                                  for
                                  (index, word, incident_type) in triggers]
                              ]})
         event_file.append({"doc_key": example['docid'],
                            "dataset": "MUC34",
-                           "ner": [[]],
+                           "ner": [list(all_ners_d.values())],
                            "sentences": [full_casual_tokenized],
                            "events": [events]})
 
