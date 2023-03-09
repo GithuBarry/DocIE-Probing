@@ -61,12 +61,13 @@ if __name__ == '__main__':
                                  [index,
                                   # dygie NER's is right hand inclusive hence -1
                                   -1 + index + len(nltk.casual_tokenize(word)),
-                                  incident_type+"Trigger"]
+                                  incident_type + "Trigger"]
                                  for
                                  (index, word, incident_type) in triggers]
                              ]})
         event_file.append({"doc_key": example['docid'],
                            "dataset": "MUC34",
+                           "ner": [[]],
                            "sentences": [full_casual_tokenized],
                            "events": [events]})
 
