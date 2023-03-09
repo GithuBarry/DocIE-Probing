@@ -156,4 +156,3 @@ cython_debug/
 ._.DS_Store
 *.cornell.edu
 Model/Dygie/dygiepp/scripts/data/ace05/common/stanford-corenlp-full-2015-04-20/stanford-corenlp-3.5.2-models.jar
-

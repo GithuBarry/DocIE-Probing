@@ -36,5 +36,6 @@ def run():
 
 
 if __name__ == "__main__":
-    shutil.rmtree("./models") # useful to restart (debugging) without errors, dangerous you plan to save the model
+    if os.getenv('RESET_MODELS'):
+        shutil.rmtree("./models") # useful to restart (debugging) without errors, dangerous you plan to save the model
     run()
