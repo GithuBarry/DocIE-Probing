@@ -1,3 +1,31 @@
+# Probing Notes by Barry
+
+Added "np.save" in `base_dataset.py
+`run_old_transformers.py` and `run_new_transformers.py` will both save `.npy` files to the directories.
+
+sbatch command used on G2: 
+```Bash
+#!/bin/bash
+#SBATCH -J TANL_prediction                         # Job name
+#SBATCH -o test_file_%j_hidden_ep20.out                  # output file (%j expands to jobID)
+#SBATCH -e test_file_%j_hidden_ep20.err                  # error log file (%j expands to jobID)
+#SBATCH --mail-type=ALL                      # Request status by email 
+#SBATCH --mail-user=zw545@cornell.edu        # Email address to send results to.
+#SBATCH -N 1                                 # Total number of nodes requested
+#SBATCH -n 1                                 # Total number of cores requested
+#SBATCH --get-user-env                       # retrieve the users login environment
+#SBATCH --mem=20000                           # server memory requested (per node)
+#SBATCH -t 8:00:00                           # Time limit (hh:mm:ss)
+#SBATCH --partition=gpu       # Request partition
+#SBATCH --gres=gpu:titanrtx:1                  # Type/number of GPUs needed
+
+#titanrtx
+cd '/home/zw545/DocIE-Probing/Model/TANL'
+source /share/apps/anaconda3/2021.05/bin/activate
+conda activate tanl
+python3 run_old_transformers.py muc_event --num_train_epochs 20 --logging_steps 500 --per_device_eval_batch_size 1 --per_device_train_batch_size 1
+```
+
 # TANL: Structured Prediction as Translation between Augmented Natural Languages
 
 Code for the paper "[Structured Prediction as Translation between Augmented Natural Languages](http://arxiv.org/abs/2101.05779)" (ICLR 2021) and [fine-tuned multi-task model](#fine-tuned-multi-task-model).
