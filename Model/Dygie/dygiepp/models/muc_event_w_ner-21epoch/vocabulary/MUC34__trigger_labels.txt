@@ -1,0 +1,7 @@
+
+attackTrigger
+bombingTrigger
+kidnappingTrigger
+arsonTrigger
+robberyTrigger
+forced work stoppageTrigger

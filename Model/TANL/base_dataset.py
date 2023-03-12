@@ -225,7 +225,7 @@ class BaseDataset(Dataset, ABC):
             predictions = model.generate(
                 inputs['input_ids'].to(device),
                 max_length=data_args.max_output_seq_length_eval,
-                num_beams=data_args.num_beams,
+                num_beams=data_args.num_beams if data_args.num_beams else 1,
                 return_dict_in_generate=True,
                 output_hidden_states=True
             )
