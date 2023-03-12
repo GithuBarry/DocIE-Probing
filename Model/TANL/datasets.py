@@ -1639,7 +1639,7 @@ class ACE2005EventDataset(ACE2005EventArgumentDataset):
                 argument_output = model.generate(
                     example_input_ids['input_ids'].to(device),
                     max_length=data_args.max_output_seq_length_eval,
-                    num_beams=data_args.num_beams,
+                    num_beams=data_args.num_beams if data_args.num_beams else 1,
                 )[0]  # only one sample
                 argument_output_sentence = self.tokenizer.decode(argument_output, skip_special_tokens=True,
                                                                  clean_up_tokenization_spaces=False)
@@ -2073,7 +2073,7 @@ class MUCEventDataset(MUCEventArgumentDataset):
                 argument_outputs = model.generate(
                     example_input_ids['input_ids'].to(device),
                     max_length=data_args.max_output_seq_length_eval,
-                    num_beams=data_args.num_beams,
+                    num_beams=data_args.num_beams if data_args.num_beams else 1,
                 )  
                 idx +=1 
                 argument_output = argument_outputs[0]
