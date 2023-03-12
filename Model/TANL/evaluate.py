@@ -51,7 +51,7 @@ def evaluate(model, dataset_name: str, data_args: DataTrainingArguments, tokeniz
     """
     model.eval()
 
-    device = torch.device("cuda", gpu)
+    device = torch.device("cuda", gpu) if torch.cuda.is_available() else torch.device("cpu")
     model.to(device)
 
     logging.info(f'Batch size: {batch_size}')
