@@ -2,6 +2,7 @@
 
 Added "np.save" in `base_dataset.py
 `run_old_transformers.py` and `run_new_transformers.py` will both save `.npy` files to the directories.
+Require transformers-4.* to output hidden states
 
 sbatch command used on G2: 
 ```Bash

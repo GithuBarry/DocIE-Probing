@@ -2009,7 +2009,7 @@ class MUCEventDataset(MUCEventArgumentDataset):
                 filtered_predicted_relations.add(filter_relation_tuple(relation))
 
         predicted_relations = filtered_predicted_relations
-        print("predicted_relations",predicted_relations,"gt_relations",gt_relations)
+        print("predicted_relations",predicted_relations,"\n gt_relations",gt_relations)
 
         # compute correct relations
         correct_relations = predicted_relations & gt_relations

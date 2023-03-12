@@ -1,0 +1,12 @@
+
+Target
+PerpInd
+attackTrigger
+Victim
+PerpOrg
+Weapon
+bombingTrigger
+kidnappingTrigger
+arsonTrigger
+robberyTrigger
+forced work stoppageTrigger
