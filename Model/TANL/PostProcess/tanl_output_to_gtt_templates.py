@@ -6,10 +6,10 @@ from typing import List
 
 import nltk
 
-output_path = "./sample_out.out"
+output_path = "./epoch80.out"
 muc_test_path = "../data/mucevent/mucevent_test_only.json"
-save_path = "output.json"
-save_path_non_empty = "output_non_empty.json"
+save_path = "../output/epoch80_test.json"
+save_path_non_empty = "../output/epoch80_test_nonempty_predictions.json"
 
 f = open(output_path)
 lines = f.readlines()
@@ -110,7 +110,8 @@ if __name__ == '__main__':
                           doc_index,
                           cur_triggers)
             else:
-                parsed = ast.literal_eval("[" + template_str[2:-2] + "]")  # Assuming each line is of form " {(..)}\n"
+                parsed = ast.literal_eval("[" + template_str[template_str.index("{") + 1:template_str.index(
+                    "}")] + "]")  # Assuming each line is of form " {(..)}\n"
                 id_to_templates[doc_index]['pred_relations'].append(parsed)
                 for argument in parsed:
                     role = argument[0].split(":")[0].strip()
@@ -125,7 +126,6 @@ if __name__ == '__main__':
         result_dict[index] = dict(value)
         if value['pred_templates']:
             result_dict_non_empty[index] = dict(value)
-
 
     json.dump(result_dict, open(save_path, "w+"))
     json.dump(result_dict_non_empty, open(save_path_non_empty, "w+"))
