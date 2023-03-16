@@ -116,8 +116,8 @@ def run_permutation(doc_index, output_path, muc_tanl_input_path, muc_gtt_input_p
     result_dict_non_empty = dict()
     for index, value in id_to_templates.items():
         result_dict[index] = dict(value)
-        if "pred_templates" not in result_dict:
-            result_dict['pred_templates'] = []
+        if "pred_templates" not in result_dict[index]:
+            result_dict[index]['pred_templates'] = []
         result_dict[index] = {key: value for key, value in sorted(result_dict[index].items())}  # Sort
         if len(value['pred_triggers']) > 0:
             result_dict_non_empty[index] = result_dict[index]
