@@ -136,7 +136,7 @@ def run_permutation(doc_index, output_path, muc_tanl_input_path, muc_gtt_input_p
                 for argument in parsed:
                     role = argument[0].split(":")[0].strip()
                     template['incident_type'] = argument[0].split(":")[1].strip()
-                    template[role].append(cur_tokens[argument[1][0]:argument[1][1]])
+                    template[role].append([" ".join(cur_tokens[argument[1][0]:argument[1][1]])])
 
             id_to_templates[doc_index]['pred_templates'].append(template)
 
