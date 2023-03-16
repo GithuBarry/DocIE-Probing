@@ -33,7 +33,7 @@ def letters(input):
 
 def extract_trigger(s: str, org_text: List[str]):
     tokens = org_text
-    regex_str = r"\[ [a-z]* \| [a-z]* \]"
+    regex_str = r"\[ [a-z\-]* \| [a-z\-]* \]"
     splits_re = re.split(regex_str, s)
     triggers_re = re.findall(regex_str, s)
     # index = 0
@@ -54,12 +54,11 @@ def extract_trigger(s: str, org_text: List[str]):
     return triggers
 
 
-id_to_templates = defaultdict(lambda: defaultdict(list))
-
-
 def run_permutation(doc_index, output_path, muc_tanl_input_path, muc_gtt_input_path, save_path,
                     save_path_non_empty):
     num_of_examples = 200
+
+    id_to_templates = defaultdict(lambda: defaultdict(list))
 
     f = open(output_path)
     lines = f.readlines()
@@ -76,6 +75,7 @@ def run_permutation(doc_index, output_path, muc_tanl_input_path, muc_gtt_input_p
     cur_triggers = []
     for line in lines:
         if line[:len(trigger_predict_prefix)] == trigger_predict_prefix:
+
             # Found predicted text with marked triggers, potentially none
             # This means a new example for sure. incrementing doc_index.
             doc_index += 1
@@ -83,7 +83,7 @@ def run_permutation(doc_index, output_path, muc_tanl_input_path, muc_gtt_input_p
                 continue
             if doc_index >= num_of_examples:  # MUC test only has 200 examples.
                 break
-
+            assert 'raw_output' not in id_to_templates[doc_index]
             # Confirmed to process this example.
             cur_tokens = tanl_input_file[doc_index]['tokens']
 
@@ -99,6 +99,13 @@ def run_permutation(doc_index, output_path, muc_tanl_input_path, muc_gtt_input_p
                 id_to_templates[doc_index][k] = v
             template_id = -1
 
+        if doc_index < 0:
+            continue
+        if doc_index >= num_of_examples:  # MUC test only has 200 examples.
+            break
+
+        id_to_templates[doc_index]['raw_output'].append(line)
+
         empty_template = {
             "incident_type": None,
             "PerpInd": [],
@@ -107,7 +114,7 @@ def run_permutation(doc_index, output_path, muc_tanl_input_path, muc_gtt_input_p
             "Victim": [],
             "Weapon": []
         }
-        if doc_index >= 0 and line[:len(pred_template_prefix)] == pred_template_prefix:
+        if line[:len(pred_template_prefix)] == pred_template_prefix:
             # Found one template, potentially with no role fillers (`set()`).
             template_id += 1
             template_str = line[len(pred_template_prefix):]
@@ -121,7 +128,6 @@ def run_permutation(doc_index, output_path, muc_tanl_input_path, muc_gtt_input_p
                     print("Must manually check doc_index for empty template's incident type:",
                           doc_index,
                           cur_triggers)
-
             else:
                 # at least one role fillers predicted for this template
                 parsed = ast.literal_eval("[" + template_str[template_str.index("{") + 1:template_str.index(
@@ -140,6 +146,7 @@ def run_permutation(doc_index, output_path, muc_tanl_input_path, muc_gtt_input_p
         result_dict[index] = dict(value)
         if "pred_templates" not in result_dict[index]:
             result_dict[index]['pred_templates'] = []
+        assert len(result_dict[index]["pred_templates"]) == len(value['pred_triggers'])
         result_dict[index] = {key: value for key, value in sorted(result_dict[index].items())}  # Sort
         if len(value['pred_triggers']) > 0:
             result_dict_non_empty[index] = result_dict[index]

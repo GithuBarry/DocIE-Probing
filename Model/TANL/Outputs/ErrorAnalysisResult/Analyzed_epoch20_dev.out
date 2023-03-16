@@ -9,12 +9,6 @@ DOCID: 0
 Comparing:
 Summary:
 |-Template (attack):
-| |-PerpInd: ((28, 37), 'guerrillas')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
-|-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
@@ -58,7 +52,7 @@ Summary:
 Template Pair 1: 
 Matching:
 Template (attack):
-| |-PerpInd: ((28, 37), 'guerrillas')
+| |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
 | |-Victim: 
@@ -75,24 +69,6 @@ Template (attack):
 
 Template Pair 2: 
 Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-Template (attack):
-| |-PerpInd: [((28, 37), 'guerrillas')]
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
-
-	---
-
-Template Pair 3: 
-Matching:
 None
  -to- 
 Template (arson):
@@ -104,7 +80,7 @@ Template (arson):
 
 	---
 
-Template Pair 4: 
+Template Pair 3: 
 Matching:
 None
  -to- 
@@ -112,6 +88,19 @@ Template (robbery):
 | |-PerpInd: [((28, 37), 'guerrillas')]
 | |-PerpOrg: [((186, 221), 'guatemalan national revolutionary unity'), ((222, 225), 'urng')]
 | |-Target: [((68, 71), 'farm'), ((700, 714), '"la eminencia" farm')]
+| |-Victim: 
+| |-Weapon: 
+
+	---
+
+Template Pair 4: 
+Matching:
+None
+ -to- 
+Template (attack):
+| |-PerpInd: [((28, 37), 'guerrillas')]
+| |-PerpOrg: 
+| |-Target: 
 | |-Victim: 
 | |-Weapon: 
 
@@ -132,6 +121,8 @@ Transformations:
 
 Template Pair 1:
 |-Introduce_Missing_Role_Filler:
+  PerpInd: From None to ((28, 37), 'guerrillas')
+|-Introduce_Missing_Role_Filler:
   PerpOrg: From None to ((186, 221), 'guatemalan national revolutionary unity')
 |-Introduce_Missing_Role_Filler:
   Target: From None to ((46, 71), '"santo tomas" presidential farm')
@@ -139,16 +130,16 @@ Template Pair 1:
   Victim: From None to ((106, 111), 'cerezo')
 
 Template Pair 2:
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((28, 37), 'guerrillas')
-
-Template Pair 3:
 |-Introduce_Missing_Template:
   : From None to {'incident_type': 'arson', 'PerpInd': [[((28, 37), 'guerrillas')]], 'PerpOrg': [[((186, 221), 'guatemalan national revolutionary unity'), ((222, 225), 'urng')]], 'Target': [[((755, 764), 'facilities')]], 'Victim': [], 'Weapon': []}
 
-Template Pair 4:
+Template Pair 3:
 |-Introduce_Missing_Template:
   : From None to {'incident_type': 'robbery', 'PerpInd': [[((28, 37), 'guerrillas')]], 'PerpOrg': [[((186, 221), 'guatemalan national revolutionary unity'), ((222, 225), 'urng')]], 'Target': [[((68, 71), 'farm'), ((700, 714), '"la eminencia" farm')]], 'Victim': [], 'Weapon': []}
+
+Template Pair 4:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [[((28, 37), 'guerrillas')]], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []}
 
 Template Pair 5:
 |-Introduce_Missing_Template:
@@ -160,12 +151,6 @@ DOCID: 1
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((79, 87), 'farabundo'), ((88, 92), 'marti'), ((93, 100), 'national'), ((101, 110), 'liberation'), ((111, 115), 'front')
-| |-Target: ((128, 135), 'electric'), ((136, 140), 'power'), ((141, 150), 'substation')
-| |-Victim: 
-| |-Weapon: 
 |-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: ((79, 87), 'farabundo'), ((88, 92), 'marti'), ((93, 100), 'national'), ((101, 110), 'liberation'), ((111, 115), 'front')
@@ -192,19 +177,6 @@ Template (attack):
 | |-Victim: 
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((79, 87), 'farabundo'), ((88, 92), 'marti'), ((93, 100), 'national'), ((101, 110), 'liberation'), ((111, 115), 'front')
-| |-Target: ((128, 135), 'electric'), ((136, 140), 'power'), ((141, 150), 'substation')
-| |-Victim: 
-| |-Weapon: 
- -to- 
 Template (attack):
 | |-PerpInd: [((70, 115), 'members of the farabundo marti national liberation front')]
 | |-PerpOrg: [((79, 115), 'farabundo marti national liberation front'), ((116, 119), 'fmln')]
@@ -215,10 +187,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((79, 87), 'farabundo'), ((88, 92), 'marti'), ((93, 100), 'national'), ((101, 110), 'liberation'), ((111, 115), 'front')], 'Target': [((128, 135), 'electric'), ((136, 140), 'power'), ((141, 150), 'substation')], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((70, 115), 'members of the farabundo marti national liberation front')
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -248,12 +216,6 @@ Summary:
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: ((143, 149), 'ricardo'), ((150, 154), 'mejia'), ((48, 53), 'hector'), ((54, 59), 'larios')
-| |-Weapon: 
-|-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
 | |-Victim: ((48, 53), 'hector'), ((54, 59), 'larios')
 | |-Weapon: 
  -to- 
@@ -267,19 +229,6 @@ Template (kidnapping):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: ((143, 149), 'ricardo'), ((150, 154), 'mejia'), ((48, 53), 'hector'), ((54, 59), 'larios')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
 | |-Victim: ((48, 53), 'hector'), ((54, 59), 'larios')
 | |-Weapon: 
  -to- 
@@ -288,10 +237,6 @@ None
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [((143, 149), 'ricardo'), ((150, 154), 'mejia'), ((48, 53), 'hector'), ((54, 59), 'larios')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Remove_Spurious_Template:
   : From {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [((48, 53), 'hector'), ((54, 59), 'larios')], 'Weapon': []} to None
 
@@ -301,12 +246,6 @@ DOCID: 3
 
 Comparing:
 Summary:
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((28, 36), 'antioquia'), ((37, 43), 'liqueur'), ((44, 48), 'plant')
-| |-Victim: 
-| |-Weapon: ((49, 52), 'four'), ((53, 60), 'powerful'), ((61, 67), 'rockets')
  -to- 
 Summary:
 |-Template (bombing):
@@ -320,12 +259,7 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((28, 36), 'antioquia'), ((37, 43), 'liqueur'), ((44, 48), 'plant')
-| |-Victim: 
-| |-Weapon: ((49, 52), 'four'), ((53, 60), 'powerful'), ((61, 67), 'rockets')
+None
  -to- 
 Template (bombing):
 | |-PerpInd: [((210, 212), 'man')], [((216, 220), 'woman')]
@@ -337,24 +271,8 @@ Template (bombing):
 Transformations:
 
 Template Pair 1:
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((210, 212), 'man')
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((216, 220), 'woman')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((28, 36), 'antioquia') to ((28, 48), 'antioquia liqueur plant') to None
-|-Alter_Span:
-  Target: From ((37, 43), 'liqueur') to ((37, 48), 'liqueur plant')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((44, 48), 'plant') to ((37, 48), 'liqueur plant') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Weapon: From ((49, 52), 'four') to ((49, 67), 'four powerful rockets') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Weapon: From ((53, 60), 'powerful') to ((53, 67), 'powerful rockets') to None
-|-Introduce_Missing_Role_Filler:
-  Weapon: From None to ((356, 363), 'dynamite')
-|-Introduce_Missing_Role_Filler:
-  Weapon: From None to ((356, 388), 'dynamite and grenade rocket launchers')
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'bombing', 'PerpInd': [[((210, 212), 'man')], [((216, 220), 'woman')]], 'PerpOrg': [], 'Target': [[((28, 48), 'antioquia liqueur plant'), ((37, 48), 'liqueur plant')]], 'Victim': [], 'Weapon': [[((49, 67), 'four powerful rockets'), ((53, 67), 'powerful rockets'), ((61, 67), 'rockets')], [((356, 363), 'dynamite'), ((356, 388), 'dynamite and grenade rocket launchers'), ((356, 379), 'dynamite and grenade rocket'), ((356, 373), 'dynamite and grenade')], [((356, 388), 'dynamite and grenade rocket launchers'), ((356, 379), 'dynamite and grenade rocket'), ((356, 373), 'dynamite and grenade'), ((367, 388), 'grenade rocket launchers'), ((367, 379), 'grenade rocket'), ((367, 373), 'grenade')]]}
 
 	------------------
 
@@ -373,12 +291,6 @@ DOCID: 5
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((0, 12), 'extraditables')
-| |-Target: 
-| |-Victim: ((81, 88), 'waldemar'), ((89, 96), 'franklin'), ((97, 104), 'quintero'), ((220, 226), 'antonio'), ((227, 232), 'roldan'), ((233, 240), 'betancur')
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -392,12 +304,7 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((0, 12), 'extraditables')
-| |-Target: 
-| |-Victim: ((81, 88), 'waldemar'), ((89, 96), 'franklin'), ((97, 104), 'quintero'), ((220, 226), 'antonio'), ((227, 232), 'roldan'), ((233, 240), 'betancur')
-| |-Weapon: 
+None
  -to- 
 Template (attack):
 | |-PerpInd: 
@@ -409,20 +316,8 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpOrg: From ((0, 12), 'extraditables') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Victim: From ((81, 88), 'waldemar') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Victim: From ((89, 96), 'franklin') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Victim: From ((97, 104), 'quintero') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((220, 226), 'antonio') to ((220, 240), 'antonio roldan betancur') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((227, 232), 'roldan') to ((220, 240), 'antonio roldan betancur') to None
-|-Alter_Span:
-  Victim: From ((233, 240), 'betancur') to ((220, 240), 'antonio roldan betancur')
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [[((220, 240), 'antonio roldan betancur')]], 'Weapon': []}
 
 	------------------
 
@@ -626,12 +521,6 @@ Summary:
 | |-Target: 
 | |-Victim: ((175, 180), 'hector'), ((181, 186), 'oqueli'), ((187, 195), 'colindres'), ((245, 249), 'hilda'), ((250, 255), 'flores')
 | |-Weapon: 
-|-Template (kidnapping):
-| |-PerpInd: ((320, 331), 'unidentified'), ((332, 342), 'individuals')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((175, 180), 'hector'), ((181, 186), 'oqueli'), ((187, 195), 'colindres'), ((245, 249), 'hilda'), ((250, 255), 'flores')
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (kidnapping):
@@ -652,19 +541,6 @@ Template (kidnapping):
 | |-Victim: ((175, 180), 'hector'), ((181, 186), 'oqueli'), ((187, 195), 'colindres'), ((245, 249), 'hilda'), ((250, 255), 'flores')
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (kidnapping):
-| |-PerpInd: ((320, 331), 'unidentified'), ((332, 342), 'individuals')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((175, 180), 'hector'), ((181, 186), 'oqueli'), ((187, 195), 'colindres'), ((245, 249), 'hilda'), ((250, 255), 'flores')
-| |-Weapon: 
- -to- 
 Template (kidnapping):
 | |-PerpInd: [((781, 805), 'salvadoran rightist sectors')], [((809, 816), 'soldiers')]
 | |-PerpOrg: 
@@ -675,10 +551,6 @@ Template (kidnapping):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'kidnapping', 'PerpInd': [((320, 331), 'unidentified'), ((332, 342), 'individuals')], 'PerpOrg': [], 'Target': [], 'Victim': [((175, 180), 'hector'), ((181, 186), 'oqueli'), ((187, 195), 'colindres'), ((245, 249), 'hilda'), ((250, 255), 'flores')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Remove_Unrelated_Spurious_Role_Filler:
   PerpInd: From ((320, 331), 'unidentified') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
@@ -760,12 +632,6 @@ DOCID: 21
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((391, 395), 'death'), ((396, 401), 'squads')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -779,12 +645,7 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((391, 395), 'death'), ((396, 401), 'squads')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
+None
  -to- 
 Template (attack):
 | |-PerpInd: [((375, 388), 'security forces')], [((391, 401), 'death squads')]
@@ -796,12 +657,8 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Alter_Span -> Alter_Role:
-  From PerpOrg: ((396, 401), 'squads') to PerpOrg: ((391, 401), 'death squads') to PerpInd: ((391, 401), 'death squads')
-|-Alter_Span -> Alter_Role:
-  From PerpOrg: ((391, 395), 'death') to PerpOrg: ((391, 401), 'death squads') to PerpInd: ((391, 401), 'death squads')
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((375, 388), 'security forces')
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [[((375, 388), 'security forces')], [((391, 401), 'death squads')]], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []}
 
 	------------------
 
@@ -821,18 +678,6 @@ DOCID: 23
 Comparing:
 Summary:
 |-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((447, 458), 'headquarters'), ((80, 81), 'of'), ((1, 0), 'the'), ((461, 467), 'country'), ((31, 31), "'s"), ((469, 477), 'principal'), ((82, 89), 'security'), ((486, 497), 'organization'), ((203, 205), 'bus'), ((38, 45), 'building')
-| |-Victim: 
-| |-Weapon: 
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((38, 45), 'building'), ((203, 205), 'bus')
-| |-Victim: 
-| |-Weapon: ((0, 2), 'car'), ((3, 6), 'bomb')
-|-Template (bombing):
 | |-PerpInd: ((395, 404), 'terrorists')
 | |-PerpOrg: 
 | |-Target: ((447, 458), 'headquarters'), ((80, 81), 'of'), ((1, 0), 'the'), ((461, 467), 'country'), ((31, 31), "'s"), ((469, 477), 'principal'), ((82, 89), 'security'), ((486, 497), 'organization'), ((203, 205), 'bus'), ((38, 45), 'building')
@@ -858,32 +703,6 @@ Summary:
 Template Pair 1: 
 Matching:
 Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((447, 458), 'headquarters'), ((80, 81), 'of'), ((1, 0), 'the'), ((461, 467), 'country'), ((31, 31), "'s"), ((469, 477), 'principal'), ((82, 89), 'security'), ((486, 497), 'organization'), ((203, 205), 'bus'), ((38, 45), 'building')
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((38, 45), 'building'), ((203, 205), 'bus')
-| |-Victim: 
-| |-Weapon: ((0, 2), 'car'), ((3, 6), 'bomb')
- -to- 
-None
-
-	---
-
-Template Pair 3: 
-Matching:
-Template (bombing):
 | |-PerpInd: ((395, 404), 'terrorists')
 | |-PerpOrg: 
 | |-Target: ((447, 458), 'headquarters'), ((80, 81), 'of'), ((1, 0), 'the'), ((461, 467), 'country'), ((31, 31), "'s"), ((469, 477), 'principal'), ((82, 89), 'security'), ((486, 497), 'organization'), ((203, 205), 'bus'), ((38, 45), 'building')
@@ -899,7 +718,7 @@ Template (bombing):
 
 	---
 
-Template Pair 4: 
+Template Pair 2: 
 Matching:
 Template (bombing):
 | |-PerpInd: ((395, 404), 'terrorists')
@@ -913,14 +732,6 @@ None
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [], 'Target': [((447, 458), 'headquarters'), ((80, 81), 'of'), ((1, 0), 'the'), ((461, 467), 'country'), ((31, 31), "'s"), ((469, 477), 'principal'), ((82, 89), 'security'), ((486, 497), 'organization'), ((203, 205), 'bus'), ((38, 45), 'building')], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [], 'Target': [((38, 45), 'building'), ((203, 205), 'bus')], 'Victim': [], 'Weapon': [((0, 2), 'car'), ((3, 6), 'bomb')]} to None
-
-Template Pair 3:
 |-Alter_Role:
   From Target: ((203, 205), 'bus') to Weapon: ((203, 205), 'bus')
 |-Remove_Unrelated_Spurious_Role_Filler:
@@ -968,7 +779,7 @@ Template Pair 3:
 |-Alter_Span:
   Victim: From ((535, 541), 'marquez') to ((525, 541), 'miguel maza marquez')
 
-Template Pair 4:
+Template Pair 2:
 |-Remove_Spurious_Template:
   : From {'incident_type': 'bombing', 'PerpInd': [((395, 404), 'terrorists')], 'PerpOrg': [], 'Target': [((38, 45), 'building'), ((203, 205), 'bus')], 'Victim': [], 'Weapon': [((0, 2), 'car'), ((3, 6), 'bomb')]} to None
 
@@ -1026,12 +837,6 @@ Summary:
 |-Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((38, 41), 'bomb')
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
 | |-Target: ((372, 378), 'offices'), ((9, 10), 'of'), ((1, 0), 'the'), ((381, 386), 'deputy'), ((387, 391), 'mayor')
 | |-Victim: ((112, 116), 'jaime'), ((31, 33), 'paz'), ((120, 125), 'zamora')
 | |-Weapon: ((38, 41), 'bomb')
@@ -1051,19 +856,6 @@ Matching:
 Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((38, 41), 'bomb')
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
 | |-Target: ((372, 378), 'offices'), ((9, 10), 'of'), ((1, 0), 'the'), ((381, 386), 'deputy'), ((387, 391), 'mayor')
 | |-Victim: ((112, 116), 'jaime'), ((31, 33), 'paz'), ((120, 125), 'zamora')
 | |-Weapon: ((38, 41), 'bomb')
@@ -1078,10 +870,6 @@ Template (bombing):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': [((38, 41), 'bomb')]} to None
-
-Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((448, 456), 'terrorist')
 |-Alter_Span:
@@ -1107,33 +895,10 @@ DOCID: 27
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((165, 171), 'gonzalo')
-| |-Weapon: 
  -to- 
 Summary:
 
-	---
-
-Template Pair 1: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((165, 171), 'gonzalo')
-| |-Weapon: 
- -to- 
-None
-
 Transformations:
-
-Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [((165, 171), 'gonzalo')], 'Weapon': []} to None
 
 	------------------
 
@@ -1186,33 +951,10 @@ DOCID: 30
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 
-	---
-
-Template Pair 1: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
 Transformations:
-
-Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
 
 	------------------
 
@@ -1237,12 +979,6 @@ Summary:
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 
@@ -1259,26 +995,9 @@ Template (attack):
  -to- 
 None
 
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Remove_Spurious_Template:
   : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
 
@@ -1333,12 +1052,6 @@ DOCID: 35
 
 Comparing:
 Summary:
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((177, 184), 'homemade'), ((185, 188), 'bomb')
 |-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -1358,24 +1071,6 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((177, 184), 'homemade'), ((185, 188), 'bomb')
- -to- 
-Template (bombing):
-| |-PerpInd: [((307, 314), 'suspects')]
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: [((177, 188), 'homemade bomb'), ((185, 188), 'bomb')]
-
-	---
-
-Template Pair 2: 
-Matching:
 Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -1385,17 +1080,28 @@ Template (attack):
  -to- 
 None
 
+	---
+
+Template Pair 2: 
+Matching:
+None
+ -to- 
+Template (bombing):
+| |-PerpInd: [((307, 314), 'suspects')]
+| |-PerpOrg: 
+| |-Target: 
+| |-Victim: 
+| |-Weapon: [((177, 188), 'homemade bomb'), ((185, 188), 'bomb')]
+
 Transformations:
 
 Template Pair 1:
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((307, 314), 'suspects')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Weapon: From ((177, 184), 'homemade') to ((177, 188), 'homemade bomb') to None
-
-Template Pair 2:
 |-Remove_Spurious_Template:
   : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': [((177, 184), 'homemade'), ((185, 188), 'bomb')]} to None
+
+Template Pair 2:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'bombing', 'PerpInd': [[((307, 314), 'suspects')]], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': [[((177, 188), 'homemade bomb'), ((185, 188), 'bomb')]]}
 
 	------------------
 
@@ -1403,18 +1109,6 @@ DOCID: 36
 
 Comparing:
 Summary:
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((666, 671), 'nadine'), ((672, 679), 'elkashes'), ((234, 244), 'christopher'), ((245, 252), 'anderson'), ((218, 222), 'erika'), ((223, 230), 'sullivan')
-| |-Weapon: ((565, 571), 'grenade')
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((218, 222), 'erika'), ((223, 230), 'sullivan'), ((234, 244), 'christopher'), ((245, 252), 'anderson'), ((666, 671), 'nadine'), ((672, 679), 'elkashes')
-| |-Weapon: ((565, 571), 'grenade')
 |-Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -1456,7 +1150,7 @@ Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: ((666, 671), 'nadine'), ((672, 679), 'elkashes'), ((234, 244), 'christopher'), ((245, 252), 'anderson'), ((218, 222), 'erika'), ((223, 230), 'sullivan')
+| |-Victim: ((666, 671), 'nadine'), ((672, 679), 'elkashes')
 | |-Weapon: ((565, 571), 'grenade')
  -to- 
 Template (bombing):
@@ -1474,7 +1168,7 @@ Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: ((218, 222), 'erika'), ((223, 230), 'sullivan'), ((234, 244), 'christopher'), ((245, 252), 'anderson'), ((666, 671), 'nadine'), ((672, 679), 'elkashes')
+| |-Victim: 
 | |-Weapon: ((565, 571), 'grenade')
  -to- 
 Template (attack):
@@ -1488,25 +1182,7 @@ Template (attack):
 
 Template Pair 3: 
 Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((666, 671), 'nadine'), ((672, 679), 'elkashes')
-| |-Weapon: ((565, 571), 'grenade')
- -to- 
 None
-
-	---
-
-Template Pair 4: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((565, 571), 'grenade')
  -to- 
 Template (attack):
 | |-PerpInd: 
@@ -1526,40 +1202,18 @@ Template Pair 1:
   Victim: From ((666, 671), 'nadine') to ((666, 679), 'nadine elkashes') to None
 |-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
   Victim: From ((672, 679), 'elkashes') to ((666, 679), 'nadine elkashes') to None
-|-Alter_Span:
-  Victim: From ((234, 244), 'christopher') to ((234, 252), 'christopher anderson')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((245, 252), 'anderson') to ((234, 252), 'christopher anderson') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((218, 222), 'erika') to ((218, 230), 'erika sullivan') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((223, 230), 'sullivan') to ((218, 230), 'erika sullivan') to None
+|-Introduce_Missing_Role_Filler:
+  Victim: From None to ((234, 252), 'christopher anderson')
 
 Template Pair 2:
 |-Remove_Cross_Template_Spurious_Role_Filler:
   Weapon: From ((565, 571), 'grenade') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((218, 222), 'erika') to ((218, 230), 'erika sullivan') to None
-|-Alter_Span:
-  Victim: From ((223, 230), 'sullivan') to ((218, 230), 'erika sullivan')
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((234, 244), 'christopher') to ((234, 252), 'christopher anderson') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((245, 252), 'anderson') to ((234, 252), 'christopher anderson') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((666, 671), 'nadine') to ((666, 679), 'nadine elkashes') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((672, 679), 'elkashes') to ((666, 679), 'nadine elkashes') to None
+|-Introduce_Missing_Role_Filler:
+  Victim: From None to ((218, 230), 'erika sullivan')
 
 Template Pair 3:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [((666, 671), 'nadine'), ((672, 679), 'elkashes')], 'Weapon': [((565, 571), 'grenade')]} to None
-
-Template Pair 4:
-|-Remove_Cross_Template_Spurious_Role_Filler:
-  Weapon: From ((565, 571), 'grenade') to None
-|-Introduce_Missing_Role_Filler:
-  Victim: From None to ((666, 679), 'nadine elkashes')
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [[((666, 679), 'nadine elkashes')]], 'Weapon': []}
 
 	------------------
 
@@ -1607,12 +1261,6 @@ Summary:
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: ((35, 45), 'individuals')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -1656,12 +1304,7 @@ Template (attack):
 
 Template Pair 2: 
 Matching:
-Template (attack):
-| |-PerpInd: ((35, 45), 'individuals')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
+None
  -to- 
 Template (attack):
 | |-PerpInd: [((1507, 1511), 'guard')]
@@ -1696,14 +1339,8 @@ Template Pair 1:
   Weapon: From None to ((1640, 1647), 'ak rifles')
 
 Template Pair 2:
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpInd: From ((35, 45), 'individuals') to None
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((1507, 1511), 'guard')
-|-Introduce_Missing_Role_Filler:
-  PerpOrg: From None to ((1491, 1506), 'brazilian embassy')
-|-Introduce_Missing_Role_Filler:
-  Weapon: From None to ((60, 62), 'gun')
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [[((1507, 1511), 'guard')]], 'PerpOrg': [[((1491, 1506), 'brazilian embassy')]], 'Target': [], 'Victim': [], 'Weapon': [[((60, 62), 'gun')]]}
 
 Template Pair 3:
 |-Introduce_Missing_Template:
@@ -1715,30 +1352,6 @@ DOCID: 39
 
 Comparing:
 Summary:
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: ((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')
-| |-Target: 
-| |-Victim: ((1103, 1106), 'luis'), ((1107, 1112), 'carlos'), ((1113, 1117), 'galan')
-| |-Weapon: ((65, 67), 'car'), ((1201, 1204), 'bomb'), ((65, 67), 'car'), ((1201, 1205), 'bombs'), ((1185, 1194), 'explosives')
-|-Template (bombing):
-| |-PerpInd: ((1056, 1059), 'drug'), ((1150, 1160), 'traffickers')
-| |-PerpOrg: ((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')
-| |-Target: 
-| |-Victim: ((1103, 1106), 'luis'), ((1107, 1112), 'carlos'), ((1113, 1117), 'galan')
-| |-Weapon: ((65, 67), 'car'), ((1201, 1205), 'bombs'), ((1185, 1194), 'explosives')
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')
-| |-Target: 
-| |-Victim: ((1103, 1106), 'luis'), ((1107, 1112), 'carlos'), ((1113, 1117), 'galan')
-| |-Weapon: 
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: ((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')
-| |-Target: 
-| |-Victim: ((1103, 1106), 'luis'), ((1107, 1112), 'carlos'), ((1113, 1117), 'galan')
-| |-Weapon: ((65, 67), 'car'), ((1201, 1205), 'bombs'), ((1185, 1194), 'explosives')
 |-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: ((1, 0), 'the'), ((5, 17), 'extraditables'), ((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')
@@ -1770,63 +1383,6 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: ((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')
-| |-Target: 
-| |-Victim: ((1103, 1106), 'luis'), ((1107, 1112), 'carlos'), ((1113, 1117), 'galan')
-| |-Weapon: ((65, 67), 'car'), ((1201, 1204), 'bomb'), ((65, 67), 'car'), ((1201, 1205), 'bombs'), ((1185, 1194), 'explosives')
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: ((1056, 1059), 'drug'), ((1150, 1160), 'traffickers')
-| |-PerpOrg: ((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')
-| |-Target: 
-| |-Victim: ((1103, 1106), 'luis'), ((1107, 1112), 'carlos'), ((1113, 1117), 'galan')
-| |-Weapon: ((65, 67), 'car'), ((1201, 1205), 'bombs'), ((1185, 1194), 'explosives')
- -to- 
-Template (bombing):
-| |-PerpInd: [((1146, 1160), 'drug traffickers')]
-| |-PerpOrg: [((5, 17), 'the extraditables'), ((5, 17), '"the extraditables"')]
-| |-Target: [((1520, 1539), 'avianca airlines plane'), ((1535, 1539), 'plane')]
-| |-Victim: 
-| |-Weapon: [((1185, 1194), 'explosives')]
-
-	---
-
-Template Pair 3: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')
-| |-Target: 
-| |-Victim: ((1103, 1106), 'luis'), ((1107, 1112), 'carlos'), ((1113, 1117), 'galan')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 4: 
-Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: ((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')
-| |-Target: 
-| |-Victim: ((1103, 1106), 'luis'), ((1107, 1112), 'carlos'), ((1113, 1117), 'galan')
-| |-Weapon: ((65, 67), 'car'), ((1201, 1205), 'bombs'), ((1185, 1194), 'explosives')
- -to- 
-None
-
-	---
-
-Template Pair 5: 
-Matching:
 Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: ((1, 0), 'the'), ((5, 17), 'extraditables'), ((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')
@@ -1838,7 +1394,7 @@ None
 
 	---
 
-Template Pair 6: 
+Template Pair 2: 
 Matching:
 Template (bombing):
 | |-PerpInd: ((1056, 1059), 'drug'), ((1150, 1160), 'traffickers')
@@ -1854,49 +1410,26 @@ Template (bombing):
 | |-Victim: 
 | |-Weapon: [((1198, 1205), 'car bombs'), ((1605, 1611), 'bus bomb')]
 
+	---
+
+Template Pair 3: 
+Matching:
+None
+ -to- 
+Template (bombing):
+| |-PerpInd: [((1146, 1160), 'drug traffickers')]
+| |-PerpOrg: [((5, 17), 'the extraditables'), ((5, 17), '"the extraditables"')]
+| |-Target: [((1520, 1539), 'avianca airlines plane'), ((1535, 1539), 'plane')]
+| |-Victim: 
+| |-Weapon: [((1185, 1194), 'explosives')]
+
 Transformations:
 
 Template Pair 1:
 |-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')], 'Target': [], 'Victim': [((1103, 1106), 'luis'), ((1107, 1112), 'carlos'), ((1113, 1117), 'galan')], 'Weapon': [((65, 67), 'car'), ((1201, 1204), 'bomb'), ((65, 67), 'car'), ((1201, 1205), 'bombs'), ((1185, 1194), 'explosives')]} to None
-
-Template Pair 2:
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpInd: From ((1056, 1059), 'drug') to None
-|-Alter_Span:
-  PerpInd: From ((1150, 1160), 'traffickers') to ((1146, 1160), 'drug traffickers')
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpOrg: From ((1056, 1070), 'drug-trafficking') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpOrg: From ((1071, 1076), 'mafias') to None
-|-Introduce_Missing_Role_Filler:
-  PerpOrg: From None to ((5, 17), 'the extraditables')
-|-Introduce_Missing_Role_Filler:
-  Target: From None to ((1520, 1539), 'avianca airlines plane')
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Weapon: From ((65, 67), 'car') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Weapon: From ((1201, 1205), 'bombs') to ((1198, 1205), 'car bombs') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Victim: From ((1103, 1106), 'luis') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Victim: From ((1107, 1112), 'carlos') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Victim: From ((1113, 1117), 'galan') to None
-
-Template Pair 3:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')], 'Target': [], 'Victim': [((1103, 1106), 'luis'), ((1107, 1112), 'carlos'), ((1113, 1117), 'galan')], 'Weapon': []} to None
-
-Template Pair 4:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')], 'Target': [], 'Victim': [((1103, 1106), 'luis'), ((1107, 1112), 'carlos'), ((1113, 1117), 'galan')], 'Weapon': [((65, 67), 'car'), ((1201, 1205), 'bombs'), ((1185, 1194), 'explosives')]} to None
-
-Template Pair 5:
-|-Remove_Spurious_Template:
   : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((1, 0), 'the'), ((5, 17), 'extraditables'), ((1056, 1070), 'drug-trafficking'), ((1071, 1076), 'mafias')], 'Target': [], 'Victim': [((1103, 1106), 'luis'), ((1107, 1112), 'carlos'), ((1113, 1117), 'galan')], 'Weapon': []} to None
 
-Template Pair 6:
+Template Pair 2:
 |-Remove_Unrelated_Spurious_Role_Filler:
   PerpInd: From ((1056, 1059), 'drug') to None
 |-Alter_Span:
@@ -1923,6 +1456,10 @@ Template Pair 6:
   Victim: From ((1107, 1112), 'carlos') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
   Victim: From ((1113, 1117), 'galan') to None
+
+Template Pair 3:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'bombing', 'PerpInd': [[((1146, 1160), 'drug traffickers')]], 'PerpOrg': [[((5, 17), 'the extraditables'), ((5, 17), '"the extraditables"')]], 'Target': [[((1520, 1539), 'avianca airlines plane'), ((1535, 1539), 'plane')]], 'Victim': [], 'Weapon': [[((1185, 1194), 'explosives')]]}
 
 	------------------
 
@@ -1998,12 +1535,6 @@ DOCID: 44
 Comparing:
 Summary:
 |-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((121, 125), 'armed'), ((126, 131), 'forces')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
-|-Template (attack):
 | |-PerpInd: ((582, 587), 'hector'), ((588, 596), 'heriberto'), ((597, 605), 'hernandez')
 | |-PerpOrg: ((121, 125), 'armed'), ((126, 131), 'forces')
 | |-Target: 
@@ -2023,19 +1554,6 @@ Summary:
 Template Pair 1: 
 Matching:
 Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((121, 125), 'armed'), ((126, 131), 'forces')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
 | |-PerpInd: ((582, 587), 'hector'), ((588, 596), 'heriberto'), ((597, 605), 'hernandez')
 | |-PerpOrg: ((121, 125), 'armed'), ((126, 131), 'forces')
 | |-Target: 
@@ -2052,10 +1570,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((121, 125), 'armed'), ((126, 131), 'forces')], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   PerpInd: From ((582, 587), 'hector') to ((575, 605), 'colonel hector heriberto hernandez') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -2207,12 +1721,6 @@ Summary:
 |-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
-| |-Target: ((213, 217), 'power'), ((236, 240), 'pylon'), ((213, 217), 'power'), ((218, 227), 'substation'), ((295, 302), 'vehicles')
-| |-Victim: ((168, 175), 'bernardo'), ((176, 184), 'jaramillo'), ((185, 188), 'ossa')
-| |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
 | |-Target: ((295, 302), 'vehicles'), ((213, 217), 'power'), ((218, 227), 'substation'), ((213, 217), 'power'), ((236, 240), 'pylon'), ((323, 328), 'balboa'), ((329, 336), 'hospital'), ((337, 345), 'ambulance')
 | |-Victim: ((168, 175), 'bernardo'), ((176, 184), 'jaramillo'), ((185, 188), 'ossa')
 | |-Weapon: 
@@ -2244,19 +1752,6 @@ Matching:
 Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
-| |-Target: ((213, 217), 'power'), ((236, 240), 'pylon'), ((213, 217), 'power'), ((218, 227), 'substation'), ((295, 302), 'vehicles')
-| |-Victim: ((168, 175), 'bernardo'), ((176, 184), 'jaramillo'), ((185, 188), 'ossa')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
 | |-Target: ((295, 302), 'vehicles'), ((213, 217), 'power'), ((218, 227), 'substation'), ((213, 217), 'power'), ((236, 240), 'pylon'), ((323, 328), 'balboa'), ((329, 336), 'hospital'), ((337, 345), 'ambulance')
 | |-Victim: ((168, 175), 'bernardo'), ((176, 184), 'jaramillo'), ((185, 188), 'ossa')
 | |-Weapon: 
@@ -2270,7 +1765,7 @@ Template (attack):
 
 	---
 
-Template Pair 3: 
+Template Pair 2: 
 Matching:
 None
  -to- 
@@ -2283,7 +1778,7 @@ Template (bombing):
 
 	---
 
-Template Pair 4: 
+Template Pair 3: 
 Matching:
 None
  -to- 
@@ -2297,10 +1792,6 @@ Template (arson):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [((213, 217), 'power'), ((236, 240), 'pylon'), ((213, 217), 'power'), ((218, 227), 'substation'), ((295, 302), 'vehicles')], 'Victim': [((168, 175), 'bernardo'), ((176, 184), 'jaramillo'), ((185, 188), 'ossa')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Remove_Unrelated_Spurious_Role_Filler:
   Target: From ((295, 302), 'vehicles') to None
 |-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
@@ -2324,11 +1815,11 @@ Template Pair 2:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   Victim: From ((185, 188), 'ossa') to ((168, 188), 'bernardo jaramillo ossa') to None
 
-Template Pair 3:
+Template Pair 2:
 |-Introduce_Missing_Template:
   : From None to {'incident_type': 'bombing', 'PerpInd': [[((0, 16), 'members of the 8th front')]], 'PerpOrg': [[((29, 62), 'revolutionary armed forces of colombia'), ((63, 66), 'farc')]], 'Target': [[((213, 227), 'power substation')], [((231, 240), 'power pylon')]], 'Victim': [], 'Weapon': []}
 
-Template Pair 4:
+Template Pair 3:
 |-Introduce_Missing_Template:
   : From None to {'incident_type': 'arson', 'PerpInd': [[((0, 16), 'members of the 8th front')]], 'PerpOrg': [[((29, 62), 'revolutionary armed forces of colombia'), ((63, 66), 'farc')]], 'Target': [[((323, 345), 'balboa hospital ambulance'), ((337, 345), 'ambulance')], [((346, 354), 'fuel truck'), ((346, 383), 'fuel truck carrying 3,000 gallons of gasoline'), ((350, 354), 'truck')], [((387, 398), 'station wagon')]], 'Victim': [], 'Weapon': []}
 
@@ -2338,12 +1829,6 @@ DOCID: 49
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: ((333, 335), 'men'), ((798, 804), 'wearing'), ((805, 812), 'military'), ((813, 820), 'uniforms')
-| |-PerpOrg: ((805, 812), 'military')
-| |-Target: 
-| |-Victim: ((670, 676), 'ignacio'), ((677, 685), 'ellacuria')
-| |-Weapon: 
 |-Template (attack):
 | |-PerpInd: ((333, 335), 'men'), ((798, 804), 'wearing'), ((805, 812), 'military'), ((813, 820), 'uniforms')
 | |-PerpOrg: ((805, 812), 'military')
@@ -2367,19 +1852,6 @@ Template (attack):
 | |-PerpInd: ((333, 335), 'men'), ((798, 804), 'wearing'), ((805, 812), 'military'), ((813, 820), 'uniforms')
 | |-PerpOrg: ((805, 812), 'military')
 | |-Target: 
-| |-Victim: ((670, 676), 'ignacio'), ((677, 685), 'ellacuria')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: ((333, 335), 'men'), ((798, 804), 'wearing'), ((805, 812), 'military'), ((813, 820), 'uniforms')
-| |-PerpOrg: ((805, 812), 'military')
-| |-Target: 
 | |-Victim: ((17, 22), 'marcos'), ((23, 29), 'mcgrath'), ((670, 676), 'ignacio'), ((677, 685), 'ellacuria')
 | |-Weapon: 
  -to- 
@@ -2393,10 +1865,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [((333, 335), 'men'), ((798, 804), 'wearing'), ((805, 812), 'military'), ((813, 820), 'uniforms')], 'PerpOrg': [((805, 812), 'military')], 'Target': [], 'Victim': [((670, 676), 'ignacio'), ((677, 685), 'ellacuria')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span -> Alter_Role:
   From PerpOrg: ((805, 812), 'military') to PerpOrg: ((795, 820), 'men wearing military uniforms') to PerpInd: ((795, 820), 'men wearing military uniforms')
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -2502,12 +1970,6 @@ Summary:
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: ((85, 93), 'president'), ((5, 5), "'s"), ((95, 103), 'residence')
-| |-Victim: ((410, 413), 'jose'), ((414, 420), 'alfonso'), ((421, 426), 'chavez')
-| |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((85, 93), 'president'), ((5, 5), "'s"), ((95, 103), 'residence')
 | |-Victim: 
 | |-Weapon: 
 |-Template (attack):
@@ -2545,7 +2007,7 @@ Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: ((85, 93), 'president'), ((5, 5), "'s"), ((95, 103), 'residence')
-| |-Victim: ((410, 413), 'jose'), ((414, 420), 'alfonso'), ((421, 426), 'chavez')
+| |-Victim: 
 | |-Weapon: 
  -to- 
 Template (attack):
@@ -2577,12 +2039,7 @@ Template (attack):
 
 Template Pair 3: 
 Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((85, 93), 'president'), ((5, 5), "'s"), ((95, 103), 'residence')
-| |-Victim: 
-| |-Weapon: 
+None
  -to- 
 Template (attack):
 | |-PerpInd: 
@@ -2600,12 +2057,6 @@ Template Pair 1:
   Target: From ((5, 5), "'s") to None
 |-Remove_Unrelated_Spurious_Role_Filler:
   Target: From ((95, 103), 'residence') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Victim: From ((410, 413), 'jose') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Victim: From ((414, 420), 'alfonso') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Victim: From ((421, 426), 'chavez') to None
 
 Template Pair 2:
 |-Remove_Unrelated_Spurious_Role_Filler:
@@ -2616,20 +2067,8 @@ Template Pair 2:
   Target: From ((95, 103), 'residence') to None
 
 Template Pair 3:
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((85, 93), 'president') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((5, 5), "'s") to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((95, 103), 'residence') to None
-|-Introduce_Missing_Role_Filler:
-  Target: From None to ((104, 126), 'central electoral council')
-|-Introduce_Missing_Role_Filler:
-  Target: From None to ((885, 905), 'presidential residence')
-|-Introduce_Missing_Role_Filler:
-  Target: From None to ((906, 918), 'sheraton hotel')
-|-Introduce_Missing_Role_Filler:
-  Target: From None to ((933, 975), "public works minister mauricio stubig's residence")
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [[((104, 126), 'central electoral council')], [((885, 905), 'presidential residence')], [((906, 918), 'sheraton hotel'), ((914, 918), 'hotel')], [((933, 975), "public works minister mauricio stubig's residence")]], 'Victim': [], 'Weapon': []}
 
 	------------------
 
@@ -2661,12 +2100,6 @@ Comparing:
 Summary:
 |-Template (attack):
 | |-PerpInd: 
-| |-PerpOrg: ((67, 70), 'fmln')
-| |-Target: 
-| |-Victim: ((102, 105), 'jose'), ((106, 112), 'antonio'), ((113, 121), 'rodriguez'), ((122, 126), 'porth')
-| |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
 | |-PerpOrg: ((67, 70), 'fmln'), ((67, 70), 'fmln')
 | |-Target: 
 | |-Victim: ((102, 105), 'jose'), ((106, 112), 'antonio'), ((113, 121), 'rodriguez'), ((122, 126), 'porth')
@@ -2686,19 +2119,6 @@ Template Pair 1:
 Matching:
 Template (attack):
 | |-PerpInd: 
-| |-PerpOrg: ((67, 70), 'fmln')
-| |-Target: 
-| |-Victim: ((102, 105), 'jose'), ((106, 112), 'antonio'), ((113, 121), 'rodriguez'), ((122, 126), 'porth')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
 | |-PerpOrg: ((67, 70), 'fmln'), ((67, 70), 'fmln')
 | |-Target: 
 | |-Victim: ((102, 105), 'jose'), ((106, 112), 'antonio'), ((113, 121), 'rodriguez'), ((122, 126), 'porth')
@@ -2714,10 +2134,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((67, 70), 'fmln')], 'Target': [], 'Victim': [((102, 105), 'jose'), ((106, 112), 'antonio'), ((113, 121), 'rodriguez'), ((122, 126), 'porth')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((1048, 1053), 'rebels')
 |-Remove_Duplicate_Role_Filler:
@@ -2782,12 +2198,6 @@ DOCID: 61
 
 Comparing:
 Summary:
-|-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: ((0, 3), 'army'), ((4, 5), 'of'), ((6, 13), 'national'), ((14, 23), 'liberation')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
 |-Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: ((0, 3), 'army'), ((4, 5), 'of'), ((6, 13), 'national'), ((14, 23), 'liberation')
@@ -2813,19 +2223,6 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: ((0, 3), 'army'), ((4, 5), 'of'), ((6, 13), 'national'), ((14, 23), 'liberation')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
 Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: ((0, 3), 'army'), ((4, 5), 'of'), ((6, 13), 'national'), ((14, 23), 'liberation')
@@ -2842,7 +2239,7 @@ Template (bombing):
 
 	---
 
-Template Pair 3: 
+Template Pair 2: 
 Matching:
 Template (kidnapping):
 | |-PerpInd: 
@@ -2856,10 +2253,6 @@ None
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [((0, 3), 'army'), ((4, 5), 'of'), ((6, 13), 'national'), ((14, 23), 'liberation')], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   PerpOrg: From ((0, 3), 'army') to ((0, 23), 'army of national liberation') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -2873,7 +2266,7 @@ Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   Weapon: From None to ((476, 497), 'several dynamite attacks')
 
-Template Pair 3:
+Template Pair 2:
 |-Remove_Spurious_Template:
   : From {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [((0, 3), 'army'), ((4, 5), 'of'), ((6, 13), 'national'), ((14, 23), 'liberation')], 'Target': [], 'Victim': [], 'Weapon': []} to None
 
@@ -2909,12 +2302,6 @@ Summary:
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: 
-| |-Weapon: 
-|-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
 | |-Victim: ((241, 249), 'francisco'), ((250, 253), 'puja'), ((179, 185), 'roberto'), ((186, 192), 'roascio')
 | |-Weapon: 
  -to- 
@@ -2934,19 +2321,6 @@ Template (kidnapping):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
 | |-Victim: ((241, 249), 'francisco'), ((250, 253), 'puja'), ((179, 185), 'roberto'), ((186, 192), 'roascio')
 | |-Weapon: 
  -to- 
@@ -2960,10 +2334,6 @@ Template (kidnapping):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span:
   Victim: From ((241, 249), 'francisco') to ((241, 253), 'francisco puja')
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -3009,12 +2379,6 @@ Summary:
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: ((52, 60), 'uniformed'), ((61, 71), 'individuals')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -3035,19 +2399,6 @@ Template (attack):
 | |-Victim: 
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: ((52, 60), 'uniformed'), ((61, 71), 'individuals')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
 Template (attack):
 | |-PerpInd: [((52, 71), 'uniformed individuals')]
 | |-PerpOrg: 
@@ -3058,10 +2409,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [((52, 60), 'uniformed'), ((61, 71), 'individuals')], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   PerpInd: From ((52, 60), 'uniformed') to ((52, 71), 'uniformed individuals') to None
 |-Alter_Span:
@@ -3137,30 +2484,6 @@ DOCID: 70
 
 Comparing:
 Summary:
-|-Template (bombing):
-| |-PerpInd: ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((739, 742), 'todd'), ((743, 745), 'ray'), ((746, 751), 'wilson'), ((752, 760), 'burdenson'), ((764, 770), 'jeffrey'), ((771, 775), 'brent'), ((776, 779), 'ball')
-| |-Weapon: ((1043, 1052), 'machinegun'), ((334, 341), 'dynamite')
-|-Template (attack):
-| |-PerpInd: ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((764, 770), 'jeffrey'), ((771, 775), 'brent'), ((776, 779), 'ball'), ((739, 742), 'todd'), ((743, 745), 'ray'), ((746, 751), 'wilson'), ((752, 760), 'burdenson')
-| |-Weapon: ((1043, 1052), 'machinegun')
-|-Template (bombing):
-| |-PerpInd: ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((739, 742), 'todd'), ((743, 745), 'ray'), ((746, 751), 'wilson'), ((752, 760), 'burdenson'), ((764, 770), 'jeffrey'), ((771, 775), 'brent'), ((776, 779), 'ball')
-| |-Weapon: ((1043, 1052), 'machinegun'), ((334, 341), 'dynamite')
-|-Template (attack):
-| |-PerpInd: ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((764, 770), 'jeffrey'), ((771, 775), 'brent'), ((776, 779), 'ball'), ((739, 742), 'todd'), ((743, 745), 'ray'), ((746, 751), 'wilson'), ((752, 760), 'burdenson')
-| |-Weapon: ((1043, 1052), 'machinegun')
 |-Template (attack):
 | |-PerpInd: ((1, 0), 'a'), ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')
 | |-PerpOrg: ((81, 86), 'zarate'), ((87, 91), 'wilka'), ((92, 96), 'armed'), ((97, 102), 'forces'), ((65, 66), 'of'), ((105, 114), 'liberation')
@@ -3186,51 +2509,12 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (bombing):
-| |-PerpInd: ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((739, 742), 'todd'), ((743, 745), 'ray'), ((746, 751), 'wilson'), ((752, 760), 'burdenson'), ((764, 770), 'jeffrey'), ((771, 775), 'brent'), ((776, 779), 'ball')
-| |-Weapon: ((1043, 1052), 'machinegun'), ((334, 341), 'dynamite')
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
 Template (attack):
-| |-PerpInd: ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')
-| |-PerpOrg: 
+| |-PerpInd: ((1, 0), 'a'), ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')
+| |-PerpOrg: ((81, 86), 'zarate'), ((87, 91), 'wilka'), ((92, 96), 'armed'), ((97, 102), 'forces'), ((65, 66), 'of'), ((105, 114), 'liberation')
 | |-Target: 
-| |-Victim: ((764, 770), 'jeffrey'), ((771, 775), 'brent'), ((776, 779), 'ball'), ((739, 742), 'todd'), ((743, 745), 'ray'), ((746, 751), 'wilson'), ((752, 760), 'burdenson')
-| |-Weapon: ((1043, 1052), 'machinegun')
- -to- 
-None
-
-	---
-
-Template Pair 3: 
-Matching:
-Template (bombing):
-| |-PerpInd: ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((739, 742), 'todd'), ((743, 745), 'ray'), ((746, 751), 'wilson'), ((752, 760), 'burdenson'), ((764, 770), 'jeffrey'), ((771, 775), 'brent'), ((776, 779), 'ball')
-| |-Weapon: ((1043, 1052), 'machinegun'), ((334, 341), 'dynamite')
- -to- 
-None
-
-	---
-
-Template Pair 4: 
-Matching:
-Template (attack):
-| |-PerpInd: ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((764, 770), 'jeffrey'), ((771, 775), 'brent'), ((776, 779), 'ball'), ((739, 742), 'todd'), ((743, 745), 'ray'), ((746, 751), 'wilson'), ((752, 760), 'burdenson')
-| |-Weapon: ((1043, 1052), 'machinegun')
+| |-Victim: 
+| |-Weapon: ((334, 341), 'dynamite'), ((1043, 1052), 'machinegun')
  -to- 
 Template (attack):
 | |-PerpInd: [((60, 76), 'group of terrorists'), ((67, 76), 'terrorists')]
@@ -3241,20 +2525,7 @@ Template (attack):
 
 	---
 
-Template Pair 5: 
-Matching:
-Template (attack):
-| |-PerpInd: ((1, 0), 'a'), ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')
-| |-PerpOrg: ((81, 86), 'zarate'), ((87, 91), 'wilka'), ((92, 96), 'armed'), ((97, 102), 'forces'), ((65, 66), 'of'), ((105, 114), 'liberation')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((334, 341), 'dynamite'), ((1043, 1052), 'machinegun')
- -to- 
-None
-
-	---
-
-Template Pair 6: 
+Template Pair 2: 
 Matching:
 Template (bombing):
 | |-PerpInd: ((1, 0), 'a'), ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')
@@ -3268,44 +2539,32 @@ None
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')], 'PerpOrg': [], 'Target': [], 'Victim': [((739, 742), 'todd'), ((743, 745), 'ray'), ((746, 751), 'wilson'), ((752, 760), 'burdenson'), ((764, 770), 'jeffrey'), ((771, 775), 'brent'), ((776, 779), 'ball')], 'Weapon': [((1043, 1052), 'machinegun'), ((334, 341), 'dynamite')]} to None
-
-Template Pair 2:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')], 'PerpOrg': [], 'Target': [], 'Victim': [((764, 770), 'jeffrey'), ((771, 775), 'brent'), ((776, 779), 'ball'), ((739, 742), 'todd'), ((743, 745), 'ray'), ((746, 751), 'wilson'), ((752, 760), 'burdenson')], 'Weapon': [((1043, 1052), 'machinegun')]} to None
-
-Template Pair 3:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')], 'PerpOrg': [], 'Target': [], 'Victim': [((739, 742), 'todd'), ((743, 745), 'ray'), ((746, 751), 'wilson'), ((752, 760), 'burdenson'), ((764, 770), 'jeffrey'), ((771, 775), 'brent'), ((776, 779), 'ball')], 'Weapon': [((1043, 1052), 'machinegun'), ((334, 341), 'dynamite')]} to None
-
-Template Pair 4:
+|-Alter_Span -> Alter_Role:
+  From PerpOrg: ((65, 66), 'of') to PerpOrg: ((60, 76), 'group of terrorists') to PerpInd: ((60, 76), 'group of terrorists')
+|-Remove_Unrelated_Spurious_Role_Filler:
+  PerpInd: From ((1, 0), 'a') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   PerpInd: From ((60, 64), 'group') to ((60, 76), 'group of terrorists') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   PerpInd: From ((65, 66), 'of') to ((60, 76), 'group of terrorists') to None
+|-Alter_Span -> Remove_Duplicate_Role_Filler:
+  PerpOrg: From ((81, 86), 'zarate') to ((81, 114), 'zarate wilka armed forces of liberation') to None
+|-Alter_Span -> Remove_Duplicate_Role_Filler:
+  PerpOrg: From ((87, 91), 'wilka') to ((81, 114), 'zarate wilka armed forces of liberation') to None
+|-Alter_Span -> Remove_Duplicate_Role_Filler:
+  PerpOrg: From ((92, 96), 'armed') to ((81, 114), 'zarate wilka armed forces of liberation') to None
+|-Alter_Span -> Remove_Duplicate_Role_Filler:
+  PerpOrg: From ((97, 102), 'forces') to ((81, 114), 'zarate wilka armed forces of liberation') to None
+|-Alter_Span:
+  PerpOrg: From ((105, 114), 'liberation') to ((81, 114), 'zarate wilka armed forces of liberation')
+|-Remove_Unrelated_Spurious_Role_Filler:
+  Weapon: From ((334, 341), 'dynamite') to None
 |-Introduce_Missing_Role_Filler:
-  PerpOrg: From None to ((81, 114), 'zarate wilka armed forces of liberation')
-|-Alter_Span:
-  Victim: From ((764, 770), 'jeffrey') to ((764, 779), 'jeffrey brent ball')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((771, 775), 'brent') to ((764, 779), 'jeffrey brent ball') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((776, 779), 'ball') to ((764, 779), 'jeffrey brent ball') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((739, 742), 'todd') to ((739, 760), 'todd ray wilson burdenson') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((743, 745), 'ray') to ((739, 760), 'todd ray wilson burdenson') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((746, 751), 'wilson') to ((739, 760), 'todd ray wilson burdenson') to None
-|-Alter_Span:
-  Victim: From ((752, 760), 'burdenson') to ((739, 760), 'todd ray wilson burdenson')
+  Victim: From None to ((739, 760), 'todd ray wilson burdenson')
+|-Introduce_Missing_Role_Filler:
+  Victim: From None to ((764, 779), 'jeffrey brent ball')
 
-Template Pair 5:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [((1, 0), 'a'), ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')], 'PerpOrg': [((81, 86), 'zarate'), ((87, 91), 'wilka'), ((92, 96), 'armed'), ((97, 102), 'forces'), ((65, 66), 'of'), ((105, 114), 'liberation')], 'Target': [], 'Victim': [], 'Weapon': [((334, 341), 'dynamite'), ((1043, 1052), 'machinegun')]} to None
-
-Template Pair 6:
+Template Pair 2:
 |-Remove_Spurious_Template:
   : From {'incident_type': 'bombing', 'PerpInd': [((1, 0), 'a'), ((60, 64), 'group'), ((65, 66), 'of'), ((67, 76), 'terrorists')], 'PerpOrg': [((81, 86), 'zarate'), ((87, 91), 'wilka'), ((92, 96), 'armed'), ((97, 102), 'forces'), ((65, 66), 'of'), ((105, 114), 'liberation')], 'Target': [], 'Victim': [], 'Weapon': [((1043, 1052), 'machinegun'), ((334, 341), 'dynamite')]} to None
 
@@ -3349,12 +2608,6 @@ DOCID: 72
 
 Comparing:
 Summary:
-|-Template (bombing):
-| |-PerpInd: ((41, 50), 'terrorists')
-| |-PerpOrg: 
-| |-Target: ((198, 203), 'branch'), ((132, 133), 'of'), ((1, 0), 'the'), ((1, 0), '``'), ((206, 213), 'citicorp'), ((1, 0), "''"), ((214, 222), 'financial'), ((223, 226), 'firm'), ((174, 179), 'mormon'), ((180, 185), 'church')
-| |-Victim: 
-| |-Weapon: ((62, 65), 'bomb')
 |-Template (bombing):
 | |-PerpInd: ((41, 50), 'terrorists')
 | |-PerpOrg: 
@@ -3413,9 +2666,9 @@ Matching:
 Template (bombing):
 | |-PerpInd: ((41, 50), 'terrorists')
 | |-PerpOrg: 
-| |-Target: ((198, 203), 'branch'), ((132, 133), 'of'), ((1, 0), 'the'), ((1, 0), '``'), ((206, 213), 'citicorp'), ((1, 0), "''"), ((214, 222), 'financial'), ((223, 226), 'firm'), ((174, 179), 'mormon'), ((180, 185), 'church')
+| |-Target: ((174, 179), 'mormon'), ((564, 569), 'temple'), ((148, 156), 'u.s.-chilean'), ((157, 164), 'cultural'), ((165, 173), 'institute'), ((198, 203), 'branch'), ((132, 133), 'of'), ((1, 0), 'the'), ((1, 0), '``'), ((206, 213), 'citicorp'), ((1, 0), "''"), ((214, 222), 'financial'), ((223, 226), 'firm')
 | |-Victim: 
-| |-Weapon: ((62, 65), 'bomb')
+| |-Weapon: 
  -to- 
 Template (bombing):
 | |-PerpInd: [((41, 50), 'terrorists')]
@@ -3428,12 +2681,7 @@ Template (bombing):
 
 Template Pair 2: 
 Matching:
-Template (bombing):
-| |-PerpInd: ((41, 50), 'terrorists')
-| |-PerpOrg: 
-| |-Target: ((174, 179), 'mormon'), ((564, 569), 'temple'), ((148, 156), 'u.s.-chilean'), ((157, 164), 'cultural'), ((165, 173), 'institute'), ((198, 203), 'branch'), ((132, 133), 'of'), ((1, 0), 'the'), ((1, 0), '``'), ((206, 213), 'citicorp'), ((1, 0), "''"), ((214, 222), 'financial'), ((223, 226), 'firm')
-| |-Victim: 
-| |-Weapon: 
+None
  -to- 
 Template (bombing):
 | |-PerpInd: [((41, 50), 'terrorists')]
@@ -3514,38 +2762,14 @@ Template Pair 1:
   PerpOrg: From None to ((728, 744), 'lautaro youth front')
 |-Introduce_Missing_Role_Filler:
   PerpOrg: From None to ((1060, 1088), 'manuel rodriguez patriotic front')
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Target: From ((198, 203), 'branch') to ((198, 226), 'branch of the "citicorp" financial firm') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((132, 133), 'of') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((1, 0), 'the') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((1, 0), '``') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Target: From ((206, 213), 'citicorp') to ((198, 226), 'branch of the "citicorp" financial firm') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((1, 0), "''") to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Target: From ((214, 222), 'financial') to ((198, 226), 'branch of the "citicorp" financial firm') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Target: From ((223, 226), 'firm') to ((198, 226), 'branch of the "citicorp" financial firm') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   Target: From ((174, 179), 'mormon') to ((174, 185), 'mormon church') to None
-
-Template Pair 2:
-|-Introduce_Missing_Role_Filler:
-  PerpOrg: From None to ((1060, 1088), 'manuel rodriguez patriotic front')
 |-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Target: From ((174, 179), 'mormon') to ((174, 185), 'mormon church') to None
-|-Remove_Cross_Template_Spurious_Role_Filler:
-  Target: From ((564, 569), 'temple') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
   Target: From ((148, 156), 'u.s.-chilean') to ((148, 173), 'u.s.-chilean cultural institute') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
+|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
   Target: From ((157, 164), 'cultural') to ((157, 173), 'cultural institute') to None
-|-Alter_Span:
-  Target: From ((165, 173), 'institute') to ((157, 173), 'cultural institute')
+|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
+  Target: From ((165, 173), 'institute') to ((157, 173), 'cultural institute') to None
 |-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
   Target: From ((198, 203), 'branch') to ((198, 226), 'branch of the "citicorp" financial firm') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
@@ -3564,6 +2788,10 @@ Template Pair 2:
   Target: From ((223, 226), 'firm') to ((198, 226), 'branch of the "citicorp" financial firm') to None
 |-Introduce_Missing_Role_Filler:
   Weapon: From None to ((62, 65), 'bomb')
+
+Template Pair 2:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'bombing', 'PerpInd': [[((41, 50), 'terrorists')]], 'PerpOrg': [[((1060, 1088), 'manuel rodriguez patriotic front'), ((1089, 1092), 'fpmr')]], 'Target': [[((148, 173), 'u.s.-chilean cultural institute'), ((157, 173), 'cultural institute'), ((320, 345), 'chilean-u.s. cultural institute')]], 'Victim': [], 'Weapon': [[((62, 65), 'bomb'), ((62, 72), 'bomb attacks')]]}
 
 Template Pair 3:
 |-Introduce_Missing_Template:
@@ -3593,24 +2821,6 @@ Comparing:
 Summary:
 |-Template (attack):
 | |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
 | |-PerpOrg: ((159, 168), 'government')
 | |-Target: 
 | |-Victim: ((424, 430), 'mariela'), ((431, 438), 'espinosa'), ((439, 444), 'arango')
@@ -3636,45 +2846,6 @@ Template Pair 1:
 Matching:
 Template (attack):
 | |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 3: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 4: 
-Matching:
-Template (attack):
-| |-PerpInd: 
 | |-PerpOrg: ((159, 168), 'government')
 | |-Target: 
 | |-Victim: ((424, 430), 'mariela'), ((431, 438), 'espinosa'), ((439, 444), 'arango')
@@ -3684,7 +2855,7 @@ None
 
 	---
 
-Template Pair 5: 
+Template Pair 2: 
 Matching:
 Template (attack):
 | |-PerpInd: 
@@ -3704,21 +2875,9 @@ Transformations:
 
 Template Pair 1:
 |-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 3:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 4:
-|-Remove_Spurious_Template:
   : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((159, 168), 'government')], 'Target': [], 'Victim': [((424, 430), 'mariela'), ((431, 438), 'espinosa'), ((439, 444), 'arango')], 'Weapon': []} to None
 
-Template Pair 5:
+Template Pair 2:
 |-Remove_Unrelated_Spurious_Role_Filler:
   PerpOrg: From ((159, 168), 'government') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -3738,18 +2897,6 @@ Summary:
 | |-PerpInd: ((185, 189), 'group'), ((77, 78), 'of'), ((192, 193), '10'), ((17, 20), 'paid'), ((198, 206), 'assassins')
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: ((704, 712), 'dagoberto'), ((713, 721), 'rodriguez'), ((725, 731), 'alfonso'), ((87, 88), 'de'), ((734, 737), 'lima')
-| |-Weapon: 
-|-Template (attack):
-| |-PerpInd: ((185, 189), 'group'), ((77, 78), 'of'), ((192, 193), '10'), ((17, 20), 'paid'), ((198, 206), 'assassins')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((704, 712), 'dagoberto'), ((713, 721), 'rodriguez'), ((725, 731), 'alfonso'), ((87, 88), 'de'), ((734, 737), 'lima')
-| |-Weapon: 
-|-Template (attack):
-| |-PerpInd: ((185, 189), 'group'), ((77, 78), 'of'), ((192, 193), '10'), ((17, 20), 'paid'), ((198, 206), 'assassins')
-| |-PerpOrg: 
-| |-Target: 
 | |-Victim: ((725, 731), 'alfonso'), ((87, 88), 'de'), ((734, 737), 'lima'), ((704, 712), 'dagoberto'), ((713, 721), 'rodriguez'), ((48, 52), 'maria'), ((53, 57), 'elena'), ((58, 61), 'diaz'), ((62, 66), 'perez')
 | |-Weapon: 
  -to- 
@@ -3775,20 +2922,7 @@ Template (attack):
 | |-PerpInd: ((185, 189), 'group'), ((77, 78), 'of'), ((192, 193), '10'), ((17, 20), 'paid'), ((198, 206), 'assassins')
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: ((704, 712), 'dagoberto'), ((713, 721), 'rodriguez'), ((725, 731), 'alfonso'), ((87, 88), 'de'), ((734, 737), 'lima')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: ((185, 189), 'group'), ((77, 78), 'of'), ((192, 193), '10'), ((17, 20), 'paid'), ((198, 206), 'assassins')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((704, 712), 'dagoberto'), ((713, 721), 'rodriguez'), ((725, 731), 'alfonso'), ((87, 88), 'de'), ((734, 737), 'lima')
+| |-Victim: ((725, 731), 'alfonso'), ((87, 88), 'de'), ((734, 737), 'lima'), ((704, 712), 'dagoberto'), ((713, 721), 'rodriguez'), ((48, 52), 'maria'), ((53, 57), 'elena'), ((58, 61), 'diaz'), ((62, 66), 'perez')
 | |-Weapon: 
  -to- 
 Template (attack):
@@ -3800,14 +2934,9 @@ Template (attack):
 
 	---
 
-Template Pair 3: 
+Template Pair 2: 
 Matching:
-Template (attack):
-| |-PerpInd: ((185, 189), 'group'), ((77, 78), 'of'), ((192, 193), '10'), ((17, 20), 'paid'), ((198, 206), 'assassins')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((725, 731), 'alfonso'), ((87, 88), 'de'), ((734, 737), 'lima'), ((704, 712), 'dagoberto'), ((713, 721), 'rodriguez'), ((48, 52), 'maria'), ((53, 57), 'elena'), ((58, 61), 'diaz'), ((62, 66), 'perez')
-| |-Weapon: 
+None
  -to- 
 Template (attack):
 | |-PerpInd: 
@@ -3819,10 +2948,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [((185, 189), 'group'), ((77, 78), 'of'), ((192, 193), '10'), ((17, 20), 'paid'), ((198, 206), 'assassins')], 'PerpOrg': [], 'Target': [], 'Victim': [((704, 712), 'dagoberto'), ((713, 721), 'rodriguez'), ((725, 731), 'alfonso'), ((87, 88), 'de'), ((734, 737), 'lima')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   PerpInd: From ((185, 189), 'group') to ((185, 206), 'group of 10 paid assassins') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
@@ -3835,40 +2960,16 @@ Template Pair 2:
   PerpInd: From ((198, 206), 'assassins') to ((192, 206), '10 paid assassins')
 |-Introduce_Missing_Role_Filler:
   Weapon: From None to ((529, 552), '55 9-mm submachine gun rounds')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((704, 712), 'dagoberto') to ((704, 721), 'dagoberto rodriguez') to None
-|-Alter_Span:
-  Victim: From ((713, 721), 'rodriguez') to ((704, 721), 'dagoberto rodriguez')
 |-Alter_Span:
   Victim: From ((725, 731), 'alfonso') to ((725, 737), 'alfonso de lima')
 |-Remove_Unrelated_Spurious_Role_Filler:
   Victim: From ((87, 88), 'de') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   Victim: From ((734, 737), 'lima') to ((725, 737), 'alfonso de lima') to None
-|-Introduce_Missing_Role_Filler:
-  Victim: From None to ((48, 66), 'maria elena diaz perez')
-
-Template Pair 3:
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  PerpInd: From ((185, 189), 'group') to ((185, 206), 'group of 10 paid assassins') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpInd: From ((77, 78), 'of') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  PerpInd: From ((192, 193), '10') to ((192, 206), '10 paid assassins') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpInd: From ((17, 20), 'paid') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  PerpInd: From ((198, 206), 'assassins') to ((192, 206), '10 paid assassins') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((725, 731), 'alfonso') to ((725, 737), 'alfonso de lima') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Victim: From ((87, 88), 'de') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((734, 737), 'lima') to ((725, 737), 'alfonso de lima') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
+|-Alter_Span -> Remove_Duplicate_Role_Filler:
   Victim: From ((704, 712), 'dagoberto') to ((704, 721), 'dagoberto rodriguez') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((713, 721), 'rodriguez') to ((704, 721), 'dagoberto rodriguez') to None
+|-Alter_Span:
+  Victim: From ((713, 721), 'rodriguez') to ((704, 721), 'dagoberto rodriguez')
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   Victim: From ((48, 52), 'maria') to ((48, 66), 'maria elena diaz perez') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -3878,18 +2979,16 @@ Template Pair 3:
 |-Alter_Span:
   Victim: From ((62, 66), 'perez') to ((48, 66), 'maria elena diaz perez')
 
+Template Pair 2:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [[((48, 66), 'maria elena diaz perez')]], 'Weapon': []}
+
 	------------------
 
 DOCID: 75
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: ((301, 309), 'criminals')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((81, 85), 'stela'), ((86, 92), 'torrado'), ((73, 74), 'de'), ((95, 101), 'otalora'), ((146, 150), 'jairo'), ((95, 101), 'otalora')
-| |-Weapon: 
 |-Template (attack):
 | |-PerpInd: ((301, 309), 'criminals')
 | |-PerpOrg: 
@@ -3931,19 +3030,6 @@ Template (attack):
 | |-PerpInd: ((301, 309), 'criminals')
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: ((81, 85), 'stela'), ((86, 92), 'torrado'), ((73, 74), 'de'), ((95, 101), 'otalora'), ((146, 150), 'jairo'), ((95, 101), 'otalora')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: ((301, 309), 'criminals')
-| |-PerpOrg: 
-| |-Target: 
 | |-Victim: ((146, 150), 'jairo'), ((95, 101), 'otalora'), ((81, 85), 'stela'), ((86, 92), 'torrado'), ((73, 74), 'de'), ((95, 101), 'otalora'), ((586, 591), 'angela'), ((592, 597), 'piedad'), ((73, 74), 'de'), ((573, 580), 'guerrero'), ((567, 572), 'carlos'), ((573, 580), 'guerrero')
 | |-Weapon: 
  -to- 
@@ -3956,7 +3042,7 @@ Template (attack):
 
 	---
 
-Template Pair 3: 
+Template Pair 2: 
 Matching:
 Template (attack):
 | |-PerpInd: ((301, 309), 'criminals')
@@ -3974,7 +3060,7 @@ Template (attack):
 
 	---
 
-Template Pair 4: 
+Template Pair 3: 
 Matching:
 None
  -to- 
@@ -3988,10 +3074,6 @@ Template (robbery):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [((301, 309), 'criminals')], 'PerpOrg': [], 'Target': [], 'Victim': [((81, 85), 'stela'), ((86, 92), 'torrado'), ((73, 74), 'de'), ((95, 101), 'otalora'), ((146, 150), 'jairo'), ((95, 101), 'otalora')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Remove_Cross_Template_Spurious_Role_Filler:
   PerpInd: From ((301, 309), 'criminals') to None
 |-Introduce_Missing_Role_Filler:
@@ -4021,7 +3103,7 @@ Template Pair 2:
 |-Remove_Unrelated_Spurious_Role_Filler:
   Victim: From ((573, 580), 'guerrero') to None
 
-Template Pair 3:
+Template Pair 2:
 |-Remove_Cross_Template_Spurious_Role_Filler:
   PerpInd: From ((301, 309), 'criminals') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
@@ -4045,7 +3127,7 @@ Template Pair 3:
 |-Remove_Unrelated_Spurious_Role_Filler:
   Victim: From ((573, 580), 'guerrero') to None
 
-Template Pair 4:
+Template Pair 3:
 |-Introduce_Missing_Template:
   : From None to {'incident_type': 'robbery', 'PerpInd': [[((301, 309), 'criminals')]], 'PerpOrg': [], 'Target': [[((177, 183), 'vehicle')]], 'Victim': [], 'Weapon': []}
 
@@ -4117,12 +3199,6 @@ Summary:
 | |-Target: 
 | |-Victim: ((14, 21), 'federico'), ((22, 28), 'estrada'), ((29, 33), 'velez')
 | |-Weapon: 
-|-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((14, 21), 'federico'), ((22, 28), 'estrada'), ((29, 33), 'velez')
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (kidnapping):
@@ -4143,19 +3219,6 @@ Template (kidnapping):
 | |-Victim: ((14, 21), 'federico'), ((22, 28), 'estrada'), ((29, 33), 'velez')
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((14, 21), 'federico'), ((22, 28), 'estrada'), ((29, 33), 'velez')
-| |-Weapon: 
- -to- 
 Template (kidnapping):
 | |-PerpInd: [((284, 303), 'three heavily armed men')]
 | |-PerpOrg: [((420, 432), 'the extraditables'), ((420, 432), 'extraditables')]
@@ -4166,10 +3229,6 @@ Template (kidnapping):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [((14, 21), 'federico'), ((22, 28), 'estrada'), ((29, 33), 'velez')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((284, 303), 'three heavily armed men')
 |-Introduce_Missing_Role_Filler:
@@ -4278,12 +3337,6 @@ DOCID: 82
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((159, 163), 'oscar'), ((164, 170), 'arnulfo'), ((171, 176), 'romero')
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -4303,12 +3356,7 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((159, 163), 'oscar'), ((164, 170), 'arnulfo'), ((171, 176), 'romero')
-| |-Weapon: 
+None
  -to- 
 Template (attack):
 | |-PerpInd: [((92, 122), "rightist leader roberto d'aubuisson"), ((605, 671), "rightist deputy d'aubuisson, founder of the nationalist republican alliance (arena)"), ((605, 666), "rightist deputy d'aubuisson, founder of the nationalist republican alliance"), ((605, 628), "rightist deputy d'aubuisson")], [((698, 717), 'captain alvaro saravia')]
@@ -4333,18 +3381,8 @@ Template (kidnapping):
 Transformations:
 
 Template Pair 1:
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((92, 122), "rightist leader roberto d'aubuisson")
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((698, 717), 'captain alvaro saravia')
-|-Introduce_Missing_Role_Filler:
-  PerpOrg: From None to ((638, 666), 'nationalist republican alliance')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((159, 163), 'oscar') to ((159, 176), 'oscar arnulfo romero') to None
-|-Alter_Span:
-  Victim: From ((164, 170), 'arnulfo') to ((159, 176), 'oscar arnulfo romero')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((171, 176), 'romero') to ((159, 176), 'oscar arnulfo romero') to None
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [[((92, 122), "rightist leader roberto d'aubuisson"), ((605, 671), "rightist deputy d'aubuisson, founder of the nationalist republican alliance (arena)"), ((605, 666), "rightist deputy d'aubuisson, founder of the nationalist republican alliance"), ((605, 628), "rightist deputy d'aubuisson")], [((698, 717), 'captain alvaro saravia')]], 'PerpOrg': [[((638, 666), 'nationalist republican alliance'), ((667, 671), 'arena')]], 'Target': [], 'Victim': [[((159, 176), 'oscar arnulfo romero')]], 'Weapon': []}
 
 Template Pair 2:
 |-Introduce_Missing_Template:
@@ -4390,18 +3428,6 @@ DOCID: 86
 Comparing:
 Summary:
 |-Template (attack):
-| |-PerpInd: ((298, 300), 'men'), ((806, 812), 'wearing'), ((813, 820), 'military'), ((821, 828), 'uniforms')
-| |-PerpOrg: ((813, 820), 'military')
-| |-Target: 
-| |-Victim: ((0, 8), 'guillermo'), ((9, 12), 'ungo')
-| |-Weapon: 
-|-Template (attack):
-| |-PerpInd: ((298, 300), 'men'), ((806, 812), 'wearing'), ((813, 820), 'military'), ((821, 828), 'uniforms')
-| |-PerpOrg: ((813, 820), 'military')
-| |-Target: 
-| |-Victim: ((0, 8), 'guillermo'), ((9, 12), 'ungo')
-| |-Weapon: 
-|-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: ((365, 368), 'fmln'), ((813, 820), 'military')
 | |-Target: 
@@ -4427,37 +3453,6 @@ Summary:
 Template Pair 1: 
 Matching:
 Template (attack):
-| |-PerpInd: ((298, 300), 'men'), ((806, 812), 'wearing'), ((813, 820), 'military'), ((821, 828), 'uniforms')
-| |-PerpOrg: ((813, 820), 'military')
-| |-Target: 
-| |-Victim: ((0, 8), 'guillermo'), ((9, 12), 'ungo')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: ((298, 300), 'men'), ((806, 812), 'wearing'), ((813, 820), 'military'), ((821, 828), 'uniforms')
-| |-PerpOrg: ((813, 820), 'military')
-| |-Target: 
-| |-Victim: ((0, 8), 'guillermo'), ((9, 12), 'ungo')
-| |-Weapon: 
- -to- 
-Template (attack):
-| |-PerpInd: [((298, 300), 'men'), ((803, 828), 'men wearing military uniforms')]
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
-
-	---
-
-Template Pair 3: 
-Matching:
-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: ((365, 368), 'fmln'), ((813, 820), 'military')
 | |-Target: 
@@ -4471,27 +3466,22 @@ Template (attack):
 | |-Victim: [((0, 12), 'guillermo ungo')]
 | |-Weapon: 
 
+	---
+
+Template Pair 2: 
+Matching:
+None
+ -to- 
+Template (attack):
+| |-PerpInd: [((298, 300), 'men'), ((803, 828), 'men wearing military uniforms')]
+| |-PerpOrg: 
+| |-Target: 
+| |-Victim: 
+| |-Weapon: 
+
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [((298, 300), 'men'), ((806, 812), 'wearing'), ((813, 820), 'military'), ((821, 828), 'uniforms')], 'PerpOrg': [((813, 820), 'military')], 'Target': [], 'Victim': [((0, 8), 'guillermo'), ((9, 12), 'ungo')], 'Weapon': []} to None
-
-Template Pair 2:
-|-Alter_Span -> Alter_Role:
-  From PerpOrg: ((813, 820), 'military') to PerpOrg: ((803, 828), 'men wearing military uniforms') to PerpInd: ((803, 828), 'men wearing military uniforms')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((806, 812), 'wearing') to ((803, 828), 'men wearing military uniforms') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((813, 820), 'military') to ((803, 828), 'men wearing military uniforms') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((821, 828), 'uniforms') to ((803, 828), 'men wearing military uniforms') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((0, 8), 'guillermo') to ((0, 12), 'guillermo ungo') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((9, 12), 'ungo') to ((0, 12), 'guillermo ungo') to None
-
-Template Pair 3:
 |-Remove_Unrelated_Spurious_Role_Filler:
   PerpOrg: From ((365, 368), 'fmln') to None
 |-Alter_Span -> Alter_Role -> Remove_Cross_Template_Spurious_Role_Filler:
@@ -4506,6 +3496,10 @@ Template Pair 3:
   Victim: From ((0, 8), 'guillermo') to ((0, 12), 'guillermo ungo')
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   Victim: From ((9, 12), 'ungo') to ((0, 12), 'guillermo ungo') to None
+
+Template Pair 2:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [[((298, 300), 'men'), ((803, 828), 'men wearing military uniforms')]], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []}
 
 	------------------
 
@@ -4673,12 +3667,6 @@ Comparing:
 Summary:
 |-Template (bombing):
 | |-PerpInd: ((167, 171), 'urban'), ((172, 180), 'guerrilla'), ((181, 189), 'commandos')
-| |-PerpOrg: 
-| |-Target: ((26, 30), 'power'), ((31, 35), 'tower')
-| |-Victim: 
-| |-Weapon: 
-|-Template (bombing):
-| |-PerpInd: ((167, 171), 'urban'), ((172, 180), 'guerrilla'), ((181, 189), 'commandos')
 | |-PerpOrg: ((265, 273), 'farabundo'), ((274, 278), 'marti'), ((279, 286), 'national'), ((287, 296), 'liberation'), ((297, 301), 'front')
 | |-Target: ((26, 30), 'power'), ((31, 35), 'tower')
 | |-Victim: 
@@ -4698,19 +3686,6 @@ Template Pair 1:
 Matching:
 Template (bombing):
 | |-PerpInd: ((167, 171), 'urban'), ((172, 180), 'guerrilla'), ((181, 189), 'commandos')
-| |-PerpOrg: 
-| |-Target: ((26, 30), 'power'), ((31, 35), 'tower')
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: ((167, 171), 'urban'), ((172, 180), 'guerrilla'), ((181, 189), 'commandos')
 | |-PerpOrg: ((265, 273), 'farabundo'), ((274, 278), 'marti'), ((279, 286), 'national'), ((287, 296), 'liberation'), ((297, 301), 'front')
 | |-Target: ((26, 30), 'power'), ((31, 35), 'tower')
 | |-Victim: 
@@ -4726,10 +3701,6 @@ Template (bombing):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [((167, 171), 'urban'), ((172, 180), 'guerrilla'), ((181, 189), 'commandos')], 'PerpOrg': [], 'Target': [((26, 30), 'power'), ((31, 35), 'tower')], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   PerpInd: From ((167, 171), 'urban') to ((167, 189), 'urban guerrilla commandos') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -4849,33 +3820,10 @@ DOCID: 94
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((644, 649), 'rifles'), ((689, 695), 'grenade')
  -to- 
 Summary:
 
-	---
-
-Template Pair 1: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((644, 649), 'rifles'), ((689, 695), 'grenade')
- -to- 
-None
-
 Transformations:
-
-Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': [((644, 649), 'rifles'), ((689, 695), 'grenade')]} to None
 
 	------------------
 
@@ -4923,12 +3871,6 @@ Summary:
 | |-Target: ((134, 143), 'nicaraguan'), ((144, 150), 'embassy')
 | |-Victim: 
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((134, 143), 'nicaraguan'), ((144, 150), 'embassy')
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 
@@ -4945,26 +3887,9 @@ Template (attack):
  -to- 
 None
 
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((134, 143), 'nicaraguan'), ((144, 150), 'embassy')
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [((134, 143), 'nicaraguan'), ((144, 150), 'embassy')], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Remove_Spurious_Template:
   : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [((134, 143), 'nicaraguan'), ((144, 150), 'embassy')], 'Victim': [], 'Weapon': []} to None
 
@@ -4985,18 +3910,6 @@ DOCID: 98
 
 Comparing:
 Summary:
-|-Template (bombing):
-| |-PerpInd: ((22, 31), 'terrorists')
-| |-PerpOrg: 
-| |-Target: ((45, 53), 'embassies'), ((54, 55), 'of'), ((1, 0), 'the'), ((56, 58), 'prc'), ((56, 58), 'prc'), ((130, 136), 'embassy')
-| |-Victim: 
-| |-Weapon: ((103, 109), 'car-bomb'), ((189, 191), 'two'), ((73, 77), 'bombs')
-|-Template (bombing):
-| |-PerpInd: ((22, 31), 'terrorists')
-| |-PerpOrg: 
-| |-Target: ((56, 58), 'prc'), ((130, 136), 'embassy'), ((664, 666), 'bus'), ((45, 53), 'embassies'), ((54, 55), 'of'), ((1, 0), 'the'), ((56, 58), 'prc')
-| |-Victim: 
-| |-Weapon: ((103, 109), 'car-bomb')
 |-Template (bombing):
 | |-PerpInd: ((22, 31), 'terrorists')
 | |-PerpOrg: 
@@ -5043,32 +3956,6 @@ Matching:
 Template (bombing):
 | |-PerpInd: ((22, 31), 'terrorists')
 | |-PerpOrg: 
-| |-Target: ((45, 53), 'embassies'), ((54, 55), 'of'), ((1, 0), 'the'), ((56, 58), 'prc'), ((56, 58), 'prc'), ((130, 136), 'embassy')
-| |-Victim: 
-| |-Weapon: ((103, 109), 'car-bomb'), ((189, 191), 'two'), ((73, 77), 'bombs')
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: ((22, 31), 'terrorists')
-| |-PerpOrg: 
-| |-Target: ((56, 58), 'prc'), ((130, 136), 'embassy'), ((664, 666), 'bus'), ((45, 53), 'embassies'), ((54, 55), 'of'), ((1, 0), 'the'), ((56, 58), 'prc')
-| |-Victim: 
-| |-Weapon: ((103, 109), 'car-bomb')
- -to- 
-None
-
-	---
-
-Template Pair 3: 
-Matching:
-Template (bombing):
-| |-PerpInd: ((22, 31), 'terrorists')
-| |-PerpOrg: 
 | |-Target: ((664, 666), 'bus'), ((209, 212), 'ussr'), ((130, 136), 'embassy'), ((220, 226), 'vehicle'), ((45, 53), 'embassies'), ((54, 55), 'of'), ((1, 0), 'the'), ((56, 58), 'prc'), ((56, 58), 'prc'), ((130, 136), 'embassy')
 | |-Victim: 
 | |-Weapon: ((103, 109), 'car-bomb')
@@ -5077,7 +3964,7 @@ None
 
 	---
 
-Template Pair 4: 
+Template Pair 2: 
 Matching:
 Template (bombing):
 | |-PerpInd: 
@@ -5095,7 +3982,7 @@ Template (bombing):
 
 	---
 
-Template Pair 5: 
+Template Pair 3: 
 Matching:
 Template (bombing):
 | |-PerpInd: ((22, 31), 'terrorists')
@@ -5113,7 +4000,7 @@ Template (bombing):
 
 	---
 
-Template Pair 6: 
+Template Pair 4: 
 Matching:
 None
  -to- 
@@ -5128,17 +4015,9 @@ Transformations:
 
 Template Pair 1:
 |-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [((22, 31), 'terrorists')], 'PerpOrg': [], 'Target': [((45, 53), 'embassies'), ((54, 55), 'of'), ((1, 0), 'the'), ((56, 58), 'prc'), ((56, 58), 'prc'), ((130, 136), 'embassy')], 'Victim': [], 'Weapon': [((103, 109), 'car-bomb'), ((189, 191), 'two'), ((73, 77), 'bombs')]} to None
-
-Template Pair 2:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [((22, 31), 'terrorists')], 'PerpOrg': [], 'Target': [((56, 58), 'prc'), ((130, 136), 'embassy'), ((664, 666), 'bus'), ((45, 53), 'embassies'), ((54, 55), 'of'), ((1, 0), 'the'), ((56, 58), 'prc')], 'Victim': [], 'Weapon': [((103, 109), 'car-bomb')]} to None
-
-Template Pair 3:
-|-Remove_Spurious_Template:
   : From {'incident_type': 'bombing', 'PerpInd': [((22, 31), 'terrorists')], 'PerpOrg': [], 'Target': [((664, 666), 'bus'), ((209, 212), 'ussr'), ((130, 136), 'embassy'), ((220, 226), 'vehicle'), ((45, 53), 'embassies'), ((54, 55), 'of'), ((1, 0), 'the'), ((56, 58), 'prc'), ((56, 58), 'prc'), ((130, 136), 'embassy')], 'Victim': [], 'Weapon': [((103, 109), 'car-bomb')]} to None
 
-Template Pair 4:
+Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((22, 31), 'terrorists')
 |-Introduce_Missing_Role_Filler:
@@ -5164,7 +4043,7 @@ Template Pair 4:
 |-Remove_Cross_Template_Spurious_Role_Filler:
   Weapon: From ((103, 109), 'car-bomb') to None
 
-Template Pair 5:
+Template Pair 3:
 |-Introduce_Missing_Role_Filler:
   PerpOrg: From None to ((502, 512), 'shining path')
 |-Introduce_Missing_Role_Filler:
@@ -5188,7 +4067,7 @@ Template Pair 5:
 |-Remove_Cross_Template_Spurious_Role_Filler:
   Target: From ((130, 136), 'embassy') to None
 
-Template Pair 6:
+Template Pair 4:
 |-Introduce_Missing_Template:
   : From None to {'incident_type': 'arson', 'PerpInd': [], 'PerpOrg': [[((502, 512), 'shining path')]], 'Target': [[((1007, 1011), 'buses')]], 'Victim': [], 'Weapon': []}
 
@@ -5330,12 +4209,6 @@ Summary:
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -5356,19 +4229,6 @@ Template (attack):
 | |-Victim: 
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
 Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -5379,10 +4239,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 
 	------------------
 
@@ -5396,12 +4252,6 @@ Summary:
 | |-Target: ((92, 101), 'salvadoran'), ((102, 110), 'consulate')
 | |-Victim: 
 | |-Weapon: 
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: ((144, 149), 'manuel'), ((150, 158), 'rodriguez'), ((159, 167), 'patriotic'), ((168, 172), 'front')
-| |-Target: ((92, 101), 'salvadoran'), ((102, 110), 'consulate')
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (bombing):
@@ -5422,19 +4272,6 @@ Template (bombing):
 | |-Victim: 
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: ((144, 149), 'manuel'), ((150, 158), 'rodriguez'), ((159, 167), 'patriotic'), ((168, 172), 'front')
-| |-Target: ((92, 101), 'salvadoran'), ((102, 110), 'consulate')
-| |-Victim: 
-| |-Weapon: 
- -to- 
 Template (bombing):
 | |-PerpInd: [((144, 172), 'manuel rodriguez patriotic front'), ((173, 176), 'fpmr')]
 | |-PerpOrg: [((144, 172), 'manuel rodriguez patriotic front'), ((173, 176), 'fpmr'), ((569, 589), 'communist party of chile'), ((569, 582), 'communist party')]
@@ -5445,10 +4282,6 @@ Template (bombing):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [((144, 149), 'manuel'), ((150, 158), 'rodriguez'), ((159, 167), 'patriotic'), ((168, 172), 'front')], 'Target': [((92, 101), 'salvadoran'), ((102, 110), 'consulate')], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span -> Alter_Role:
   From PerpOrg: ((168, 172), 'front') to PerpOrg: ((144, 172), 'manuel rodriguez patriotic front') to PerpInd: ((144, 172), 'manuel rodriguez patriotic front')
 |-Alter_Span -> Alter_Role:
@@ -5468,12 +4301,6 @@ DOCID: 102
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: ((62, 65), 'ruth'), ((66, 74), 'esperanza'), ((75, 81), 'aguilar'), ((82, 90), 'marroquin')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((124, 131), 'jennifer'), ((132, 137), 'casolo')
-| |-Weapon: 
 |-Template (attack):
 | |-PerpInd: ((62, 65), 'ruth'), ((66, 74), 'esperanza'), ((75, 81), 'aguilar'), ((82, 90), 'marroquin')
 | |-PerpOrg: 
@@ -5523,24 +4350,6 @@ Template (attack):
 
 Template Pair 2: 
 Matching:
-Template (attack):
-| |-PerpInd: ((62, 65), 'ruth'), ((66, 74), 'esperanza'), ((75, 81), 'aguilar'), ((82, 90), 'marroquin')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((124, 131), 'jennifer'), ((132, 137), 'casolo')
-| |-Weapon: 
- -to- 
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: [((140, 142), 'erp'), ((143, 166), "people's revolutionary army")]
-| |-Target: 
-| |-Victim: 
-| |-Weapon: [((711, 722), 'hand grenades')]
-
-	---
-
-Template Pair 3: 
-Matching:
 None
  -to- 
 Template (kidnapping):
@@ -5549,6 +4358,19 @@ Template (kidnapping):
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
+
+	---
+
+Template Pair 3: 
+Matching:
+None
+ -to- 
+Template (attack):
+| |-PerpInd: 
+| |-PerpOrg: [((140, 142), 'erp'), ((143, 166), "people's revolutionary army")]
+| |-Target: 
+| |-Victim: 
+| |-Weapon: [((711, 722), 'hand grenades')]
 
 Transformations:
 
@@ -5573,26 +4395,12 @@ Template Pair 1:
   Victim: From ((132, 137), 'casolo') to None
 
 Template Pair 2:
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((62, 65), 'ruth') to ((62, 90), 'ruth esperanza aguilar marroquin') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((66, 74), 'esperanza') to ((62, 90), 'ruth esperanza aguilar marroquin') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((75, 81), 'aguilar') to ((62, 90), 'ruth esperanza aguilar marroquin') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((82, 90), 'marroquin') to ((62, 90), 'ruth esperanza aguilar marroquin') to None
-|-Introduce_Missing_Role_Filler:
-  PerpOrg: From None to ((140, 142), 'erp')
-|-Introduce_Missing_Role_Filler:
-  Weapon: From None to ((711, 722), 'hand grenades')
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Victim: From ((124, 131), 'jennifer') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Victim: From ((132, 137), 'casolo') to None
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'kidnapping', 'PerpInd': [[((62, 90), 'ruth esperanza aguilar marroquin')]], 'PerpOrg': [[((140, 142), 'erp'), ((143, 166), "people's revolutionary army")]], 'Target': [], 'Victim': [], 'Weapon': []}
 
 Template Pair 3:
 |-Introduce_Missing_Template:
-  : From None to {'incident_type': 'kidnapping', 'PerpInd': [[((62, 90), 'ruth esperanza aguilar marroquin')]], 'PerpOrg': [[((140, 142), 'erp'), ((143, 166), "people's revolutionary army")]], 'Target': [], 'Victim': [], 'Weapon': []}
+  : From None to {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [[((140, 142), 'erp'), ((143, 166), "people's revolutionary army")]], 'Target': [], 'Victim': [], 'Weapon': [[((711, 722), 'hand grenades')]]}
 
 	------------------
 
@@ -5600,12 +4408,6 @@ DOCID: 103
 
 Comparing:
 Summary:
-|-Template (bombing):
-| |-PerpInd: ((263, 274), 'unidentified'), ((275, 280), 'person')
-| |-PerpOrg: 
-| |-Target: ((39, 46), 'american'), ((47, 53), 'embassy'), ((894, 897), 'book'), ((898, 902), 'store')
-| |-Victim: 
-| |-Weapon: ((8, 15), 'dynamite'), ((16, 21), 'charge')
 |-Template (bombing):
 | |-PerpInd: ((263, 274), 'unidentified'), ((275, 280), 'person')
 | |-PerpOrg: 
@@ -5632,19 +4434,6 @@ Template (bombing):
 | |-Victim: 
 | |-Weapon: ((8, 15), 'dynamite'), ((16, 21), 'charge')
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: ((263, 274), 'unidentified'), ((275, 280), 'person')
-| |-PerpOrg: 
-| |-Target: ((39, 46), 'american'), ((47, 53), 'embassy'), ((894, 897), 'book'), ((898, 902), 'store')
-| |-Victim: 
-| |-Weapon: ((8, 15), 'dynamite'), ((16, 21), 'charge')
- -to- 
 Template (bombing):
 | |-PerpInd: [((263, 280), 'unidentified person')]
 | |-PerpOrg: [((462, 496), 'zarate willka armed forces of liberation')]
@@ -5655,10 +4444,6 @@ Template (bombing):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [((263, 274), 'unidentified'), ((275, 280), 'person')], 'PerpOrg': [], 'Target': [((39, 46), 'american'), ((47, 53), 'embassy'), ((894, 897), 'book'), ((898, 902), 'store')], 'Victim': [], 'Weapon': [((8, 15), 'dynamite'), ((16, 21), 'charge')]} to None
-
-Template Pair 2:
 |-Alter_Span:
   PerpInd: From ((263, 274), 'unidentified') to ((263, 280), 'unidentified person')
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -5715,12 +4500,6 @@ Summary:
 | |-PerpOrg: ((298, 301), 'drug'), ((302, 307), 'cartel')
 | |-Target: ((462, 467), 'houses'), ((451, 456), 'public'), ((457, 461), 'buses')
 | |-Victim: 
-| |-Weapon: ((302, 304), 'car'), ((504, 507), 'bomb')
-|-Template (bombing):
-| |-PerpInd: ((286, 295), 'terrorists')
-| |-PerpOrg: ((298, 301), 'drug'), ((302, 307), 'cartel')
-| |-Target: ((462, 467), 'houses'), ((451, 456), 'public'), ((457, 461), 'buses')
-| |-Victim: 
 | |-Weapon: ((518, 520), '300'), ((521, 522), 'kg'), ((368, 369), 'of'), ((525, 532), 'dynamite'), ((302, 304), 'car'), ((504, 507), 'bomb')
 |-Template (attack):
 | |-PerpInd: ((286, 295), 'terrorists')
@@ -5752,19 +4531,6 @@ Template (bombing):
 | |-PerpOrg: ((298, 301), 'drug'), ((302, 307), 'cartel')
 | |-Target: ((462, 467), 'houses'), ((451, 456), 'public'), ((457, 461), 'buses')
 | |-Victim: 
-| |-Weapon: ((302, 304), 'car'), ((504, 507), 'bomb')
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: ((286, 295), 'terrorists')
-| |-PerpOrg: ((298, 301), 'drug'), ((302, 307), 'cartel')
-| |-Target: ((462, 467), 'houses'), ((451, 456), 'public'), ((457, 461), 'buses')
-| |-Victim: 
 | |-Weapon: ((518, 520), '300'), ((521, 522), 'kg'), ((368, 369), 'of'), ((525, 532), 'dynamite'), ((302, 304), 'car'), ((504, 507), 'bomb')
  -to- 
 Template (bombing):
@@ -5776,7 +4542,7 @@ Template (bombing):
 
 	---
 
-Template Pair 3: 
+Template Pair 2: 
 Matching:
 Template (attack):
 | |-PerpInd: ((286, 295), 'terrorists')
@@ -5795,10 +4561,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [((286, 295), 'terrorists')], 'PerpOrg': [((298, 301), 'drug'), ((302, 307), 'cartel')], 'Target': [((462, 467), 'houses'), ((451, 456), 'public'), ((457, 461), 'buses')], 'Victim': [], 'Weapon': [((302, 304), 'car'), ((504, 507), 'bomb')]} to None
-
-Template Pair 2:
 |-Alter_Span -> Alter_Role:
   From Weapon: ((302, 304), 'car') to Weapon: ((286, 315), "terrorists on the drug cartel's payroll") to PerpInd: ((286, 315), "terrorists on the drug cartel's payroll")
 |-Alter_Span -> Alter_Role:
@@ -5822,7 +4584,7 @@ Template Pair 2:
 |-Alter_Span:
   Weapon: From ((504, 507), 'bomb') to ((501, 507), 'car bomb')
 
-Template Pair 3:
+Template Pair 2:
 |-Remove_Cross_Template_Spurious_Role_Filler:
   PerpInd: From ((286, 295), 'terrorists') to None
 |-Introduce_Missing_Role_Filler:
@@ -5933,12 +4695,6 @@ Summary:
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((117, 120), 'army')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -5959,19 +4715,6 @@ Template (attack):
 | |-Victim: 
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((117, 120), 'army')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
 Template (attack):
 | |-PerpInd: [((313, 326), 'two lieutenants'), ((316, 326), 'lieutenants')], [((330, 340), 'six soldiers'), ((333, 340), 'soldiers')], [((1947, 1984), 'colonel guillermo alfredo benavides moreno')]
 | |-PerpOrg: [((7, 17), 'armed forces'), ((107, 120), 'salvadoran army'), ((117, 120), 'army')]
@@ -5982,10 +4725,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((117, 120), 'army')], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((313, 326), 'two lieutenants')
 |-Introduce_Missing_Role_Filler:
@@ -6005,12 +4744,6 @@ Summary:
 | |-Target: 
 | |-Victim: ((71, 75), 'jecar'), ((76, 81), 'neghme')
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((71, 75), 'jecar'), ((76, 81), 'neghme')
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -6031,19 +4764,6 @@ Template (attack):
 | |-Victim: ((71, 75), 'jecar'), ((76, 81), 'neghme')
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((71, 75), 'jecar'), ((76, 81), 'neghme')
-| |-Weapon: 
- -to- 
 Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -6054,10 +4774,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [((71, 75), 'jecar'), ((76, 81), 'neghme')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   Victim: From ((71, 75), 'jecar') to ((71, 81), 'jecar neghme') to None
 |-Alter_Span:
@@ -6069,12 +4785,6 @@ DOCID: 112
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((96, 104), 'colombian'), ((188, 193), 'vessel')
-| |-Target: 
-| |-Victim: ((366, 370), 'julio'), ((371, 376), 'torres')
-| |-Weapon: ((204, 212), 'automatic'), ((213, 219), 'weapons')
 |-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -6102,19 +4812,6 @@ Template Pair 1:
 Matching:
 Template (attack):
 | |-PerpInd: 
-| |-PerpOrg: ((96, 104), 'colombian'), ((188, 193), 'vessel')
-| |-Target: 
-| |-Victim: ((366, 370), 'julio'), ((371, 376), 'torres')
-| |-Weapon: ((204, 212), 'automatic'), ((213, 219), 'weapons')
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
 | |-Victim: ((271, 275), 'scott'), ((276, 282), 'heyndal'), ((366, 370), 'julio'), ((371, 376), 'torres'), ((324, 328), 'edwin'), ((329, 335), 'rodrigo'), ((336, 341), 'teneda'), ((342, 348), 'parreno'), ((294, 297), 'luis'), ((298, 304), 'antonio'), ((305, 311), 'meneses'), ((312, 320), 'benavides')
@@ -6129,7 +4826,7 @@ Template (attack):
 
 	---
 
-Template Pair 3: 
+Template Pair 2: 
 Matching:
 None
  -to- 
@@ -6143,10 +4840,6 @@ Template (kidnapping):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((96, 104), 'colombian'), ((188, 193), 'vessel')], 'Target': [], 'Victim': [((366, 370), 'julio'), ((371, 376), 'torres')], 'Weapon': [((204, 212), 'automatic'), ((213, 219), 'weapons')]} to None
-
-Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((416, 424), 'attackers')
 |-Introduce_Missing_Role_Filler:
@@ -6182,7 +4875,7 @@ Template Pair 2:
 |-Alter_Span:
   Victim: From ((312, 320), 'benavides') to ((294, 320), 'luis antonio meneses benavides')
 
-Template Pair 3:
+Template Pair 2:
 |-Introduce_Missing_Template:
   : From None to {'incident_type': 'kidnapping', 'PerpInd': [[((416, 424), 'attackers'), ((416, 463), 'attackers, who wore field uniforms of the colombian military')]], 'PerpOrg': [[((447, 463), 'colombian military')]], 'Target': [], 'Victim': [[((271, 282), 'scott heyndal')], [((324, 348), 'edwin rodrigo teneda parreno')]], 'Weapon': []}
 
@@ -6203,12 +4896,6 @@ DOCID: 114
 
 Comparing:
 Summary:
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((87, 90), 'bank'), ((91, 96), 'branch'), ((97, 103), 'offices'), ((234, 238), 'banco'), ((239, 246), 'cafetero'), ((247, 254), 'branches')
-| |-Victim: 
-| |-Weapon: ((116, 125), 'explosives')
 |-Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -6241,19 +4928,6 @@ Template (bombing):
 | |-Victim: 
 | |-Weapon: ((116, 125), 'explosives')
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((87, 90), 'bank'), ((91, 96), 'branch'), ((97, 103), 'offices'), ((234, 238), 'banco'), ((239, 246), 'cafetero'), ((247, 254), 'branches')
-| |-Victim: 
-| |-Weapon: ((116, 125), 'explosives')
- -to- 
 Template (bombing):
 | |-PerpInd: [((59, 67), 'terrorist')]
 | |-PerpOrg: [((455, 468), 'medellin cartel')]
@@ -6263,7 +4937,7 @@ Template (bombing):
 
 	---
 
-Template Pair 3: 
+Template Pair 2: 
 Matching:
 Template (attack):
 | |-PerpInd: 
@@ -6277,10 +4951,6 @@ None
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [], 'Target': [((87, 90), 'bank'), ((91, 96), 'branch'), ((97, 103), 'offices'), ((234, 238), 'banco'), ((239, 246), 'cafetero'), ((247, 254), 'branches')], 'Victim': [], 'Weapon': [((116, 125), 'explosives')]} to None
-
-Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((59, 67), 'terrorist')
 |-Introduce_Missing_Role_Filler:
@@ -6302,7 +4972,7 @@ Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   Weapon: From None to ((341, 358), 'over 55 kg of dynamite')
 
-Template Pair 3:
+Template Pair 2:
 |-Remove_Spurious_Template:
   : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [((234, 238), 'banco'), ((239, 246), 'cafetero'), ((247, 254), 'branches'), ((87, 90), 'bank'), ((91, 96), 'branch'), ((97, 103), 'offices')], 'Victim': [], 'Weapon': [((116, 125), 'explosives')]} to None
 
@@ -6323,12 +4993,6 @@ DOCID: 116
 
 Comparing:
 Summary:
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((327, 333), 'federal'), ((334, 339), 'police'), ((340, 347), 'building')
-| |-Victim: 
-| |-Weapon: ((95, 99), 'truck'), ((278, 283), 'rigged'), ((284, 287), 'with'), ((288, 295), 'dynamite'), ((95, 103), 'truck-bomb')
  -to- 
 Summary:
 |-Template (bombing):
@@ -6342,12 +5006,7 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((327, 333), 'federal'), ((334, 339), 'police'), ((340, 347), 'building')
-| |-Victim: 
-| |-Weapon: ((95, 99), 'truck'), ((278, 283), 'rigged'), ((284, 287), 'with'), ((288, 295), 'dynamite'), ((95, 103), 'truck-bomb')
+None
  -to- 
 Template (bombing):
 | |-PerpInd: 
@@ -6359,18 +5018,8 @@ Template (bombing):
 Transformations:
 
 Template Pair 1:
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((327, 333), 'federal') to ((327, 347), 'federal police building') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((334, 339), 'police') to ((327, 347), 'federal police building') to None
-|-Alter_Span:
-  Target: From ((340, 347), 'building') to ((327, 347), 'federal police building')
-|-Remove_Duplicate_Role_Filler:
-  Weapon: From ((95, 99), 'truck') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Weapon: From ((278, 283), 'rigged') to ((273, 295), 'truck rigged with dynamite') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Weapon: From ((284, 287), 'with') to ((273, 295), 'truck rigged with dynamite') to None
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [], 'Target': [[((327, 347), 'federal police building')]], 'Victim': [], 'Weapon': [[((95, 103), 'truck-bomb'), ((95, 99), 'truck'), ((273, 295), 'truck rigged with dynamite')], [((288, 295), 'dynamite')]]}
 
 	------------------
 
@@ -6412,12 +5061,6 @@ DOCID: 118
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((487, 493), 'roberto'), ((494, 500), 'armando'), ((501, 506), 'rivera'), ((507, 513), 'escobar')
-| |-Weapon: ((528, 537), 'machinegun')
  -to- 
 Summary:
 |-Template (attack):
@@ -6431,12 +5074,7 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((487, 493), 'roberto'), ((494, 500), 'armando'), ((501, 506), 'rivera'), ((507, 513), 'escobar')
-| |-Weapon: ((528, 537), 'machinegun')
+None
  -to- 
 Template (attack):
 | |-PerpInd: 
@@ -6448,16 +5086,8 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Introduce_Missing_Role_Filler:
-  PerpOrg: From None to ((45, 81), 'farabundo marti national liberation front')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((487, 493), 'roberto') to ((487, 513), 'roberto armando rivera escobar') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((494, 500), 'armando') to ((487, 513), 'roberto armando rivera escobar') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((501, 506), 'rivera') to ((487, 513), 'roberto armando rivera escobar') to None
-|-Alter_Span:
-  Victim: From ((507, 513), 'escobar') to ((487, 513), 'roberto armando rivera escobar')
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [[((45, 81), 'farabundo marti national liberation front'), ((83, 86), 'fmln')]], 'Target': [], 'Victim': [[((487, 513), 'roberto armando rivera escobar')]], 'Weapon': [[((528, 537), 'machinegun')]]}
 
 	------------------
 
@@ -6471,12 +5101,6 @@ Summary:
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (bombing):
@@ -6497,19 +5121,6 @@ Template (bombing):
 | |-Victim: 
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
 Template (bombing):
 | |-PerpInd: [((586, 606), 'colombian drug kingpins')], [((697, 732), 'man who called the caracol network news office'), ((697, 699), 'man')]
 | |-PerpOrg: [((573, 585), 'the extraditables'), ((573, 585), 'extraditables')]
@@ -6520,10 +5131,6 @@ Template (bombing):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((586, 606), 'colombian drug kingpins')
 |-Introduce_Missing_Role_Filler:
@@ -6542,18 +5149,6 @@ Summary:
 |-Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((386, 396), 'electricity'), ((397, 401), 'poles'), ((402, 405), 'with'), ((406, 413), 'dynamite')
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((386, 396), 'electricity'), ((397, 401), 'poles'), ((402, 405), 'with'), ((406, 413), 'dynamite')
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
 | |-Target: ((386, 396), 'electricity'), ((397, 401), 'poles')
 | |-Victim: 
 | |-Weapon: 
@@ -6591,9 +5186,9 @@ Matching:
 Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: 
-| |-Target: 
+| |-Target: ((386, 396), 'electricity'), ((397, 401), 'poles')
 | |-Victim: 
-| |-Weapon: ((386, 396), 'electricity'), ((397, 401), 'poles'), ((402, 405), 'with'), ((406, 413), 'dynamite')
+| |-Weapon: 
  -to- 
 Template (bombing):
 | |-PerpInd: [((357, 362), 'rebels')]
@@ -6606,12 +5201,7 @@ Template (bombing):
 
 Template Pair 2: 
 Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((386, 396), 'electricity'), ((397, 401), 'poles'), ((402, 405), 'with'), ((406, 413), 'dynamite')
+None
  -to- 
 Template (bombing):
 | |-PerpInd: [((357, 362), 'rebels')]
@@ -6624,12 +5214,7 @@ Template (bombing):
 
 Template Pair 3: 
 Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((386, 396), 'electricity'), ((397, 401), 'poles')
-| |-Victim: 
-| |-Weapon: 
+None
  -to- 
 Template (bombing):
 | |-PerpInd: [((357, 362), 'rebels')]
@@ -6654,26 +5239,6 @@ Template (bombing):
 Transformations:
 
 Template Pair 1:
-|-Alter_Span -> Alter_Role:
-  From Weapon: ((397, 401), 'poles') to Weapon: ((386, 401), 'electricity poles') to Target: ((386, 401), 'electricity poles')
-|-Alter_Span -> Alter_Role:
-  From Weapon: ((386, 396), 'electricity') to Weapon: ((386, 401), 'electricity poles') to Target: ((386, 401), 'electricity poles')
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((357, 362), 'rebels')
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Weapon: From ((402, 405), 'with') to None
-
-Template Pair 2:
-|-Alter_Span -> Alter_Role:
-  From Weapon: ((397, 401), 'poles') to Weapon: ((386, 401), 'electricity poles') to Target: ((386, 401), 'electricity poles')
-|-Alter_Span -> Alter_Role:
-  From Weapon: ((386, 396), 'electricity') to Weapon: ((386, 401), 'electricity poles') to Target: ((386, 401), 'electricity poles')
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((357, 362), 'rebels')
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Weapon: From ((402, 405), 'with') to None
-
-Template Pair 3:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((357, 362), 'rebels')
 |-Alter_Span:
@@ -6682,6 +5247,14 @@ Template Pair 3:
   Target: From ((397, 401), 'poles') to ((386, 401), 'electricity poles') to None
 |-Introduce_Missing_Role_Filler:
   Weapon: From None to ((406, 413), 'dynamite')
+
+Template Pair 2:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'bombing', 'PerpInd': [[((357, 362), 'rebels')]], 'PerpOrg': [], 'Target': [[((386, 401), 'electricity poles')]], 'Victim': [], 'Weapon': [[((406, 413), 'dynamite')]]}
+
+Template Pair 3:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'bombing', 'PerpInd': [[((357, 362), 'rebels')]], 'PerpOrg': [], 'Target': [[((386, 401), 'electricity poles')]], 'Victim': [], 'Weapon': [[((406, 413), 'dynamite')]]}
 
 Template Pair 4:
 |-Introduce_Missing_Template:
@@ -6860,12 +5433,6 @@ Comparing:
 Summary:
 |-Template (attack):
 | |-PerpInd: ((1063, 1071), 'uniformed'), ((23, 25), 'men')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((1024, 1030), 'ignacio'), ((1031, 1039), 'ellacuria')
-| |-Weapon: 
-|-Template (attack):
-| |-PerpInd: ((1063, 1071), 'uniformed'), ((23, 25), 'men')
 | |-PerpOrg: ((353, 361), 'farabundo'), ((362, 366), 'marti'), ((176, 183), 'national'), ((375, 384), 'liberation'), ((385, 389), 'front')
 | |-Target: 
 | |-Victim: ((1024, 1030), 'ignacio'), ((1031, 1039), 'ellacuria')
@@ -6885,19 +5452,6 @@ Template Pair 1:
 Matching:
 Template (attack):
 | |-PerpInd: ((1063, 1071), 'uniformed'), ((23, 25), 'men')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((1024, 1030), 'ignacio'), ((1031, 1039), 'ellacuria')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: ((1063, 1071), 'uniformed'), ((23, 25), 'men')
 | |-PerpOrg: ((353, 361), 'farabundo'), ((362, 366), 'marti'), ((176, 183), 'national'), ((375, 384), 'liberation'), ((385, 389), 'front')
 | |-Target: 
 | |-Victim: ((1024, 1030), 'ignacio'), ((1031, 1039), 'ellacuria')
@@ -6913,10 +5467,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [((1063, 1071), 'uniformed'), ((23, 25), 'men')], 'PerpOrg': [], 'Target': [], 'Victim': [((1024, 1030), 'ignacio'), ((1031, 1039), 'ellacuria')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span:
   PerpInd: From ((1063, 1071), 'uniformed') to ((1063, 1074), 'uniformed men')
 |-Remove_Unrelated_Spurious_Role_Filler:
@@ -7081,12 +5631,6 @@ Comparing:
 Summary:
 |-Template (bombing):
 | |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
-|-Template (bombing):
-| |-PerpInd: 
 | |-PerpOrg: ((642, 646), 'armed'), ((647, 651), 'foces'), ((652, 655), 'high'), ((656, 662), 'command')
 | |-Target: 
 | |-Victim: 
@@ -7106,19 +5650,6 @@ Template Pair 1:
 Matching:
 Template (bombing):
 | |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: 
 | |-PerpOrg: ((642, 646), 'armed'), ((647, 651), 'foces'), ((652, 655), 'high'), ((656, 662), 'command')
 | |-Target: 
 | |-Victim: 
@@ -7134,10 +5665,6 @@ Template (bombing):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   PerpOrg: From ((642, 646), 'armed') to ((642, 651), 'armed foces') to None
 |-Alter_Span:
@@ -7244,12 +5771,6 @@ Summary:
 | |-Target: 
 | |-Victim: ((126, 133), 'bernardo'), ((134, 142), 'jaramillo'), ((143, 146), 'ossa')
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((126, 133), 'bernardo'), ((134, 142), 'jaramillo'), ((143, 146), 'ossa')
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -7287,12 +5808,7 @@ Template (attack):
 
 Template Pair 2: 
 Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((126, 133), 'bernardo'), ((134, 142), 'jaramillo'), ((143, 146), 'ossa')
-| |-Weapon: 
+None
  -to- 
 Template (attack):
 | |-PerpInd: [((976, 982), 'callers')]
@@ -7324,18 +5840,8 @@ Template Pair 1:
   Victim: From ((143, 146), 'ossa') to ((126, 146), 'bernardo jaramillo ossa') to None
 
 Template Pair 2:
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((976, 982), 'callers')
-|-Introduce_Missing_Role_Filler:
-  PerpOrg: From None to ((1399, 1411), 'the extraditables')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((126, 133), 'bernardo') to ((126, 146), 'bernardo jaramillo ossa') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((134, 142), 'jaramillo') to ((126, 146), 'bernardo jaramillo ossa') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((143, 146), 'ossa') to ((126, 146), 'bernardo jaramillo ossa') to None
-|-Introduce_Missing_Role_Filler:
-  Victim: From None to ((1364, 1383), 'cesar gaviria trujillo')
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [[((976, 982), 'callers')]], 'PerpOrg': [[((1399, 1411), 'the extraditables'), ((1399, 1411), 'extraditables')]], 'Target': [], 'Victim': [[((1364, 1383), 'cesar gaviria trujillo')]], 'Weapon': []}
 
 	------------------
 
@@ -7343,12 +5849,6 @@ DOCID: 132
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: ((406, 415), 'terrorists')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((0, 8), 'francisco'), ((121, 124), 'jose'), ((125, 132), 'guerrero')
-| |-Weapon: 
 |-Template (attack):
 | |-PerpInd: ((406, 415), 'terrorists')
 | |-PerpOrg: 
@@ -7375,19 +5875,6 @@ Template (attack):
 | |-Victim: ((0, 8), 'francisco'), ((121, 124), 'jose'), ((125, 132), 'guerrero')
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: ((406, 415), 'terrorists')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((0, 8), 'francisco'), ((121, 124), 'jose'), ((125, 132), 'guerrero')
-| |-Weapon: 
- -to- 
 Template (attack):
 | |-PerpInd: [((406, 415), 'terrorists'), ((1147, 1155), 'criminals')]
 | |-PerpOrg: 
@@ -7398,10 +5885,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [((406, 415), 'terrorists')], 'PerpOrg': [], 'Target': [], 'Victim': [((0, 8), 'francisco'), ((121, 124), 'jose'), ((125, 132), 'guerrero')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Remove_Unrelated_Spurious_Role_Filler:
   Victim: From ((0, 8), 'francisco') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -7421,12 +5904,6 @@ Summary:
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -7459,20 +5936,20 @@ Template (attack):
 | |-Victim: 
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
 Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
+
+	---
+
+Template Pair 2: 
+Matching:
+None
  -to- 
-Template (attack):
+Template (kidnapping):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
@@ -7489,35 +5966,18 @@ Template (kidnapping):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: 
-| |-Weapon: 
-
-	---
-
-Template Pair 4: 
-Matching:
-None
- -to- 
-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
 | |-Victim: [((2162, 2188), 'eduardo antonio lopez palencia')]
 | |-Weapon: 
 
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
 
 Template Pair 2:
-
-Template Pair 3:
 |-Introduce_Missing_Template:
   : From None to {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []}
 
-Template Pair 4:
+Template Pair 3:
 |-Introduce_Missing_Template:
   : From None to {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [[((2162, 2188), 'eduardo antonio lopez palencia')]], 'Weapon': []}
 
@@ -7538,12 +5998,6 @@ DOCID: 135
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((811, 815), 'mario'), ((816, 821), 'flores')
-| |-Weapon: 
 |-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -7615,24 +6069,6 @@ Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: ((811, 815), 'mario'), ((816, 821), 'flores')
-| |-Weapon: 
- -to- 
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: [((759, 771), 'national guard')]
-| |-Target: 
-| |-Victim: [((811, 821), 'mario flores')]
-| |-Weapon: 
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
 | |-Victim: ((1342, 1347), 'rafael'), ((1348, 1353), 'romero'), ((1320, 1325), 'victor'), ((1326, 1331), 'manuel'), ((1332, 1338), 'vasquez'), ((811, 815), 'mario'), ((816, 821), 'flores')
 | |-Weapon: 
  -to- 
@@ -7641,6 +6077,19 @@ Template (attack):
 | |-PerpOrg: [((1257, 1274), '6th infantry brigade')]
 | |-Target: 
 | |-Victim: [((1320, 1338), 'victor manuel vasquez')], [((1342, 1353), 'rafael romero')]
+| |-Weapon: 
+
+	---
+
+Template Pair 2: 
+Matching:
+None
+ -to- 
+Template (attack):
+| |-PerpInd: 
+| |-PerpOrg: [((759, 771), 'national guard')]
+| |-Target: 
+| |-Victim: [((811, 821), 'mario flores')]
 | |-Weapon: 
 
 	---
@@ -7738,14 +6187,6 @@ Transformations:
 
 Template Pair 1:
 |-Introduce_Missing_Role_Filler:
-  PerpOrg: From None to ((759, 771), 'national guard')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((811, 815), 'mario') to ((811, 821), 'mario flores') to None
-|-Alter_Span:
-  Victim: From ((816, 821), 'flores') to ((811, 821), 'mario flores')
-
-Template Pair 2:
-|-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((1229, 1303), 'oromontique battalion troops of the 6th infantry brigade commanded by lieutenant pachecho')
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((1286, 1303), 'lieutenant pachecho')
@@ -7765,6 +6206,10 @@ Template Pair 2:
   Victim: From ((811, 815), 'mario') to ((811, 821), 'mario flores') to None
 |-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
   Victim: From ((816, 821), 'flores') to ((811, 821), 'mario flores') to None
+
+Template Pair 2:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [[((759, 771), 'national guard')]], 'Target': [], 'Victim': [[((811, 821), 'mario flores')]], 'Weapon': []}
 
 Template Pair 3:
 |-Introduce_Missing_Template:
@@ -7823,12 +6268,6 @@ DOCID: 138
 Comparing:
 Summary:
 |-Template (kidnapping):
-| |-PerpInd: ((90, 99), 'guerrillas')
-| |-PerpOrg: ((102, 104), 'eln'), ((261, 266), 'nelson'), ((267, 273), 'mandela'), ((274, 277), 'cell')
-| |-Target: 
-| |-Victim: ((178, 182), 'david'), ((183, 187), 'lecky'), ((215, 219), 'james'), ((220, 225), 'arthur'), ((226, 233), 'donnelly')
-| |-Weapon: 
-|-Template (kidnapping):
 | |-PerpInd: ((261, 266), 'nelson'), ((267, 273), 'mandela'), ((274, 277), 'cell'), ((90, 99), 'guerrillas')
 | |-PerpOrg: ((102, 104), 'eln')
 | |-Target: 
@@ -7854,8 +6293,8 @@ Summary:
 Template Pair 1: 
 Matching:
 Template (kidnapping):
-| |-PerpInd: ((90, 99), 'guerrillas')
-| |-PerpOrg: ((102, 104), 'eln'), ((261, 266), 'nelson'), ((267, 273), 'mandela'), ((274, 277), 'cell')
+| |-PerpInd: ((261, 266), 'nelson'), ((267, 273), 'mandela'), ((274, 277), 'cell'), ((90, 99), 'guerrillas')
+| |-PerpOrg: ((102, 104), 'eln')
 | |-Target: 
 | |-Victim: ((178, 182), 'david'), ((183, 187), 'lecky'), ((215, 219), 'james'), ((220, 225), 'arthur'), ((226, 233), 'donnelly')
 | |-Weapon: 
@@ -7871,12 +6310,7 @@ Template (kidnapping):
 
 Template Pair 2: 
 Matching:
-Template (kidnapping):
-| |-PerpInd: ((261, 266), 'nelson'), ((267, 273), 'mandela'), ((274, 277), 'cell'), ((90, 99), 'guerrillas')
-| |-PerpOrg: ((102, 104), 'eln')
-| |-Target: 
-| |-Victim: ((178, 182), 'david'), ((183, 187), 'lecky'), ((215, 219), 'james'), ((220, 225), 'arthur'), ((226, 233), 'donnelly')
-| |-Weapon: 
+None
  -to- 
 Template (kidnapping):
 | |-PerpInd: [((261, 282), 'nelson mandela cell of the eln'), ((261, 277), 'nelson mandela cell')]
@@ -7888,16 +6322,14 @@ Template (kidnapping):
 Transformations:
 
 Template Pair 1:
-|-Alter_Span -> Alter_Role:
-  From PerpOrg: ((274, 277), 'cell') to PerpOrg: ((261, 277), 'nelson mandela cell') to PerpInd: ((261, 277), 'nelson mandela cell')
-|-Alter_Span -> Alter_Role:
-  From PerpOrg: ((267, 273), 'mandela') to PerpOrg: ((261, 277), 'nelson mandela cell') to PerpInd: ((261, 277), 'nelson mandela cell')
-|-Alter_Span -> Alter_Role:
-  From PerpOrg: ((261, 266), 'nelson') to PerpOrg: ((261, 277), 'nelson mandela cell') to PerpInd: ((261, 277), 'nelson mandela cell')
+|-Alter_Span -> Remove_Duplicate_Role_Filler:
+  PerpInd: From ((261, 266), 'nelson') to ((261, 277), 'nelson mandela cell') to None
+|-Alter_Span:
+  PerpInd: From ((267, 273), 'mandela') to ((261, 277), 'nelson mandela cell')
+|-Alter_Span -> Remove_Duplicate_Role_Filler:
+  PerpInd: From ((274, 277), 'cell') to ((261, 277), 'nelson mandela cell') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
   PerpInd: From ((90, 99), 'guerrillas') to None
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((261, 282), 'nelson mandela cell of the eln')
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   Victim: From ((178, 182), 'david') to ((178, 187), 'david lecky') to None
 |-Alter_Span:
@@ -7910,26 +6342,8 @@ Template Pair 1:
   Victim: From ((226, 233), 'donnelly') to ((215, 233), 'james arthur donnelly')
 
 Template Pair 2:
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((261, 266), 'nelson') to ((261, 277), 'nelson mandela cell') to None
-|-Alter_Span:
-  PerpInd: From ((267, 273), 'mandela') to ((261, 277), 'nelson mandela cell')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((274, 277), 'cell') to ((261, 277), 'nelson mandela cell') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpInd: From ((90, 99), 'guerrillas') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((178, 182), 'david') to ((178, 187), 'david lecky') to None
-|-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
-  Victim: From ((183, 187), 'lecky') to ((178, 187), 'david lecky') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((215, 219), 'james') to ((215, 233), 'james arthur donnelly') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((220, 225), 'arthur') to ((215, 233), 'james arthur donnelly') to None
-|-Alter_Span:
-  Victim: From ((226, 233), 'donnelly') to ((215, 233), 'james arthur donnelly')
-|-Introduce_Missing_Role_Filler:
-  Victim: From None to ((424, 433), 'leslie kent')
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'kidnapping', 'PerpInd': [[((261, 282), 'nelson mandela cell of the eln'), ((261, 277), 'nelson mandela cell')]], 'PerpOrg': [[((102, 104), 'eln'), ((105, 128), 'army of national liberation')]], 'Target': [], 'Victim': [[((215, 233), 'james arthur donnelly')], [((424, 433), 'leslie kent')]], 'Weapon': []}
 
 	------------------
 
@@ -8143,18 +6557,6 @@ Summary:
 |-Template (bombing):
 | |-PerpInd: ((380, 384), 'urban'), ((311, 320), 'guerrillas')
 | |-PerpOrg: ((113, 121), 'farabundo'), ((122, 126), 'marti'), ((127, 134), 'national'), ((135, 144), 'liberation'), ((145, 149), 'front')
-| |-Target: ((400, 406), 'vehicle')
-| |-Victim: ((82, 88), 'roberto'), ((89, 94), 'garcia'), ((95, 102), 'alvarado')
-| |-Weapon: ((368, 371), 'bomb')
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((113, 121), 'farabundo'), ((122, 126), 'marti'), ((127, 134), 'national'), ((135, 144), 'liberation'), ((145, 149), 'front')
-| |-Target: 
-| |-Victim: ((82, 88), 'roberto'), ((89, 94), 'garcia'), ((95, 102), 'alvarado')
-| |-Weapon: 
-|-Template (bombing):
-| |-PerpInd: ((380, 384), 'urban'), ((311, 320), 'guerrillas')
-| |-PerpOrg: ((113, 121), 'farabundo'), ((122, 126), 'marti'), ((127, 134), 'national'), ((135, 144), 'liberation'), ((145, 149), 'front')
 | |-Target: 
 | |-Victim: ((82, 88), 'roberto'), ((89, 94), 'garcia'), ((95, 102), 'alvarado')
 | |-Weapon: 
@@ -8192,32 +6594,6 @@ Matching:
 Template (bombing):
 | |-PerpInd: ((380, 384), 'urban'), ((311, 320), 'guerrillas')
 | |-PerpOrg: ((113, 121), 'farabundo'), ((122, 126), 'marti'), ((127, 134), 'national'), ((135, 144), 'liberation'), ((145, 149), 'front')
-| |-Target: ((400, 406), 'vehicle')
-| |-Victim: ((82, 88), 'roberto'), ((89, 94), 'garcia'), ((95, 102), 'alvarado')
-| |-Weapon: ((368, 371), 'bomb')
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((113, 121), 'farabundo'), ((122, 126), 'marti'), ((127, 134), 'national'), ((135, 144), 'liberation'), ((145, 149), 'front')
-| |-Target: 
-| |-Victim: ((82, 88), 'roberto'), ((89, 94), 'garcia'), ((95, 102), 'alvarado')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 3: 
-Matching:
-Template (bombing):
-| |-PerpInd: ((380, 384), 'urban'), ((311, 320), 'guerrillas')
-| |-PerpOrg: ((113, 121), 'farabundo'), ((122, 126), 'marti'), ((127, 134), 'national'), ((135, 144), 'liberation'), ((145, 149), 'front')
 | |-Target: 
 | |-Victim: ((82, 88), 'roberto'), ((89, 94), 'garcia'), ((95, 102), 'alvarado')
 | |-Weapon: 
@@ -8231,7 +6607,7 @@ Template (bombing):
 
 	---
 
-Template Pair 4: 
+Template Pair 2: 
 Matching:
 Template (bombing):
 | |-PerpInd: ((380, 384), 'urban'), ((311, 320), 'guerrillas')
@@ -8249,7 +6625,7 @@ Template (bombing):
 
 	---
 
-Template Pair 5: 
+Template Pair 3: 
 Matching:
 Template (attack):
 | |-PerpInd: 
@@ -8263,14 +6639,6 @@ None
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [((380, 384), 'urban'), ((311, 320), 'guerrillas')], 'PerpOrg': [((113, 121), 'farabundo'), ((122, 126), 'marti'), ((127, 134), 'national'), ((135, 144), 'liberation'), ((145, 149), 'front')], 'Target': [((400, 406), 'vehicle')], 'Victim': [((82, 88), 'roberto'), ((89, 94), 'garcia'), ((95, 102), 'alvarado')], 'Weapon': [((368, 371), 'bomb')]} to None
-
-Template Pair 2:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((113, 121), 'farabundo'), ((122, 126), 'marti'), ((127, 134), 'national'), ((135, 144), 'liberation'), ((145, 149), 'front')], 'Target': [], 'Victim': [((82, 88), 'roberto'), ((89, 94), 'garcia'), ((95, 102), 'alvarado')], 'Weapon': []} to None
-
-Template Pair 3:
 |-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
   PerpInd: From ((380, 384), 'urban') to ((380, 394), 'urban guerrillas') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -8294,7 +6662,7 @@ Template Pair 3:
 |-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
   Victim: From ((95, 102), 'alvarado') to ((82, 102), 'roberto garcia alvarado') to None
 
-Template Pair 4:
+Template Pair 2:
 |-Alter_Span:
   PerpInd: From ((380, 384), 'urban') to ((380, 394), 'urban guerrillas')
 |-Remove_Cross_Template_Spurious_Role_Filler:
@@ -8326,7 +6694,7 @@ Template Pair 4:
 |-Alter_Span:
   Victim: From ((95, 102), 'alvarado') to ((82, 102), 'roberto garcia alvarado')
 
-Template Pair 5:
+Template Pair 3:
 |-Remove_Spurious_Template:
   : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((113, 121), 'farabundo'), ((122, 126), 'marti'), ((127, 134), 'national'), ((135, 144), 'liberation'), ((145, 149), 'front')], 'Target': [], 'Victim': [((82, 88), 'roberto'), ((89, 94), 'garcia'), ((95, 102), 'alvarado')], 'Weapon': [((368, 371), 'bomb')]} to None
 
@@ -8348,18 +6716,6 @@ Summary:
 | |-Target: 
 | |-Victim: 
 | |-Weapon: ((335, 337), 'car'), ((338, 341), 'bomb')
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((335, 337), 'car'), ((338, 341), 'bomb')
  -to- 
 Summary:
 |-Template (bombing):
@@ -8393,32 +6749,6 @@ Template (bombing):
 | |-Victim: 
 | |-Weapon: ((335, 337), 'car'), ((338, 341), 'bomb')
  -to- 
-None
-
-	---
-
-Template Pair 3: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 4: 
-Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: ((335, 337), 'car'), ((338, 341), 'bomb')
- -to- 
 Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -8433,14 +6763,6 @@ Template Pair 1:
   : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
 
 Template Pair 2:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': [((335, 337), 'car'), ((338, 341), 'bomb')]} to None
-
-Template Pair 3:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 4:
 |-Introduce_Missing_Role_Filler:
   Target: From None to ((54, 64), 'military bus')
 |-Introduce_Missing_Role_Filler:
@@ -8462,12 +6784,6 @@ Summary:
 | |-Target: 
 | |-Victim: ((65, 69), 'jorge'), ((70, 75), 'adolfo'), ((76, 81), 'vargas'), ((82, 89), 'gonzalez')
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((65, 69), 'jorge'), ((70, 75), 'adolfo'), ((76, 81), 'vargas'), ((82, 89), 'gonzalez')
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -8488,19 +6804,6 @@ Template (attack):
 | |-Victim: ((65, 69), 'jorge'), ((70, 75), 'adolfo'), ((76, 81), 'vargas'), ((82, 89), 'gonzalez')
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((65, 69), 'jorge'), ((70, 75), 'adolfo'), ((76, 81), 'vargas'), ((82, 89), 'gonzalez')
-| |-Weapon: 
- -to- 
 Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -8511,10 +6814,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [((65, 69), 'jorge'), ((70, 75), 'adolfo'), ((76, 81), 'vargas'), ((82, 89), 'gonzalez')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   Victim: From ((65, 69), 'jorge') to ((65, 89), 'jorge adolfo vargas gonzalez') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -8530,12 +6829,6 @@ DOCID: 150
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((164, 167), 'luis'), ((168, 173), 'carlos'), ((174, 178), 'galan'), ((179, 187), 'sarmiento')
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -8549,12 +6842,7 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((164, 167), 'luis'), ((168, 173), 'carlos'), ((174, 178), 'galan'), ((179, 187), 'sarmiento')
-| |-Weapon: 
+None
  -to- 
 Template (attack):
 | |-PerpInd: 
@@ -8566,14 +6854,8 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((164, 167), 'luis') to ((164, 187), 'luis carlos galan sarmiento') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((168, 173), 'carlos') to ((164, 187), 'luis carlos galan sarmiento') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Victim: From ((174, 178), 'galan') to ((164, 187), 'luis carlos galan sarmiento') to None
-|-Alter_Span:
-  Victim: From ((179, 187), 'sarmiento') to ((164, 187), 'luis carlos galan sarmiento')
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [[((164, 187), 'luis carlos galan sarmiento')]], 'Weapon': []}
 
 	------------------
 
@@ -8596,12 +6878,6 @@ Summary:
 | |-PerpInd: ((154, 165), 'unidentified'), ((166, 175), 'assailants')
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: ((19, 24), 'carlos'), ((25, 30), 'andres'), ((31, 35), 'perez'), ((185, 192), 'norberto'), ((193, 201), 'rodriguez')
-| |-Weapon: 
-|-Template (kidnapping):
-| |-PerpInd: ((154, 165), 'unidentified'), ((166, 175), 'assailants')
-| |-PerpOrg: 
-| |-Target: 
 | |-Victim: ((19, 24), 'carlos'), ((25, 30), 'andres'), ((31, 35), 'perez'), ((230, 235), 'blanca'), ((193, 201), 'rodriguez'), ((15, 16), 'de'), ((31, 35), 'perez'), ((185, 192), 'norberto'), ((193, 201), 'rodriguez')
 | |-Weapon: 
 |-Template (kidnapping):
@@ -8627,19 +6903,6 @@ Template (kidnapping):
 | |-PerpInd: ((154, 165), 'unidentified'), ((166, 175), 'assailants')
 | |-PerpOrg: 
 | |-Target: 
-| |-Victim: ((19, 24), 'carlos'), ((25, 30), 'andres'), ((31, 35), 'perez'), ((185, 192), 'norberto'), ((193, 201), 'rodriguez')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (kidnapping):
-| |-PerpInd: ((154, 165), 'unidentified'), ((166, 175), 'assailants')
-| |-PerpOrg: 
-| |-Target: 
 | |-Victim: ((19, 24), 'carlos'), ((25, 30), 'andres'), ((31, 35), 'perez'), ((230, 235), 'blanca'), ((193, 201), 'rodriguez'), ((15, 16), 'de'), ((31, 35), 'perez'), ((185, 192), 'norberto'), ((193, 201), 'rodriguez')
 | |-Weapon: 
  -to- 
@@ -8647,7 +6910,7 @@ None
 
 	---
 
-Template Pair 3: 
+Template Pair 2: 
 Matching:
 Template (kidnapping):
 | |-PerpInd: ((154, 165), 'unidentified'), ((166, 175), 'assailants')
@@ -8667,13 +6930,9 @@ Transformations:
 
 Template Pair 1:
 |-Remove_Spurious_Template:
-  : From {'incident_type': 'kidnapping', 'PerpInd': [((154, 165), 'unidentified'), ((166, 175), 'assailants')], 'PerpOrg': [], 'Target': [], 'Victim': [((19, 24), 'carlos'), ((25, 30), 'andres'), ((31, 35), 'perez'), ((185, 192), 'norberto'), ((193, 201), 'rodriguez')], 'Weapon': []} to None
-
-Template Pair 2:
-|-Remove_Spurious_Template:
   : From {'incident_type': 'kidnapping', 'PerpInd': [((154, 165), 'unidentified'), ((166, 175), 'assailants')], 'PerpOrg': [], 'Target': [], 'Victim': [((19, 24), 'carlos'), ((25, 30), 'andres'), ((31, 35), 'perez'), ((230, 235), 'blanca'), ((193, 201), 'rodriguez'), ((15, 16), 'de'), ((31, 35), 'perez'), ((185, 192), 'norberto'), ((193, 201), 'rodriguez')], 'Weapon': []} to None
 
-Template Pair 3:
+Template Pair 2:
 |-Alter_Span:
   PerpInd: From ((154, 165), 'unidentified') to ((154, 175), 'unidentified assailants')
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -8741,18 +7000,6 @@ Summary:
 | |-Target: 
 | |-Victim: ((116, 121), 'hector'), ((122, 128), 'delgado'), ((129, 134), 'parker')
 | |-Weapon: 
-|-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((116, 121), 'hector'), ((122, 128), 'delgado'), ((129, 134), 'parker')
-| |-Weapon: 
-|-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((116, 121), 'hector'), ((122, 128), 'delgado'), ((129, 134), 'parker')
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -8792,32 +7039,6 @@ Template (kidnapping):
 | |-Victim: ((116, 121), 'hector'), ((122, 128), 'delgado'), ((129, 134), 'parker')
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 3: 
-Matching:
-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((116, 121), 'hector'), ((122, 128), 'delgado'), ((129, 134), 'parker')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 4: 
-Matching:
-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((116, 121), 'hector'), ((122, 128), 'delgado'), ((129, 134), 'parker')
-| |-Weapon: 
- -to- 
 Template (kidnapping):
 | |-PerpInd: [((370, 432), 'commando of the pro-che guevara group tupac amaru revolutionary movement (mrta)'), ((370, 428), 'commando of the pro-che guevara group tupac amaru revolutionary movement'), ((370, 397), 'commando of the pro-che guevara group'), ((370, 377), 'commando'), ((561, 573), 'mrta activists')]
 | |-PerpOrg: [((398, 428), 'tupac amaru revolutionary movement'), ((429, 432), 'mrta')]
@@ -8827,7 +7048,7 @@ Template (kidnapping):
 
 	---
 
-Template Pair 5: 
+Template Pair 3: 
 Matching:
 None
  -to- 
@@ -8845,14 +7066,6 @@ Template Pair 1:
   : From {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [((116, 121), 'hector'), ((122, 128), 'delgado'), ((129, 134), 'parker')], 'Weapon': []} to None
 
 Template Pair 2:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [((116, 121), 'hector'), ((122, 128), 'delgado'), ((129, 134), 'parker')], 'Weapon': []} to None
-
-Template Pair 3:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [((116, 121), 'hector'), ((122, 128), 'delgado'), ((129, 134), 'parker')], 'Weapon': []} to None
-
-Template Pair 4:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((370, 432), 'commando of the pro-che guevara group tupac amaru revolutionary movement (mrta)')
 |-Introduce_Missing_Role_Filler:
@@ -8864,7 +7077,7 @@ Template Pair 4:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   Victim: From ((129, 134), 'parker') to ((116, 134), 'hector delgado parker') to None
 
-Template Pair 5:
+Template Pair 3:
 |-Introduce_Missing_Template:
   : From None to {'incident_type': 'attack', 'PerpInd': [[((370, 432), 'commando of the pro-che guevara group tupac amaru revolutionary movement (mrta)'), ((370, 428), 'commando of the pro-che guevara group tupac amaru revolutionary movement'), ((370, 397), 'commando of the pro-che guevara group'), ((370, 377), 'commando'), ((561, 573), 'mrta activists')]], 'PerpOrg': [[((398, 428), 'tupac amaru revolutionary movement'), ((429, 432), 'mrta')]], 'Target': [], 'Victim': [[((116, 134), 'hector delgado parker')]], 'Weapon': []}
 
@@ -8880,12 +7093,6 @@ Summary:
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -8906,19 +7113,6 @@ Template (attack):
 | |-Victim: 
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
 Template (attack):
 | |-PerpInd: [((851, 868), 'armed forces members'), ((941, 946), 'guards')]
 | |-PerpOrg: [((851, 861), 'armed forces')]
@@ -8929,10 +7123,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((851, 868), 'armed forces members')
 |-Introduce_Missing_Role_Filler:
@@ -8945,12 +7135,6 @@ DOCID: 156
 Comparing:
 Summary:
 |-Template (attack):
-| |-PerpInd: ((662, 668), 'colonel'), ((1156, 1164), 'heriberto'), ((1165, 1173), 'hernandez')
-| |-PerpOrg: ((750, 754), 'armed'), ((755, 760), 'forces'), ((761, 764), 'high'), ((642, 648), 'command')
-| |-Target: 
-| |-Victim: ((1241, 1247), 'alfonso'), ((1248, 1253), 'chavez'), ((1254, 1259), 'garcia')
-| |-Weapon: 
-|-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: ((568, 571), 'fmln'), ((572, 574), 'war'), ((575, 582), 'disabled'), ((750, 754), 'armed'), ((755, 760), 'forces'), ((761, 764), 'high'), ((642, 648), 'command')
 | |-Target: 
@@ -8970,10 +7154,10 @@ Summary:
 Template Pair 1: 
 Matching:
 Template (attack):
-| |-PerpInd: ((662, 668), 'colonel'), ((1156, 1164), 'heriberto'), ((1165, 1173), 'hernandez')
-| |-PerpOrg: ((750, 754), 'armed'), ((755, 760), 'forces'), ((761, 764), 'high'), ((642, 648), 'command')
+| |-PerpInd: 
+| |-PerpOrg: ((568, 571), 'fmln'), ((572, 574), 'war'), ((575, 582), 'disabled'), ((750, 754), 'armed'), ((755, 760), 'forces'), ((761, 764), 'high'), ((642, 648), 'command')
 | |-Target: 
-| |-Victim: ((1241, 1247), 'alfonso'), ((1248, 1253), 'chavez'), ((1254, 1259), 'garcia')
+| |-Victim: 
 | |-Weapon: 
  -to- 
 Template (attack):
@@ -8983,38 +7167,25 @@ Template (attack):
 | |-Victim: 
 | |-Weapon: 
 
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((568, 571), 'fmln'), ((572, 574), 'war'), ((575, 582), 'disabled'), ((750, 754), 'armed'), ((755, 760), 'forces'), ((761, 764), 'high'), ((642, 648), 'command')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
 Transformations:
 
 Template Pair 1:
-|-Alter_Span -> Alter_Role:
-  From Victim: ((1254, 1259), 'garcia') to Victim: ((1234, 1259), 'captain alfonso chavez garcia') to PerpInd: ((1234, 1259), 'captain alfonso chavez garcia')
-|-Alter_Span -> Alter_Role:
-  From Victim: ((1248, 1253), 'chavez') to Victim: ((1234, 1259), 'captain alfonso chavez garcia') to PerpInd: ((1234, 1259), 'captain alfonso chavez garcia')
-|-Alter_Span -> Alter_Role:
-  From Victim: ((1241, 1247), 'alfonso') to Victim: ((1234, 1259), 'captain alfonso chavez garcia') to PerpInd: ((1234, 1259), 'captain alfonso chavez garcia')
-|-Alter_Span:
-  PerpInd: From ((662, 668), 'colonel') to ((662, 683), 'colonel rene emilio ponce')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((1156, 1164), 'heriberto') to ((1149, 1173), 'colonel heriberto hernandez') to None
-|-Alter_Span:
-  PerpInd: From ((1165, 1173), 'hernandez') to ((1149, 1173), 'colonel heriberto hernandez')
+|-Introduce_Missing_Role_Filler:
+  PerpInd: From None to ((662, 683), 'colonel rene emilio ponce')
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((1059, 1078), 'colonel orlando zepeda')
 |-Introduce_Missing_Role_Filler:
+  PerpInd: From None to ((1149, 1173), 'colonel heriberto hernandez')
+|-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((1184, 1197), 'treasury police')
+|-Introduce_Missing_Role_Filler:
+  PerpInd: From None to ((1234, 1259), 'captain alfonso chavez garcia')
+|-Remove_Unrelated_Spurious_Role_Filler:
+  PerpOrg: From ((568, 571), 'fmln') to None
+|-Remove_Unrelated_Spurious_Role_Filler:
+  PerpOrg: From ((572, 574), 'war') to None
+|-Remove_Unrelated_Spurious_Role_Filler:
+  PerpOrg: From ((575, 582), 'disabled') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   PerpOrg: From ((750, 754), 'armed') to ((750, 760), 'armed forces') to None
 |-Alter_Span:
@@ -9023,10 +7194,6 @@ Template Pair 1:
   PerpOrg: From ((761, 764), 'high') to ((750, 771), 'armed forces high command') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
   PerpOrg: From ((642, 648), 'command') to None
-
-Template Pair 2:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((568, 571), 'fmln'), ((572, 574), 'war'), ((575, 582), 'disabled'), ((750, 754), 'armed'), ((755, 760), 'forces'), ((761, 764), 'high'), ((642, 648), 'command')], 'Target': [], 'Victim': [], 'Weapon': []} to None
 
 	------------------
 
@@ -9040,12 +7207,6 @@ Summary:
 | |-Target: 
 | |-Victim: ((198, 201), 'towm'), ((204, 208), 'villa'), ((209, 218), 'gobernador'), ((219, 224), 'galvez')
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: ((239, 244), 'people')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((198, 201), 'towm'), ((204, 208), 'villa'), ((209, 218), 'gobernador'), ((219, 224), 'galvez')
-| |-Weapon: 
  -to- 
 Summary:
 
@@ -9062,26 +7223,9 @@ Template (attack):
  -to- 
 None
 
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: ((239, 244), 'people')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((198, 201), 'towm'), ((204, 208), 'villa'), ((209, 218), 'gobernador'), ((219, 224), 'galvez')
-| |-Weapon: 
- -to- 
-None
-
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [((239, 244), 'people')], 'PerpOrg': [], 'Target': [], 'Victim': [((198, 201), 'towm'), ((204, 208), 'villa'), ((209, 218), 'gobernador'), ((219, 224), 'galvez')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Remove_Spurious_Template:
   : From {'incident_type': 'attack', 'PerpInd': [((239, 244), 'people')], 'PerpOrg': [], 'Target': [], 'Victim': [((198, 201), 'towm'), ((204, 208), 'villa'), ((209, 218), 'gobernador'), ((219, 224), 'galvez')], 'Weapon': []} to None
 
@@ -9092,18 +7236,6 @@ DOCID: 158
 Comparing:
 Summary:
 |-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((517, 526), 'residences'), ((405, 410), 'branch'), ((73, 74), 'of'), ((1, 0), 'the'), ((413, 416), 'city'), ((34, 34), "'s"), ((418, 425), 'electric'), ((426, 431), 'energy'), ((432, 441), 'enterprise'), ((292, 295), 'bank')
-| |-Victim: 
-| |-Weapon: ((166, 169), 'bomb')
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((292, 295), 'bank')
-| |-Victim: 
-| |-Weapon: ((166, 169), 'bomb')
-|-Template (bombing):
 | |-PerpInd: ((925, 928), 'drug'), ((929, 939), 'traffickers')
 | |-PerpOrg: 
 | |-Target: ((292, 295), 'bank'), ((405, 410), 'branch'), ((73, 74), 'of'), ((1, 0), 'the'), ((413, 416), 'city'), ((34, 34), "'s"), ((418, 425), 'electric'), ((426, 431), 'energy'), ((432, 441), 'enterprise'), ((140, 149), 'historical'), ((150, 154), 'beach'), ((155, 160), 'resort')
@@ -9129,37 +7261,6 @@ Summary:
 Template Pair 1: 
 Matching:
 Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((517, 526), 'residences'), ((405, 410), 'branch'), ((73, 74), 'of'), ((1, 0), 'the'), ((413, 416), 'city'), ((34, 34), "'s"), ((418, 425), 'electric'), ((426, 431), 'energy'), ((432, 441), 'enterprise'), ((292, 295), 'bank')
-| |-Victim: 
-| |-Weapon: ((166, 169), 'bomb')
- -to- 
-Template (bombing):
-| |-PerpInd: [((586, 623), 'two individuals who were passing by the building'), ((586, 599), 'two individuals'), ((589, 599), 'individuals')], [((925, 939), 'drug traffickers')]
-| |-PerpOrg: 
-| |-Target: [((405, 441), "branch of the city's electric energy enterprise"), ((418, 441), 'electric energy enterprise')], [((506, 526), 'neighboring residences'), ((517, 526), 'residences')]
-| |-Victim: 
-| |-Weapon: [((166, 169), 'bomb')]
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((292, 295), 'bank')
-| |-Victim: 
-| |-Weapon: ((166, 169), 'bomb')
- -to- 
-None
-
-	---
-
-Template Pair 3: 
-Matching:
-Template (bombing):
 | |-PerpInd: ((925, 928), 'drug'), ((929, 939), 'traffickers')
 | |-PerpOrg: 
 | |-Target: ((292, 295), 'bank'), ((405, 410), 'branch'), ((73, 74), 'of'), ((1, 0), 'the'), ((413, 416), 'city'), ((34, 34), "'s"), ((418, 425), 'electric'), ((426, 431), 'energy'), ((432, 441), 'enterprise'), ((140, 149), 'historical'), ((150, 154), 'beach'), ((155, 160), 'resort')
@@ -9173,37 +7274,22 @@ Template (bombing):
 | |-Victim: 
 | |-Weapon: [((166, 169), 'bomb')], [((818, 825), 'dynamite')]
 
+	---
+
+Template Pair 2: 
+Matching:
+None
+ -to- 
+Template (bombing):
+| |-PerpInd: [((586, 623), 'two individuals who were passing by the building'), ((586, 599), 'two individuals'), ((589, 599), 'individuals')], [((925, 939), 'drug traffickers')]
+| |-PerpOrg: 
+| |-Target: [((405, 441), "branch of the city's electric energy enterprise"), ((418, 441), 'electric energy enterprise')], [((506, 526), 'neighboring residences'), ((517, 526), 'residences')]
+| |-Victim: 
+| |-Weapon: [((166, 169), 'bomb')]
+
 Transformations:
 
 Template Pair 1:
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((586, 623), 'two individuals who were passing by the building')
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((925, 939), 'drug traffickers')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((405, 410), 'branch') to ((405, 441), "branch of the city's electric energy enterprise") to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((73, 74), 'of') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((1, 0), 'the') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((413, 416), 'city') to ((405, 441), "branch of the city's electric energy enterprise") to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((34, 34), "'s") to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((418, 425), 'electric') to ((418, 441), 'electric energy enterprise') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((426, 431), 'energy') to ((418, 441), 'electric energy enterprise') to None
-|-Alter_Span:
-  Target: From ((432, 441), 'enterprise') to ((418, 441), 'electric energy enterprise')
-|-Remove_Cross_Template_Spurious_Role_Filler:
-  Target: From ((292, 295), 'bank') to None
-
-Template Pair 2:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [], 'Target': [((292, 295), 'bank')], 'Victim': [], 'Weapon': [((166, 169), 'bomb')]} to None
-
-Template Pair 3:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   PerpInd: From ((925, 928), 'drug') to ((925, 939), 'drug traffickers') to None
 |-Alter_Span:
@@ -9235,39 +7321,20 @@ Template Pair 3:
 |-Introduce_Missing_Role_Filler:
   Weapon: From None to ((818, 825), 'dynamite')
 
+Template Pair 2:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'bombing', 'PerpInd': [[((586, 623), 'two individuals who were passing by the building'), ((586, 599), 'two individuals'), ((589, 599), 'individuals')], [((925, 939), 'drug traffickers')]], 'PerpOrg': [], 'Target': [[((405, 441), "branch of the city's electric energy enterprise"), ((418, 441), 'electric energy enterprise')], [((506, 526), 'neighboring residences'), ((517, 526), 'residences')]], 'Victim': [], 'Weapon': [[((166, 169), 'bomb')]]}
+
 	------------------
 
 DOCID: 159
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 
-	---
-
-Template Pair 1: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
 Transformations:
-
-Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
 
 	------------------
 
@@ -9276,18 +7343,6 @@ DOCID: 160
 Comparing:
 Summary:
 |-Template (attack):
-| |-PerpInd: ((559, 565), 'several'), ((566, 570), 'armed'), ((571, 581), 'individuals')
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: ((322, 325), 'luis'), ((326, 332), 'alberto'), ((333, 338), 'chavez'), ((270, 275), 'carlos'), ((276, 280), 'julio'), ((281, 287), 'bonilla')
-| |-Weapon: 
-|-Template (attack):
-| |-PerpInd: ((559, 565), 'several'), ((566, 570), 'armed'), ((571, 581), 'individuals')
-| |-PerpOrg: 
-| |-Target: ((598, 606), 'newspaper'), ((154, 155), 'el'), ((609, 613), 'siglo'), ((13, 13), "'s"), ((615, 624), 'facilities')
-| |-Victim: 
-| |-Weapon: 
-|-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: ((223, 226), 'home')
@@ -9307,23 +7362,10 @@ Summary:
 Template Pair 1: 
 Matching:
 Template (attack):
-| |-PerpInd: ((559, 565), 'several'), ((566, 570), 'armed'), ((571, 581), 'individuals')
+| |-PerpInd: 
 | |-PerpOrg: 
-| |-Target: 
+| |-Target: ((223, 226), 'home')
 | |-Victim: ((322, 325), 'luis'), ((326, 332), 'alberto'), ((333, 338), 'chavez'), ((270, 275), 'carlos'), ((276, 280), 'julio'), ((281, 287), 'bonilla')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: ((559, 565), 'several'), ((566, 570), 'armed'), ((571, 581), 'individuals')
-| |-PerpOrg: 
-| |-Target: ((598, 606), 'newspaper'), ((154, 155), 'el'), ((609, 613), 'siglo'), ((13, 13), "'s"), ((615, 624), 'facilities')
-| |-Victim: 
 | |-Weapon: 
  -to- 
 Template (attack):
@@ -9333,46 +7375,29 @@ Template (attack):
 | |-Victim: [((674, 689), 'hipolito hincapie')]
 | |-Weapon: 
 
-	---
-
-Template Pair 3: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((223, 226), 'home')
-| |-Victim: ((322, 325), 'luis'), ((326, 332), 'alberto'), ((333, 338), 'chavez'), ((270, 275), 'carlos'), ((276, 280), 'julio'), ((281, 287), 'bonilla')
-| |-Weapon: 
- -to- 
-None
-
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [((559, 565), 'several'), ((566, 570), 'armed'), ((571, 581), 'individuals')], 'PerpOrg': [], 'Target': [], 'Victim': [((322, 325), 'luis'), ((326, 332), 'alberto'), ((333, 338), 'chavez'), ((270, 275), 'carlos'), ((276, 280), 'julio'), ((281, 287), 'bonilla')], 'Weapon': []} to None
-
-Template Pair 2:
+|-Introduce_Missing_Role_Filler:
+  PerpInd: From None to ((566, 581), 'armed individuals')
 |-Remove_Unrelated_Spurious_Role_Filler:
-  PerpInd: From ((559, 565), 'several') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((566, 570), 'armed') to ((566, 581), 'armed individuals') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((598, 606), 'newspaper') to ((598, 624), "newspaper el siglo's facilities") to None
+  Target: From ((223, 226), 'home') to None
+|-Introduce_Missing_Role_Filler:
+  Target: From None to ((598, 624), "newspaper el siglo's facilities")
 |-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((154, 155), 'el') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((609, 613), 'siglo') to ((598, 624), "newspaper el siglo's facilities") to None
+  Victim: From ((322, 325), 'luis') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((13, 13), "'s") to None
-|-Alter_Span:
-  Target: From ((615, 624), 'facilities') to ((598, 624), "newspaper el siglo's facilities")
+  Victim: From ((326, 332), 'alberto') to None
+|-Remove_Unrelated_Spurious_Role_Filler:
+  Victim: From ((333, 338), 'chavez') to None
+|-Remove_Unrelated_Spurious_Role_Filler:
+  Victim: From ((270, 275), 'carlos') to None
+|-Remove_Unrelated_Spurious_Role_Filler:
+  Victim: From ((276, 280), 'julio') to None
+|-Remove_Unrelated_Spurious_Role_Filler:
+  Victim: From ((281, 287), 'bonilla') to None
 |-Introduce_Missing_Role_Filler:
   Victim: From None to ((674, 689), 'hipolito hincapie')
-
-Template Pair 3:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [((223, 226), 'home')], 'Victim': [((322, 325), 'luis'), ((326, 332), 'alberto'), ((333, 338), 'chavez'), ((270, 275), 'carlos'), ((276, 280), 'julio'), ((281, 287), 'bonilla')], 'Weapon': []} to None
 
 	------------------
 
@@ -9392,12 +7417,6 @@ DOCID: 162
 Comparing:
 Summary:
 |-Template (attack):
-| |-PerpInd: ((55, 59), 'urban'), ((60, 69), 'guerrillas')
-| |-PerpOrg: 
-| |-Target: ((86, 90), 'power'), ((91, 100), 'substation')
-| |-Victim: 
-| |-Weapon: ((688, 694), 'rockets')
-|-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: ((532, 543), 'headquarters'), ((5, 6), 'of'), ((1, 0), 'the'), ((666, 668), '1st'), ((669, 676), 'infantry'), ((677, 683), 'brigade'), ((86, 90), 'power'), ((91, 100), 'substation')
@@ -9423,24 +7442,6 @@ Summary:
 Template Pair 1: 
 Matching:
 Template (attack):
-| |-PerpInd: ((55, 59), 'urban'), ((60, 69), 'guerrillas')
-| |-PerpOrg: 
-| |-Target: ((86, 90), 'power'), ((91, 100), 'substation')
-| |-Victim: 
-| |-Weapon: ((688, 694), 'rockets')
- -to- 
-Template (attack):
-| |-PerpInd: [((55, 69), 'urban guerrillas')]
-| |-PerpOrg: 
-| |-Target: [((86, 100), 'power substation'), ((202, 256), 'lempa river hydroelectric executive commission (cel) substation')]
-| |-Victim: 
-| |-Weapon: 
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: ((532, 543), 'headquarters'), ((5, 6), 'of'), ((1, 0), 'the'), ((666, 668), '1st'), ((669, 676), 'infantry'), ((677, 683), 'brigade'), ((86, 90), 'power'), ((91, 100), 'substation')
@@ -9454,21 +7455,22 @@ Template (attack):
 | |-Victim: 
 | |-Weapon: 
 
+	---
+
+Template Pair 2: 
+Matching:
+None
+ -to- 
+Template (attack):
+| |-PerpInd: [((55, 69), 'urban guerrillas')]
+| |-PerpOrg: 
+| |-Target: [((86, 100), 'power substation'), ((202, 256), 'lempa river hydroelectric executive commission (cel) substation')]
+| |-Victim: 
+| |-Weapon: 
+
 Transformations:
 
 Template Pair 1:
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((55, 59), 'urban') to ((55, 69), 'urban guerrillas') to None
-|-Alter_Span:
-  PerpInd: From ((60, 69), 'guerrillas') to ((55, 69), 'urban guerrillas')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((86, 90), 'power') to ((86, 100), 'power substation') to None
-|-Alter_Span:
-  Target: From ((91, 100), 'substation') to ((86, 100), 'power substation')
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Weapon: From ((688, 694), 'rockets') to None
-
-Template Pair 2:
 |-Alter_Span:
   Target: From ((532, 543), 'headquarters') to ((527, 543), 'union headquarters')
 |-Remove_Unrelated_Spurious_Role_Filler:
@@ -9487,6 +7489,10 @@ Template Pair 2:
   Target: From ((91, 100), 'substation') to ((86, 100), 'power substation') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
   Weapon: From ((688, 694), 'rockets') to None
+
+Template Pair 2:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [[((55, 69), 'urban guerrillas')]], 'PerpOrg': [], 'Target': [[((86, 100), 'power substation'), ((202, 256), 'lempa river hydroelectric executive commission (cel) substation')]], 'Victim': [], 'Weapon': []}
 
 	------------------
 
@@ -9556,12 +7562,6 @@ Summary:
 | |-Target: ((621, 625), 'power'), ((626, 630), 'lines')
 | |-Victim: 
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((621, 625), 'power'), ((626, 630), 'lines')
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (forced work stoppage):
@@ -9605,17 +7605,12 @@ Template (attack):
 
 Template Pair 2: 
 Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((621, 625), 'power'), ((626, 630), 'lines')
-| |-Victim: 
-| |-Weapon: 
+None
  -to- 
-Template (attack):
+Template (forced work stoppage):
 | |-PerpInd: [((98, 113), 'salvadoran rebels'), ((108, 113), 'rebels')]
 | |-PerpOrg: [((444, 447), 'fmln')]
-| |-Target: 
+| |-Target: [((500, 513), 'transportation')], [((549, 558), 'gas station')]
 | |-Victim: 
 | |-Weapon: 
 
@@ -9625,10 +7620,10 @@ Template Pair 3:
 Matching:
 None
  -to- 
-Template (forced work stoppage):
+Template (attack):
 | |-PerpInd: [((98, 113), 'salvadoran rebels'), ((108, 113), 'rebels')]
 | |-PerpOrg: [((444, 447), 'fmln')]
-| |-Target: [((500, 513), 'transportation')], [((549, 558), 'gas station')]
+| |-Target: 
 | |-Victim: 
 | |-Weapon: 
 
@@ -9645,18 +7640,12 @@ Template Pair 1:
   Target: From ((626, 630), 'lines') to ((621, 630), 'power lines')
 
 Template Pair 2:
-|-Introduce_Missing_Role_Filler:
-  PerpInd: From None to ((98, 113), 'salvadoran rebels')
-|-Introduce_Missing_Role_Filler:
-  PerpOrg: From None to ((444, 447), 'fmln')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((621, 625), 'power') to ((621, 630), 'power lines') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((626, 630), 'lines') to ((621, 630), 'power lines') to None
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'forced work stoppage', 'PerpInd': [[((98, 113), 'salvadoran rebels'), ((108, 113), 'rebels')]], 'PerpOrg': [[((444, 447), 'fmln')]], 'Target': [[((500, 513), 'transportation')], [((549, 558), 'gas station')]], 'Victim': [], 'Weapon': []}
 
 Template Pair 3:
 |-Introduce_Missing_Template:
-  : From None to {'incident_type': 'forced work stoppage', 'PerpInd': [[((98, 113), 'salvadoran rebels'), ((108, 113), 'rebels')]], 'PerpOrg': [[((444, 447), 'fmln')]], 'Target': [[((500, 513), 'transportation')], [((549, 558), 'gas station')]], 'Victim': [], 'Weapon': []}
+  : From None to {'incident_type': 'attack', 'PerpInd': [[((98, 113), 'salvadoran rebels'), ((108, 113), 'rebels')]], 'PerpOrg': [[((444, 447), 'fmln')]], 'Target': [], 'Victim': [], 'Weapon': []}
 
 	------------------
 
@@ -9701,12 +7690,6 @@ Summary:
 |-Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: 
-| |-Target: ((69, 72), 'bank'), ((218, 227), 'restaurant')
-| |-Victim: 
-| |-Weapon: ((95, 98), 'load'), ((34, 35), 'of'), ((101, 108), 'dynamite')
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
 | |-Target: ((69, 72), 'bank'), ((210, 217), 'fast-food'), ((218, 227), 'restaurant')
 | |-Victim: 
 | |-Weapon: ((192, 195), 'bomb'), ((101, 108), 'dynamite'), ((228, 238), 'medium-sized'), ((192, 195), 'bomb')
@@ -9732,19 +7715,6 @@ Matching:
 Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: 
-| |-Target: ((69, 72), 'bank'), ((218, 227), 'restaurant')
-| |-Victim: 
-| |-Weapon: ((95, 98), 'load'), ((34, 35), 'of'), ((101, 108), 'dynamite')
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
 | |-Target: ((69, 72), 'bank'), ((210, 217), 'fast-food'), ((218, 227), 'restaurant')
 | |-Victim: 
 | |-Weapon: ((192, 195), 'bomb'), ((101, 108), 'dynamite'), ((228, 238), 'medium-sized'), ((192, 195), 'bomb')
@@ -9758,7 +7728,7 @@ Template (bombing):
 
 	---
 
-Template Pair 3: 
+Template Pair 2: 
 Matching:
 None
  -to- 
@@ -9772,10 +7742,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [], 'Target': [((69, 72), 'bank'), ((218, 227), 'restaurant')], 'Victim': [], 'Weapon': [((95, 98), 'load'), ((34, 35), 'of'), ((101, 108), 'dynamite')]} to None
-
-Template Pair 2:
 |-Introduce_Missing_Role_Filler:
   PerpInd: From None to ((432, 437), 'two men')
 |-Remove_Cross_Template_Spurious_Role_Filler:
@@ -9789,7 +7755,7 @@ Template Pair 2:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   Weapon: From ((228, 238), 'medium-sized') to ((228, 242), 'medium-sized bomb') to None
 
-Template Pair 3:
+Template Pair 2:
 |-Introduce_Missing_Template:
   : From None to {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [[((69, 72), 'bank')]], 'Victim': [], 'Weapon': []}
 
@@ -9839,12 +7805,6 @@ Summary:
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -9865,19 +7825,6 @@ Template (attack):
 | |-Victim: 
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
 Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -9888,10 +7835,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 
 	------------------
 
@@ -10007,12 +7950,6 @@ Summary:
 | |-Target: ((84, 93), 'salvadoran'), ((94, 100), 'workers'), ((101, 108), 'national'), ((109, 113), 'union'), ((114, 123), 'federation')
 | |-Victim: 
 | |-Weapon: ((48, 50), 'car'), ((51, 54), 'bomb')
-|-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((84, 93), 'salvadoran'), ((94, 100), 'workers'), ((101, 108), 'national'), ((109, 113), 'union'), ((114, 123), 'federation')
-| |-Victim: 
-| |-Weapon: ((48, 50), 'car'), ((51, 54), 'bomb')
  -to- 
 Summary:
 |-Template (bombing):
@@ -10033,19 +7970,6 @@ Template (bombing):
 | |-Victim: 
 | |-Weapon: ((48, 50), 'car'), ((51, 54), 'bomb')
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: ((84, 93), 'salvadoran'), ((94, 100), 'workers'), ((101, 108), 'national'), ((109, 113), 'union'), ((114, 123), 'federation')
-| |-Victim: 
-| |-Weapon: ((48, 50), 'car'), ((51, 54), 'bomb')
- -to- 
 Template (bombing):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -10056,10 +7980,6 @@ Template (bombing):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [], 'PerpOrg': [], 'Target': [((84, 93), 'salvadoran'), ((94, 100), 'workers'), ((101, 108), 'national'), ((109, 113), 'union'), ((114, 123), 'federation')], 'Victim': [], 'Weapon': [((48, 50), 'car'), ((51, 54), 'bomb')]} to None
-
-Template Pair 2:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   Target: From ((84, 93), 'salvadoran') to ((75, 123), 'offices of the salvadoran workers national union federation') to None
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
@@ -10081,12 +8001,6 @@ DOCID: 175
 
 Comparing:
 Summary:
-|-Template (bombing):
-| |-PerpInd: ((325, 336), 'unidentified'), ((337, 343), 'persons')
-| |-PerpOrg: 
-| |-Target: ((45, 52), 'hercules'), ((53, 56), 'c-123'), ((57, 61), 'cargo'), ((62, 66), 'plane')
-| |-Victim: 
-| |-Weapon: ((108, 117), 'incendiary'), ((118, 121), 'bomb')
  -to- 
 Summary:
 |-Template (bombing):
@@ -10100,12 +8014,7 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (bombing):
-| |-PerpInd: ((325, 336), 'unidentified'), ((337, 343), 'persons')
-| |-PerpOrg: 
-| |-Target: ((45, 52), 'hercules'), ((53, 56), 'c-123'), ((57, 61), 'cargo'), ((62, 66), 'plane')
-| |-Victim: 
-| |-Weapon: ((108, 117), 'incendiary'), ((118, 121), 'bomb')
+None
  -to- 
 Template (bombing):
 | |-PerpInd: [((325, 343), 'unidentified persons')]
@@ -10117,18 +8026,8 @@ Template (bombing):
 Transformations:
 
 Template Pair 1:
-|-Alter_Span:
-  PerpInd: From ((325, 336), 'unidentified') to ((325, 343), 'unidentified persons')
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  PerpInd: From ((337, 343), 'persons') to ((325, 343), 'unidentified persons') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((45, 52), 'hercules') to ((45, 66), 'hercules c-123 cargo plane') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((53, 56), 'c-123') to ((53, 66), 'c-123 cargo plane') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Target: From ((57, 61), 'cargo') to ((57, 66), 'cargo plane') to None
-|-Alter_Span -> Remove_Duplicate_Role_Filler:
-  Weapon: From ((108, 117), 'incendiary') to ((108, 121), 'incendiary bomb') to None
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'bombing', 'PerpInd': [[((325, 343), 'unidentified persons')]], 'PerpOrg': [], 'Target': [[((28, 66), 'u.s. state department hercules c-123 cargo plane'), ((30, 66), 'state department hercules c-123 cargo plane'), ((45, 66), 'hercules c-123 cargo plane'), ((53, 66), 'c-123 cargo plane'), ((57, 66), 'cargo plane'), ((62, 66), 'plane')]], 'Victim': [], 'Weapon': [[((108, 121), 'incendiary bomb'), ((118, 121), 'bomb')]]}
 
 	------------------
 
@@ -10238,12 +8137,6 @@ DOCID: 179
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((713, 721), 'farabundo'), ((722, 726), 'marti'), ((330, 337), 'national'), ((735, 744), 'liberation'), ((745, 749), 'front')
-| |-Target: ((204, 211), 'vehicles'), ((850, 858), 'institute'), ((24, 25), 'of'), ((696, 700), 'urban'), ((866, 872), 'housing')
-| |-Victim: 
-| |-Weapon: 
 |-Template (arson):
 | |-PerpInd: 
 | |-PerpOrg: ((713, 721), 'farabundo'), ((722, 726), 'marti'), ((330, 337), 'national'), ((735, 744), 'liberation'), ((745, 749), 'front')
@@ -10275,24 +8168,6 @@ Summary:
 
 Template Pair 1: 
 Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((713, 721), 'farabundo'), ((722, 726), 'marti'), ((330, 337), 'national'), ((735, 744), 'liberation'), ((745, 749), 'front')
-| |-Target: ((204, 211), 'vehicles'), ((850, 858), 'institute'), ((24, 25), 'of'), ((696, 700), 'urban'), ((866, 872), 'housing')
-| |-Victim: 
-| |-Weapon: 
- -to- 
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: [((107, 127), 'presidencial residence')]
-| |-Victim: 
-| |-Weapon: 
-
-	---
-
-Template Pair 2: 
-Matching:
 Template (arson):
 | |-PerpInd: 
 | |-PerpOrg: ((713, 721), 'farabundo'), ((722, 726), 'marti'), ((330, 337), 'national'), ((735, 744), 'liberation'), ((745, 749), 'front')
@@ -10304,6 +8179,19 @@ Template (arson):
 | |-PerpInd: 
 | |-PerpOrg: 
 | |-Target: [((204, 211), 'vehicles'), ((204, 210), 'vehicle'), ((204, 231), 'vehicles of the salvadoran red cross')]
+| |-Victim: 
+| |-Weapon: 
+
+	---
+
+Template Pair 2: 
+Matching:
+None
+ -to- 
+Template (attack):
+| |-PerpInd: 
+| |-PerpOrg: 
+| |-Target: [((107, 127), 'presidencial residence')]
 | |-Victim: 
 | |-Weapon: 
 
@@ -10333,36 +8221,16 @@ Template Pair 1:
   PerpOrg: From ((735, 744), 'liberation') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
   PerpOrg: From ((745, 749), 'front') to None
-|-Remove_Cross_Template_Spurious_Role_Filler:
-  Target: From ((204, 211), 'vehicles') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((850, 858), 'institute') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((24, 25), 'of') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((696, 700), 'urban') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Target: From ((866, 872), 'housing') to None
-|-Introduce_Missing_Role_Filler:
-  Target: From None to ((107, 127), 'presidencial residence')
-
-Template Pair 2:
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpOrg: From ((713, 721), 'farabundo') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpOrg: From ((722, 726), 'marti') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpOrg: From ((330, 337), 'national') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpOrg: From ((735, 744), 'liberation') to None
-|-Remove_Unrelated_Spurious_Role_Filler:
-  PerpOrg: From ((745, 749), 'front') to None
 |-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
   Target: From ((107, 118), 'presidencial') to ((107, 127), 'presidencial residence') to None
 |-Alter_Span -> Remove_Cross_Template_Spurious_Role_Filler:
   Target: From ((119, 127), 'residence') to ((107, 127), 'presidencial residence') to None
 |-Remove_Cross_Template_Spurious_Role_Filler:
   Target: From ((306, 314), 'ambulance') to None
+
+Template Pair 2:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [[((107, 127), 'presidencial residence')]], 'Victim': [], 'Weapon': []}
 
 Template Pair 3:
 |-Introduce_Missing_Template:
@@ -10374,12 +8242,6 @@ DOCID: 180
 
 Comparing:
 Summary:
-|-Template (bombing):
-| |-PerpInd: ((191, 202), 'unidentified'), ((203, 209), 'persons')
-| |-PerpOrg: 
-| |-Target: ((232, 241), 'government'), ((242, 245), 'bank'), ((246, 253), 'branches')
-| |-Victim: ((69, 74), 'monica'), ((8, 9), 'de'), ((77, 82), 'greiff')
-| |-Weapon: ((216, 217), '11'), ((218, 222), 'bombs')
 |-Template (bombing):
 | |-PerpInd: ((191, 202), 'unidentified'), ((203, 209), 'persons')
 | |-PerpOrg: 
@@ -10404,7 +8266,7 @@ Template (bombing):
 | |-PerpOrg: 
 | |-Target: ((232, 241), 'government'), ((242, 245), 'bank'), ((246, 253), 'branches')
 | |-Victim: ((69, 74), 'monica'), ((8, 9), 'de'), ((77, 82), 'greiff')
-| |-Weapon: ((216, 217), '11'), ((218, 222), 'bombs')
+| |-Weapon: 
  -to- 
 Template (bombing):
 | |-PerpInd: [((191, 209), 'unidentified persons')]
@@ -10412,19 +8274,6 @@ Template (bombing):
 | |-Target: [((232, 253), 'government bank branches'), ((242, 253), 'bank branches')]
 | |-Victim: 
 | |-Weapon: [((218, 222), 'bombs')]
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: ((191, 202), 'unidentified'), ((203, 209), 'persons')
-| |-PerpOrg: 
-| |-Target: ((232, 241), 'government'), ((242, 245), 'bank'), ((246, 253), 'branches')
-| |-Victim: ((69, 74), 'monica'), ((8, 9), 'de'), ((77, 82), 'greiff')
-| |-Weapon: 
- -to- 
-None
 
 Transformations:
 
@@ -10439,18 +8288,14 @@ Template Pair 1:
   Target: From ((242, 245), 'bank') to ((242, 253), 'bank branches') to None
 |-Alter_Span:
   Target: From ((246, 253), 'branches') to ((242, 253), 'bank branches')
-|-Remove_Unrelated_Spurious_Role_Filler:
-  Weapon: From ((216, 217), '11') to None
+|-Introduce_Missing_Role_Filler:
+  Weapon: From None to ((218, 222), 'bombs')
 |-Remove_Unrelated_Spurious_Role_Filler:
   Victim: From ((69, 74), 'monica') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
   Victim: From ((8, 9), 'de') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
   Victim: From ((77, 82), 'greiff') to None
-
-Template Pair 2:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [((191, 202), 'unidentified'), ((203, 209), 'persons')], 'PerpOrg': [], 'Target': [((232, 241), 'government'), ((242, 245), 'bank'), ((246, 253), 'branches')], 'Victim': [((69, 74), 'monica'), ((8, 9), 'de'), ((77, 82), 'greiff')], 'Weapon': []} to None
 
 	------------------
 
@@ -10472,12 +8317,6 @@ Summary:
 |-Template (bombing):
 | |-PerpInd: ((76, 85), 'guerrillas')
 | |-PerpOrg: ((190, 196), 'members'), ((15, 16), 'of'), ((1, 0), 'the'), ((199, 202), '17th'), ((203, 207), 'front'), ((15, 16), 'of'), ((1, 0), 'the'), ((210, 222), 'revolutionary'), ((223, 227), 'armed'), ((228, 233), 'forces'), ((15, 16), 'of'), ((64, 71), 'colombia')
-| |-Target: ((95, 101), 'vehicle')
-| |-Victim: 
-| |-Weapon: 
-|-Template (bombing):
-| |-PerpInd: ((76, 85), 'guerrillas')
-| |-PerpOrg: ((190, 196), 'members'), ((15, 16), 'of'), ((1, 0), 'the'), ((199, 202), '17th'), ((203, 207), 'front'), ((15, 16), 'of'), ((1, 0), 'the'), ((210, 222), 'revolutionary'), ((223, 227), 'armed'), ((228, 233), 'forces'), ((15, 16), 'of'), ((64, 71), 'colombia')
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
@@ -10491,19 +8330,6 @@ Matching:
 Template (bombing):
 | |-PerpInd: ((76, 85), 'guerrillas')
 | |-PerpOrg: ((190, 196), 'members'), ((15, 16), 'of'), ((1, 0), 'the'), ((199, 202), '17th'), ((203, 207), 'front'), ((15, 16), 'of'), ((1, 0), 'the'), ((210, 222), 'revolutionary'), ((223, 227), 'armed'), ((228, 233), 'forces'), ((15, 16), 'of'), ((64, 71), 'colombia')
-| |-Target: ((95, 101), 'vehicle')
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: ((76, 85), 'guerrillas')
-| |-PerpOrg: ((190, 196), 'members'), ((15, 16), 'of'), ((1, 0), 'the'), ((199, 202), '17th'), ((203, 207), 'front'), ((15, 16), 'of'), ((1, 0), 'the'), ((210, 222), 'revolutionary'), ((223, 227), 'armed'), ((228, 233), 'forces'), ((15, 16), 'of'), ((64, 71), 'colombia')
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
@@ -10513,10 +8339,6 @@ None
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [((76, 85), 'guerrillas')], 'PerpOrg': [((190, 196), 'members'), ((15, 16), 'of'), ((1, 0), 'the'), ((199, 202), '17th'), ((203, 207), 'front'), ((15, 16), 'of'), ((1, 0), 'the'), ((210, 222), 'revolutionary'), ((223, 227), 'armed'), ((228, 233), 'forces'), ((15, 16), 'of'), ((64, 71), 'colombia')], 'Target': [((95, 101), 'vehicle')], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Remove_Spurious_Template:
   : From {'incident_type': 'bombing', 'PerpInd': [((76, 85), 'guerrillas')], 'PerpOrg': [((190, 196), 'members'), ((15, 16), 'of'), ((1, 0), 'the'), ((199, 202), '17th'), ((203, 207), 'front'), ((15, 16), 'of'), ((1, 0), 'the'), ((210, 222), 'revolutionary'), ((223, 227), 'armed'), ((228, 233), 'forces'), ((15, 16), 'of'), ((64, 71), 'colombia')], 'Target': [], 'Victim': [], 'Weapon': []} to None
 
@@ -10526,33 +8348,10 @@ DOCID: 183
 
 Comparing:
 Summary:
-|-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 
-	---
-
-Template Pair 1: 
-Matching:
-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
 Transformations:
-
-Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
 
 	------------------
 
@@ -10577,12 +8376,6 @@ Summary:
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (attack):
@@ -10620,12 +8413,7 @@ Template (attack):
 
 Template Pair 2: 
 Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
+None
  -to- 
 Template (attack):
 | |-PerpInd: 
@@ -10639,6 +8427,8 @@ Transformations:
 Template Pair 1:
 
 Template Pair 2:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []}
 
 	------------------
 
@@ -10668,56 +8458,10 @@ DOCID: 188
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((0, 8), 'colombian'), ((708, 711), 'army')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((0, 8), 'colombian'), ((708, 711), 'army')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 
-	---
-
-Template Pair 1: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((0, 8), 'colombian'), ((708, 711), 'army')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((0, 8), 'colombian'), ((708, 711), 'army')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
 Transformations:
-
-Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((0, 8), 'colombian'), ((708, 711), 'army')], 'Target': [], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((0, 8), 'colombian'), ((708, 711), 'army')], 'Target': [], 'Victim': [], 'Weapon': []} to None
 
 	------------------
 
@@ -10883,33 +8627,10 @@ DOCID: 195
 
 Comparing:
 Summary:
-|-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((319, 323), 'tupac'), ((324, 328), 'amaru'), ((329, 341), 'revolutionary'), ((342, 349), 'movement')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 
-	---
-
-Template Pair 1: 
-Matching:
-Template (attack):
-| |-PerpInd: 
-| |-PerpOrg: ((319, 323), 'tupac'), ((324, 328), 'amaru'), ((329, 341), 'revolutionary'), ((342, 349), 'movement')
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-None
-
 Transformations:
-
-Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [((319, 323), 'tupac'), ((324, 328), 'amaru'), ((329, 341), 'revolutionary'), ((342, 349), 'movement')], 'Target': [], 'Victim': [], 'Weapon': []} to None
 
 	------------------
 
@@ -10934,12 +8655,6 @@ Summary:
 | |-Target: 
 | |-Victim: 
 | |-Weapon: 
-|-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
 |-Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -10983,24 +8698,6 @@ Template (kidnapping):
 
 Template Pair 2: 
 Matching:
-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: 
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
- -to- 
-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: [((429, 438), 'government'), ((855, 883), 'christian democratic government')], [((595, 598), 'army'), ((799, 812), 'guatemalan army')]
-| |-Target: 
-| |-Victim: 
-| |-Weapon: 
-
-	---
-
-Template Pair 3: 
-Matching:
 Template (attack):
 | |-PerpInd: 
 | |-PerpOrg: 
@@ -11009,6 +8706,19 @@ Template (attack):
 | |-Weapon: 
  -to- 
 None
+
+	---
+
+Template Pair 3: 
+Matching:
+None
+ -to- 
+Template (kidnapping):
+| |-PerpInd: 
+| |-PerpOrg: [((429, 438), 'government'), ((855, 883), 'christian democratic government')], [((595, 598), 'army'), ((799, 812), 'guatemalan army')]
+| |-Target: 
+| |-Victim: 
+| |-Weapon: 
 
 Transformations:
 
@@ -11019,14 +8729,12 @@ Template Pair 1:
   PerpOrg: From None to ((595, 598), 'army')
 
 Template Pair 2:
-|-Introduce_Missing_Role_Filler:
-  PerpOrg: From None to ((429, 438), 'government')
-|-Introduce_Missing_Role_Filler:
-  PerpOrg: From None to ((595, 598), 'army')
-
-Template Pair 3:
 |-Remove_Spurious_Template:
   : From {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [], 'Target': [], 'Victim': [], 'Weapon': []} to None
+
+Template Pair 3:
+|-Introduce_Missing_Template:
+  : From None to {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [[((429, 438), 'government'), ((855, 883), 'christian democratic government')], [((595, 598), 'army'), ((799, 812), 'guatemalan army')]], 'Target': [], 'Victim': [], 'Weapon': []}
 
 	------------------
 
@@ -11040,12 +8748,6 @@ Summary:
 | |-Target: ((118, 121), 'cano'), ((122, 133), 'limon-covenas'), ((134, 136), 'oil'), ((137, 144), 'pipeline')
 | |-Victim: 
 | |-Weapon: 
-|-Template (bombing):
-| |-PerpInd: ((28, 37), 'guerrillas')
-| |-PerpOrg: ((68, 71), 'army'), ((9, 10), 'of'), ((74, 81), 'national'), ((82, 91), 'liberation')
-| |-Target: ((118, 121), 'cano'), ((122, 133), 'limon-covenas'), ((134, 136), 'oil'), ((137, 144), 'pipeline')
-| |-Victim: 
-| |-Weapon: 
  -to- 
 Summary:
 |-Template (bombing):
@@ -11072,19 +8774,6 @@ Template (bombing):
 | |-Victim: 
 | |-Weapon: 
  -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (bombing):
-| |-PerpInd: ((28, 37), 'guerrillas')
-| |-PerpOrg: ((68, 71), 'army'), ((9, 10), 'of'), ((74, 81), 'national'), ((82, 91), 'liberation')
-| |-Target: ((118, 121), 'cano'), ((122, 133), 'limon-covenas'), ((134, 136), 'oil'), ((137, 144), 'pipeline')
-| |-Victim: 
-| |-Weapon: 
- -to- 
 Template (bombing):
 | |-PerpInd: [((28, 37), 'guerrillas'), ((28, 94), 'guerrillas presumed to be members of the pro-castro army of national liberation (eln)'), ((28, 91), 'guerrillas presumed to be members of the pro-castro army of national liberation')]
 | |-PerpOrg: [((68, 91), 'army of national liberation'), ((92, 94), 'eln')]
@@ -11094,7 +8783,7 @@ Template (bombing):
 
 	---
 
-Template Pair 3: 
+Template Pair 2: 
 Matching:
 None
  -to- 
@@ -11108,10 +8797,6 @@ Template (attack):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'bombing', 'PerpInd': [((28, 37), 'guerrillas')], 'PerpOrg': [((68, 71), 'army'), ((9, 10), 'of'), ((74, 81), 'national'), ((82, 91), 'liberation')], 'Target': [((118, 121), 'cano'), ((122, 133), 'limon-covenas'), ((134, 136), 'oil'), ((137, 144), 'pipeline')], 'Victim': [], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span -> Remove_Duplicate_Role_Filler:
   PerpOrg: From ((68, 71), 'army') to ((68, 91), 'army of national liberation') to None
 |-Remove_Unrelated_Spurious_Role_Filler:
@@ -11129,7 +8814,7 @@ Template Pair 2:
 |-Alter_Span:
   Target: From ((137, 144), 'pipeline') to ((134, 144), 'oil pipeline')
 
-Template Pair 3:
+Template Pair 2:
 |-Introduce_Missing_Template:
   : From None to {'incident_type': 'attack', 'PerpInd': [], 'PerpOrg': [[((68, 91), 'army of national liberation'), ((92, 94), 'eln')]], 'Target': [[((434, 460), 'cano limon-covenas oil terminal'), ((450, 460), 'oil terminal')]], 'Victim': [], 'Weapon': []}
 
@@ -11139,12 +8824,6 @@ DOCID: 199
 
 Comparing:
 Summary:
-|-Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: ((105, 108), 'army'), ((45, 46), 'of'), ((111, 118), 'national'), ((119, 128), 'liberation'), ((129, 138), 'guerrillas')
-| |-Target: 
-| |-Victim: ((66, 71), 'carlos'), ((72, 78), 'marcelo')
-| |-Weapon: 
 |-Template (kidnapping):
 | |-PerpInd: ((96, 104), 'colombian'), ((105, 108), 'army'), ((45, 46), 'of'), ((111, 118), 'national'), ((119, 128), 'liberation'), ((129, 138), 'guerrillas')
 | |-PerpOrg: 
@@ -11165,19 +8844,6 @@ Summary:
 Template Pair 1: 
 Matching:
 Template (kidnapping):
-| |-PerpInd: 
-| |-PerpOrg: ((105, 108), 'army'), ((45, 46), 'of'), ((111, 118), 'national'), ((119, 128), 'liberation'), ((129, 138), 'guerrillas')
-| |-Target: 
-| |-Victim: ((66, 71), 'carlos'), ((72, 78), 'marcelo')
-| |-Weapon: 
- -to- 
-None
-
-	---
-
-Template Pair 2: 
-Matching:
-Template (kidnapping):
 | |-PerpInd: ((96, 104), 'colombian'), ((105, 108), 'army'), ((45, 46), 'of'), ((111, 118), 'national'), ((119, 128), 'liberation'), ((129, 138), 'guerrillas')
 | |-PerpOrg: 
 | |-Target: 
@@ -11194,10 +8860,6 @@ Template (kidnapping):
 Transformations:
 
 Template Pair 1:
-|-Remove_Spurious_Template:
-  : From {'incident_type': 'kidnapping', 'PerpInd': [], 'PerpOrg': [((105, 108), 'army'), ((45, 46), 'of'), ((111, 118), 'national'), ((119, 128), 'liberation'), ((129, 138), 'guerrillas')], 'Target': [], 'Victim': [((66, 71), 'carlos'), ((72, 78), 'marcelo')], 'Weapon': []} to None
-
-Template Pair 2:
 |-Alter_Span -> Alter_Role:
   From PerpInd: ((119, 128), 'liberation') to PerpInd: ((105, 128), 'army of national liberation') to PerpOrg: ((105, 128), 'army of national liberation')
 |-Alter_Span -> Alter_Role:
@@ -11218,28 +8880,28 @@ Total Result Before Transformation :
 ************************************
 
 Result:
-total: Precision : 0.1221, Recall : 0.2132, F1 : 0.1552
-incident_type: Precision : 0.5100, Recall : 0.5340, F1 : 0.5217
-PerpInd: Precision : 0.0848, Recall : 0.0769, F1 : 0.0807
-PerpOrg: Precision : 0.0345, Recall : 0.0574, F1 : 0.0431
-Target: Precision : 0.0565, Recall : 0.1404, F1 : 0.0806
-Weapon: Precision : 0.1949, Recall : 0.3770, F1 : 0.2570
+total: Precision : 0.1643, Recall : 0.1500, F1 : 0.1568
+incident_type: Precision : 0.7604, Recall : 0.3822, F1 : 0.5087
+PerpInd: Precision : 0.1205, Recall : 0.0549, F1 : 0.0755
+PerpOrg: Precision : 0.0517, Recall : 0.0492, F1 : 0.0504
+Target: Precision : 0.0838, Recall : 0.1228, F1 : 0.0996
+Weapon: Precision : 0.2292, Recall : 0.1803, F1 : 0.2018
 Victim: Precision : 0.0000, Recall : 0.0000, F1 : 0.0000
 
-Error Score: 1624.8847870486989
-Span_Error: 96
-General_Spurious_Role_Filler: 481
-| |-Duplicate_Role_Filler: 6
-| |-Duplicate_Partially_Matched_Role_Filler: 214
+Error Score: 1117.0653978984913
+Span_Error: 76
+General_Spurious_Role_Filler: 355
+| |-Duplicate_Role_Filler: 5
+| |-Duplicate_Partially_Matched_Role_Filler: 160
 | |-Within_Template_Incorrect_Role: 1
-| |-Within_Template_Incorrect_Role + Partially_Matched_Filler: 24
-| |-Wrong_Template_For_Role_Filler: 20
-| |-Wrong_Template_For_Partially_Matched_Role_Filler: 59
+| |-Within_Template_Incorrect_Role + Partially_Matched_Filler: 12
+| |-Wrong_Template_For_Role_Filler: 16
+| |-Wrong_Template_For_Partially_Matched_Role_Filler: 39
 | |-Wrong_Template + Wrong_Role: 0
 | |-Wrong_Template + Wrong_Role + Partially_Matched_Filler: 5
-| |-Spurious_Role_Filler: 241
-Missing_Role_Filler: 146
-Spurious_Template: 98
-Spurious_Template_Role_Filler: 490
-Missing_Template: 89
-Missing_Template_Role_Filler: 261
+| |-Spurious_Role_Filler: 128
+Missing_Role_Filler: 116
+Spurious_Template: 23
+Spurious_Template_Role_Filler: 126
+Missing_Template: 118
+Missing_Template_Role_Filler: 334
