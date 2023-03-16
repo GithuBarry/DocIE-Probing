@@ -3,7 +3,7 @@ local template = import "template.libsonnet";
 
 template.DyGIE {
   bert_model: "bert-base-uncased",
-  cuda_device: 0,
+  cuda_device: -1,
   max_span_width: 8,
   data_paths: {
     train: "../../../Corpora/MUC/muc-trigger-v1/muc_dygie/muc_event_w_ner/train.json",
