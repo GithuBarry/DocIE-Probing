@@ -6,52 +6,10 @@ from typing import List
 
 import nltk
 
-file = "test"
-doc_index = -201  # set it to -201 for test, -1 for dev, because the file is dev + test + (not all) training
-
-output_path = "./epoch20.out"
-muc_tanl_input_path = "../data/mucevent/mucevent_" + file + ".json"
-muc_gtt_input_path = "../../../Corpora/MUC/muc/processed/" + file + ".json"
-save_path = "../Outputs/epoch20_" + file + ".json"
-save_path_non_empty = "../Outputs/epoch20_" + file + "_nonempty_predictions.json"
-
-num_of_examples = 200
-
-f = open(output_path)
-lines = f.readlines()
-f.close()
-
-f = open(muc_tanl_input_path)
-tanl_input_file = json.load(f)
-f.close()
-
-f = open(muc_gtt_input_path)
-gtt_input_file = [json.loads(line) for line in f.readlines()]
-f.close()
-
 trigger_predict_prefix = "trigger_output_sentence"  # Printing of this indicates a start of a new example
 gold_template_prefix = " gt_relations"  # Note there is a space. Could be multiple per example. Ignorable.
 pred_template_prefix = "predicted_relations"  # Could be multiple per example
 
-"""
-"pred_templates": [
-            {
-                "incident_type": "attack",
-                "PerpInd": [],
-                "PerpOrg": [
-                    [
-                        "military"
-                    ],
-                    [
-                        "armed forces"
-                    ]
-                ],
-                "Target": [],
-                "Victim": [],
-                "Weapon": []
-            }
-        ]
-"""
 trigger_sample = "trigger_output_sentence today , medellin , colombia 's second largest city , once again experienced a terrorist escalation when seven bank branch offices were shaken by explosives that caused heavy damage but no fatalities , according to radio reports broadcast in bogota ( 500 km to the south ) . the targets of the [ attacks | attack ] were the banco cafetero branches and its offices in medellin 's middle , western , and southeastern areas . according to preliminary reports , over 55 kg of [ dynamite | bombing ] were used in the attacks . the radio report added that the police defused another 20 kg of explosives that had slow burning fuses . the medellin cartel operates in this city located in colombia 's northeastern area . for several days now , the city has been shaken by army and police operations in an unprecedented action to capture drug lords . no one has claimed responsibility for the terrorist attacks , which lasted for 1 hour ."
 nltk.data.path.append('/Users/barry/.nltk_data')
 
@@ -81,7 +39,23 @@ def extract_trigger(s: str, org_text: List[str]):
 
 id_to_templates = defaultdict(lambda: defaultdict(list))
 
-if __name__ == '__main__':
+
+def run_permutation(doc_index, output_path, muc_tanl_input_path, muc_gtt_input_path, save_path,
+                    save_path_non_empty):
+    num_of_examples = 200
+
+    f = open(output_path)
+    lines = f.readlines()
+    f.close()
+
+    f = open(muc_tanl_input_path)
+    tanl_input_file = json.load(f)
+    f.close()
+
+    f = open(muc_gtt_input_path)
+    gtt_input_file = [json.loads(line) for line in f.readlines()]
+    f.close()
+
     cur_triggers = []
     for line in lines:
         if line[:len(trigger_predict_prefix)] == trigger_predict_prefix:
@@ -95,11 +69,12 @@ if __name__ == '__main__':
 
             # Confirmed to process this example.
             cur_tokens = tanl_input_file[doc_index]['tokens']
-            gold_templates = gtt_input_file[doc_index]['templates']
+
             id_to_templates[doc_index]['pred_trigger_in_text'] = line[len(trigger_predict_prefix) + 1:]
             cur_triggers = extract_trigger(line[len(trigger_predict_prefix) + 1:], cur_tokens)
             id_to_templates[doc_index]['pred_triggers'] = cur_triggers
-            id_to_templates[doc_index]['gold_templates'] = gold_templates
+            id_to_templates[doc_index]['gold_templates'] = gtt_input_file[doc_index]['templates']
+            id_to_templates[doc_index]['doctext'] = gtt_input_file[doc_index]['doctext']
             for k, v in tanl_input_file[doc_index].items():
                 id_to_templates[doc_index][k] = v
             template_id = -1
@@ -112,7 +87,7 @@ if __name__ == '__main__':
             "Victim": [],
             "Weapon": []
         }
-        if doc_index > 0 and line[:len(pred_template_prefix)] == pred_template_prefix:
+        if doc_index >= 0 and line[:len(pred_template_prefix)] == pred_template_prefix:
             # Found one template, potentially with no role fillers (`set()`).
             template_id += 1
             template_str = line[len(pred_template_prefix):]
@@ -142,9 +117,25 @@ if __name__ == '__main__':
     for index, value in id_to_templates.items():
         result_dict[index] = dict(value)
         result_dict[index] = {key: value for key, value in sorted(result_dict[index].items())}  # Sort
-        if value['pred_templates']:
+        if len(value['pred_triggers']) > 0:
             result_dict_non_empty[index] = result_dict[index]
+            assert "pred_templates" in value
 
     json.dump(result_dict, open(save_path, "w+"))
     if result_dict_non_empty:
         json.dump(result_dict_non_empty, open(save_path_non_empty, "w+"))
+
+
+if __name__ == '__main__':
+    for (file, doc_index) in [("dev", -1), ("test", -200)]:
+        # set doc_index to -201 for test, -1 for dev, because the file is dev + test + (not all) training
+        for epoch_num in ["80", "20"]:
+            print("file", file, "epoch_num", epoch_num)
+            output_path = "./epoch" + epoch_num + ".out"
+            muc_tanl_input_path = "../data/mucevent/mucevent_" + file + ".json"
+            muc_gtt_input_path = "../../../Corpora/MUC/muc/processed/" + file + ".json"
+            save_path = "../Outputs/epoch" + epoch_num + "_" + file + ".json"
+            save_path_non_empty = "../Outputs/epoch" + epoch_num + "_" + file + "_nonempty_predictions.json"
+            run_permutation(doc_index=doc_index, output_path=output_path, save_path=save_path,
+                            save_path_non_empty=save_path_non_empty, muc_tanl_input_path=muc_tanl_input_path,
+                            muc_gtt_input_path=muc_gtt_input_path)
