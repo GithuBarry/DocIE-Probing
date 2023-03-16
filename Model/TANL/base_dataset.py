@@ -232,14 +232,17 @@ class BaseDataset(Dataset, ABC):
             def tuple_to_numpy(x):
                 return tuple(t.cpu().numpy() if not isinstance(t, tuple) else tuple_to_numpy(t) for t in x)
             #TODO
-            tmp_i = i
-            np.save("output_sentence"+str(tmp_i)+"_encoder_hidden_states.npy",tuple_to_numpy(predictions.encoder_hidden_states))
-            np.save("output_sentence"+str(tmp_i)+"_decoder_hidden_states.npy",tuple_to_numpy(predictions.decoder_hidden_states))
-            if predictions.encoder_attentions:
-                np.save("output_sentence"+str(tmp_i)+"_encoder_attentions.npy",tuple_to_numpy(predictions.encoder_attentions))
-            if predictions.cross_attentions:
-                np.save("output_sentence"+str(tmp_i)+"_cross_attentions.npy",tuple_to_numpy(predictions.cross_attentions))
-            np.save("output_sentence"+str(tmp_i)+"_sequences.npy",tuple_to_numpy(predictions.sequences))
+            if os.getenv("HIDDENSTATE_FOLDERNAME"):
+                tmp_i = i
+                prefix = os.path.join(".",os.getenv("HIDDENSTATE_FOLDERNAME"),"output_sentence"+str(tmp_i))
+                np.save(prefix+"_encoder_hidden_states.npy",tuple_to_numpy(predictions.encoder_hidden_states))
+                if not os.getenv("NO_DECODER_HIDDEN_STATE"):
+                    np.save(prefix+"_decoder_hidden_states.npy",tuple_to_numpy(predictions.decoder_hidden_states))
+                if predictions.encoder_attentions:
+                    np.save(prefix+"_encoder_attentions.npy",tuple_to_numpy(predictions.encoder_attentions))
+                if predictions.cross_attentions:
+                    np.save(prefix+"_cross_attentions.npy",tuple_to_numpy(predictions.cross_attentions))
+                np.save(prefix+"_sequences.npy",tuple_to_numpy(predictions.sequences))
             
             predictions = predictions.sequences
             for j, (input_ids, label_ids, prediction) in enumerate(

@@ -6,10 +6,12 @@ from typing import List
 
 import nltk
 
-output_path = "./epoch80.out"
-muc_test_path = "../data/mucevent/mucevent_test_only.json"
-save_path = "../output/epoch80_test.json"
-save_path_non_empty = "../output/epoch80_test_nonempty_predictions.json"
+file = "dev"
+
+output_path = "./epoch20.out"
+muc_test_path = "../data/mucevent/mucevent_"+file+".json"
+save_path = "../Outputs/epoch20_"+file+".json"
+save_path_non_empty = "../Outputs/epoch20_"+file+"_nonempty_predictions.json"
 
 f = open(output_path)
 lines = f.readlines()
@@ -23,7 +25,7 @@ trigger_predict_prefix = "trigger_output_sentence"  # Printing of this indicates
 gold_template_prefix = " gt_relations"  # Note there is a space. Could be multiple per example. Ignorable.
 pred_template_prefix = "predicted_relations"  # Could be multiple per example
 
-doc_index = -201
+doc_index = -1
 
 """
 "pred_templates": [
