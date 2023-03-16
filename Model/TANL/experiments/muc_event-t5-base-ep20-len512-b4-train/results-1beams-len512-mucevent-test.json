@@ -1,0 +1,51 @@
+{
+"num_episodes": 1,
+"relation_precision": [
+0.6761932822628167,
+0.0
+],
+"relation_recall": [
+0.5582583313062515,
+0.0
+],
+"relation_f1": [
+0.6115922718187875,
+0.0
+],
+"relation_precision_notype": [
+0.6797289334119033,
+0.0
+],
+"relation_recall_notype": [
+0.5611773291170031,
+0.0
+],
+"relation_f1_notype": [
+0.6147901399067288,
+0.0
+],
+"trigger_precision": [
+0.8944353518821604,
+0.0
+],
+"trigger_recall": [
+0.7611420612813371,
+0.0
+],
+"trigger_f1": [
+0.8224228743416102,
+0.0
+],
+"trigger_precision_notype": [
+0.8936170212765957,
+0.0
+],
+"trigger_recall_notype": [
+0.7604456824512534,
+0.0
+],
+"trigger_f1_notype": [
+0.8216704288939051,
+0.0
+]
+}
