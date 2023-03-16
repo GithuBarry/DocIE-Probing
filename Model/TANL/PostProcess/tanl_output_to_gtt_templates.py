@@ -14,7 +14,6 @@ muc_tanl_input_path = "../data/mucevent/mucevent_" + file + ".json"
 muc_gtt_input_path = "../../../Corpora/MUC/muc/processed/" + file + ".json"
 save_path = "../Outputs/epoch20_" + file + ".json"
 save_path_non_empty = "../Outputs/epoch20_" + file + "_nonempty_predictions.json"
-save_path_pretty = "../Outputs/pretty/epoch20_pretty_" + file + ".json"
 
 num_of_examples = 200
 
@@ -149,5 +148,3 @@ if __name__ == '__main__':
     json.dump(result_dict, open(save_path, "w+"))
     if result_dict_non_empty:
         json.dump(result_dict_non_empty, open(save_path_non_empty, "w+"))
-    if save_path_pretty:
-        json.dump(result_dict, open(save_path_pretty, "w+"), indent=2)
