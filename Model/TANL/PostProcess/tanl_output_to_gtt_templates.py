@@ -6,26 +6,33 @@ from typing import List
 
 import nltk
 
-file = "dev"
+file = "test"
+doc_index = -201  # set it to -201 for test, -1 for dev, because the file is dev + test + (not all) training
 
 output_path = "./epoch20.out"
-muc_test_path = "../data/mucevent/mucevent_"+file+".json"
-save_path = "../Outputs/epoch20_"+file+".json"
-save_path_non_empty = "../Outputs/epoch20_"+file+"_nonempty_predictions.json"
+muc_tanl_input_path = "../data/mucevent/mucevent_" + file + ".json"
+muc_gtt_input_path = "../../../Corpora/MUC/muc/processed/" + file + ".json"
+save_path = "../Outputs/epoch20_" + file + ".json"
+save_path_non_empty = "../Outputs/epoch20_" + file + "_nonempty_predictions.json"
+save_path_pretty = "../Outputs/pretty/epoch20_pretty_" + file + ".json"
+
+num_of_examples = 200
 
 f = open(output_path)
 lines = f.readlines()
 f.close()
 
-f = open(muc_test_path)
-test_file = json.load(f)
+f = open(muc_tanl_input_path)
+tanl_input_file = json.load(f)
+f.close()
+
+f = open(muc_gtt_input_path)
+gtt_input_file = [json.loads(line) for line in f.readlines()]
 f.close()
 
 trigger_predict_prefix = "trigger_output_sentence"  # Printing of this indicates a start of a new example
 gold_template_prefix = " gt_relations"  # Note there is a space. Could be multiple per example. Ignorable.
 pred_template_prefix = "predicted_relations"  # Could be multiple per example
-
-doc_index = -1
 
 """
 "pred_templates": [
@@ -79,16 +86,22 @@ if __name__ == '__main__':
     cur_triggers = []
     for line in lines:
         if line[:len(trigger_predict_prefix)] == trigger_predict_prefix:
+            # Found predicted text with marked triggers, potentially none
+            # This means a new example for sure. incrementing doc_index.
             doc_index += 1
             if doc_index < 0:
                 continue
-            if doc_index >= 200:  # MUC test only has 200 examples.
+            if doc_index >= num_of_examples:  # MUC test only has 200 examples.
                 break
-            cur_tokens = test_file[doc_index]['tokens']
+
+            # Confirmed to process this example.
+            cur_tokens = tanl_input_file[doc_index]['tokens']
+            gold_templates = gtt_input_file[doc_index]['templates']
             id_to_templates[doc_index]['pred_trigger_in_text'] = line[len(trigger_predict_prefix) + 1:]
             cur_triggers = extract_trigger(line[len(trigger_predict_prefix) + 1:], cur_tokens)
             id_to_templates[doc_index]['pred_triggers'] = cur_triggers
-            for k, v in test_file[doc_index].items():
+            id_to_templates[doc_index]['gold_templates'] = gold_templates
+            for k, v in tanl_input_file[doc_index].items():
                 id_to_templates[doc_index][k] = v
             template_id = -1
 
@@ -101,10 +114,12 @@ if __name__ == '__main__':
             "Weapon": []
         }
         if doc_index > 0 and line[:len(pred_template_prefix)] == pred_template_prefix:
+            # Found one template, potentially with no role fillers (`set()`).
             template_id += 1
             template_str = line[len(pred_template_prefix):]
             template = empty_template
             if "set()" in template_str:
+                # no role fillers
                 template['incident_type'] = cur_triggers[template_id][1]
                 id_to_templates[doc_index]['pred_relations'].append([])
                 if len(cur_triggers) != 1:
@@ -112,6 +127,7 @@ if __name__ == '__main__':
                           doc_index,
                           cur_triggers)
             else:
+                # at least one role fillers predicted for this template
                 parsed = ast.literal_eval("[" + template_str[template_str.index("{") + 1:template_str.index(
                     "}")] + "]")  # Assuming each line is of form " {(..)}\n"
                 id_to_templates[doc_index]['pred_relations'].append(parsed)
@@ -126,8 +142,12 @@ if __name__ == '__main__':
     result_dict_non_empty = dict()
     for index, value in id_to_templates.items():
         result_dict[index] = dict(value)
+        result_dict[index] = {key: value for key, value in sorted(result_dict[index].items())}  # Sort
         if value['pred_templates']:
-            result_dict_non_empty[index] = dict(value)
+            result_dict_non_empty[index] = result_dict[index]
 
     json.dump(result_dict, open(save_path, "w+"))
-    json.dump(result_dict_non_empty, open(save_path_non_empty, "w+"))
+    if result_dict_non_empty:
+        json.dump(result_dict_non_empty, open(save_path_non_empty, "w+"))
+    if save_path_pretty:
+        json.dump(result_dict, open(save_path_pretty, "w+"), indent=2)
