@@ -30,16 +30,18 @@ Wayne Chen worked on converting the above GTT-compatible dataset to [TANL](https
 -compatible. TANL works for the ACE dataset, and Wayne used this functionality of TANL to run on multi-template
 prediction. His adaption of TANL and the converted dataset
 is [available on his repo.](https://github.com/WayneChen2021/2022-spring-dov-level-ie/tree/main/TANL%20scripts/data/mucevent)
-The triggers Wayne used was done with Barry in Spring 2022, using a manual list of ranked trigger word per incident
-type (labeled V0).
 
-Barry later updated triggers to the muc gtt dataset so they are more adjacent to template role fillers (labeled V1).
-Script on updating the indices of triggers in the converted dataset is available.
-
-- Available for both GTT, TANL, and dygie++ (as two NER datasets).
+- Available for both GTT, TANL, and dygie++
 
 - Contains triggers
 
-- Removed templates with "forced work stoppage" incident type as they are too rare
+- Role filler index is measured in offsets of words (as split by white space; sometimes `"` is a word too)
 
-- Role filler index is measured in offsets of words (as split by white space; sometimes `"` is a word too).
+### muc-trigger-v0
+
+The triggers Wayne used was done with Barry in Spring 2022, using a manual list of ranked trigger word per incident type. We both wrote our own script.
+
+### muc-trigger-v1
+
+Barry later updated triggers to the muc gtt dataset so triggers more adjacent to template role fillers are used when an example has multiple templates.
+Script on upgrading the TANL triggers relies on `muc-trigger-v0` because the MUC-GTT to MUC-TANL was not available. 
