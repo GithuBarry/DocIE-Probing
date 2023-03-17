@@ -6,7 +6,6 @@ This is merely all processed MUC JSON line files (from `../processed`) concatena
 
 - Train (1300 examples)
 
-- 
-  
+Totalling 1700 examples
 
-Totalling 1700 examples.
+To concatenate, use the script `../scripts/concatenate.py`
