@@ -162,11 +162,11 @@ if __name__ == '__main__':
         # set doc_index to -201 for test, -1 for dev, because the file is dev + test + (not all) training
         for epoch_num in ["80", "20"]:
             print("file", file, "epoch_num", epoch_num)
-            output_path = "./epoch" + epoch_num + ".out"
+            output_path = "../RawModelOutputs/epoch" + epoch_num + ".out"
             muc_tanl_input_path = "../data/mucevent/mucevent_" + file + ".json"
             muc_gtt_input_path = "../../../Corpora/MUC/muc/processed/" + file + ".json"
-            save_path = "../Outputs/epoch" + epoch_num + "_" + file + ".json"
-            save_path_non_empty = "../Outputs/epoch" + epoch_num + "_" + file + "_nonempty_predictions.json"
+            save_path = "../Outputs/FormattedModelOutputs/epoch" + epoch_num + "_" + file + ".json"
+            save_path_non_empty = "../Outputs/FormattedModelOutputs/epoch" + epoch_num + "_" + file + "_nonempty_predictions.json"
             run_permutation(doc_index=doc_index, output_path=output_path, save_path=save_path,
                             save_path_non_empty=save_path_non_empty, muc_tanl_input_path=muc_tanl_input_path,
                             muc_gtt_input_path=muc_gtt_input_path)
