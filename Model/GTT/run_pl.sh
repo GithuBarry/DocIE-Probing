@@ -19,17 +19,13 @@ mkdir -p "${OUTPUT_DIR}"
 # Add parent directory to python path to access transformer_base.py
 export PYTHONPATH="../":"${PYTHONPATH}"
 
-# for th in 100 200 300 400 500 600 700 800 900 1000  # 1 10 100 1000 10000 100000, 100 200 300 400 500
-# for th in 10 20 30 40 50 60 70 80 90 100
-# for th in 100
-# for th in 10 50 60 70 80 90 100 110 120 130 140 150
-#for th in 80; do
+
 export th=80
 echo "=========================================================================================="
 echo "                                           threshold (${th})                              "
 echo "=========================================================================================="
 python3 run_pl_gtt.py \
-  --data_dir ../data/muc/processed \
+  --data_dir ../../Corpora/MUC/muc/processed \
   --model_type bert \
   --model_name_or_path $BERT_MODEL \
   --output_dir "${OUTPUT_DIR}" \
