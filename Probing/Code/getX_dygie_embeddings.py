@@ -10,6 +10,9 @@ if __name__ == "__main__":
     meta_data = "bert-uncased_epoch21"
     examples_layers = defaultdict(list)
 
+    muc_1700_input = open("../../Corpora/MUC/muc/processed2/muc_1700_GTT_style-test-dev-train.json")
+    muc_ids = [example['docid'] for example in json.load(muc_1700_input)]
+
     hidden_state_path = f"../../Model/{model}/HiddenStates/Embeddings"
 
     for file in ["test","dev","train"]:
