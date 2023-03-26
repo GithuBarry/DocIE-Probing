@@ -14,20 +14,20 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-directory = "/Users/barry/Library/Mobile Documents/com~apple~CloudDocs/Cornell/Research/Fall 2022-IE/Dataset_Probing/4.nosync/outputs"
 
 if __name__ == "__main__":
 
     X = np.load(
         "/Users/barry/Library/Mobile Documents/com~apple~CloudDocs/Cornell/Research/Fall 2022-IE/Dataset_Probing/X_embeddings_muc-w-TriggersV0_TANL_t5base_1700x393216_flatten.npy")
     Y = np.load(
-        "/Users/barry/Library/Mobile Documents/com~apple~CloudDocs/Cornell/Research/Fall 2022-IE/Dataset_Probing/Y_muc_1700_Input_Len.npy")
+        "/../../Y/Y_muc_1700_Input_Len.npy")
 
     # One Hot Encoding
-    enc = OneHotEncoder()
+    # enc = OneHotEncoder()
 
     # Y = Y.reshape(-1, 1)
-    Y = enc.fit_transform(Y.reshape(-1, 1)).toarray().astype(int)
+    # Y = enc.fit_transform(Y.reshape(-1, 1)).toarray().astype(int)
+    Y.reshape(-1, 1)
 
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
 
@@ -100,8 +100,7 @@ if __name__ == "__main__":
     # plt.plot(test_losses, label='test loss')
     # plt.legend()
     # plt.show()
-    model = torch.load(open(
-        "/Users/barry/Library/Mobile Documents/com~apple~CloudDocs/Programming/probing/TANL-MucV0-Input-Len-One-Hot.pt"))
+    
 
     """evaluate model"""
 

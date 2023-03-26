@@ -1,7 +1,8 @@
 import logging
 from typing import Dict, List, Optional, Union
 import copy
-
+import os
+import numpy as np
 import torch
 import torch.nn.functional as F
 from overrides import overrides
@@ -200,6 +201,9 @@ class DyGIE(Model):
         text_embeddings = self._embedder(text, num_wrapping_dims=1)
         # (n_sents, max_n_wordpieces, embedding_dim)
         text_embeddings = self._debatch(text_embeddings)
+
+        if os.getenv("SaveHiddenState"):
+            np.save("./"+metadata.doc_key,text_embeddings.cpu().detach().numpy() )
 
         # (n_sents, max_sentence_length)
         text_mask = self._debatch(util.get_text_field_mask(text, num_wrapping_dims=1).float())

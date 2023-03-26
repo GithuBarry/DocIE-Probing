@@ -160,6 +160,7 @@ Model/Dygie/dygiepp/scripts/data/ace05/common/stanford-corenlp-full-2015-04-20/s
 
 Model/Dygie/dygiepp/models/muc_event_w_ner-14epoch/*
 Model/Dygie/dygiepp/models/muc_event_w_ner-21epoch/*
+Model/Dygie/dygiepp/HiddenStates/Embeddings/*.npy
 Model/TANL/experiments/muc_event-t5-base-ep20-len512-b4-train/episode0/*
 Model/TANL/experiments/muc_event-t5-base-ep80-len512-b4-train/episode0/*
 Model/TANL/HiddenStates/epoch80/hidden_states/*
