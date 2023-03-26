@@ -168,3 +168,6 @@ Model/TANL/HiddenStates/epoch20/hidden_states/*
 Model/GTT/HiddenStates/dev_hidden_states/*
 Model/GTT/HiddenStates/test_hidden_states/*
 Model/GTT/HiddenStates/train_hidden_states/*
+Probing/X/X_GTT_layer_0_bert-uncased_epoch20_muc1700.npy
+Probing/X/X_GTT_layer_last_bert-uncased_epoch20_muc1700.npy
+Probing/X/X_dygiepp_layer_last_bert-uncased_epoch21_muc1700.npy
