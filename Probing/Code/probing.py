@@ -111,8 +111,9 @@ if __name__ == "__main__":
         y_pred.extend(output.cpu().detach().numpy())  # Save Prediction
         labels = labels.data.cpu().detach().numpy()
         y_true.extend(labels)  # Save Truth
-        print("y_pred", y_pred)
-        print("y_true", y_true)
+        pass
+    print("y_pred", y_pred)
+    print("y_true", y_true)
     pass
 
     # constant for classes
