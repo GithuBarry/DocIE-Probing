@@ -92,10 +92,10 @@ if __name__ == "__main__":
 
     with torch.no_grad():
         p_train = model(X_train).cpu().detach().numpy().astype(int)
-        train_acc = np.mean(y_train.numpy().astype(int) == p_train)
+        train_acc = np.mean(y_train.cpu().detach().numpy().astype(int) == p_train)
 
         p_test = model(X_test).cpu().detach().numpy().astype(int)
-        test_acc = np.mean(y_test.numpy().astype(int) == p_test)
+        test_acc = np.mean(y_test.cpu().detach().numpy().astype(int) == p_test)
 
     print("train_acc", train_acc)
     print("test_acc", test_acc)
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     for inputs, labels in [(X_test[i], y_test[i]) for i in range(len(X_test))]:
         output = model(inputs)  # Feed Network
         y_pred.extend(output.cpu().detach().numpy())  # Save Prediction
-        labels = labels.data.cpu().numpy()
+        labels = labels.data.cpu().detach().numpy()
         y_true.extend(labels)  # Save Truth
         print("y_pred", y_pred)
         print("y_true", y_true)
