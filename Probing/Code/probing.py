@@ -69,11 +69,8 @@ if __name__ == "__main__":
 
     print("Torch-loading X Y")
     X_train = torch.from_numpy(X_train.astype(np.float32)).to(device)
-
     X_test = torch.from_numpy(X_test.astype(np.float32)).to(device)
-
     y_train = torch.from_numpy(y_train.astype(np.float32)).to(device)
-
     y_test = torch.from_numpy(y_test.astype(np.float32)).to(device)
 
     _, input_dimension = X_train.shape
@@ -94,10 +91,10 @@ if __name__ == "__main__":
     """evaluate model"""
 
     with torch.no_grad():
-        p_train = model(X_train).detach().numpy().astype(int)
+        p_train = model(X_train).cpu().detach().numpy().astype(int)
         train_acc = np.mean(y_train.numpy().astype(int) == p_train)
 
-        p_test = model(X_test).detach().numpy().astype(int)
+        p_test = model(X_test).cpu().detach().numpy().astype(int)
         test_acc = np.mean(y_test.numpy().astype(int) == p_test)
 
     print("train_acc", train_acc)
@@ -111,13 +108,11 @@ if __name__ == "__main__":
     # iterate over test data
     for inputs, labels in [(X_test[i], y_test[i]) for i in range(len(X_test))]:
         output = model(inputs)  # Feed Network
-
         y_pred.extend(output.cpu().detach().numpy())  # Save Prediction
-
         labels = labels.data.cpu().numpy()
         y_true.extend(labels)  # Save Truth
-
         print("y_pred", y_pred)
+        print("y_true", y_true)
     pass
 
     # constant for classes
