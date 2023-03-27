@@ -12,8 +12,8 @@ class LinearLayerClassification(torch.nn.Module, ABC):
         super().__init__()
         self.linear = torch.nn.Linear(input_dimension, 2)
 
-    def forward(self, input_dimension):
-        return self.linear(input_dimension)
+    def forward(self, input):
+        return self.linear(input)
 
 
 def configure_loss_function():
@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     print("loading X Y")
     X = np.load(
-        "../X/X_GTT_layer_last_bert-uncased_epoch20_muc1700.npy")
+        "../X/X_TANL_layer_last_bert-uncased_epoch20_muc1700.npy")
     Y = np.load(
         "../Y/Y_muc_1700_num_events.npy")
 
@@ -92,9 +92,11 @@ if __name__ == "__main__":
 
     with torch.no_grad():
         p_train = model(X_train).cpu().detach().numpy().astype(int)
+        print("train bool:", y_train.cpu().detach().numpy().astype(int) == p_train)
         train_acc = np.mean(y_train.cpu().detach().numpy().astype(int) == p_train)
 
         p_test = model(X_test).cpu().detach().numpy().astype(int)
+        print("test bool:", y_test.cpu().detach().numpy().astype(int) == p_test)
         test_acc = np.mean(y_test.cpu().detach().numpy().astype(int) == p_test)
 
     print("train_acc", train_acc)
@@ -113,6 +115,7 @@ if __name__ == "__main__":
         y_true.extend(labels)  # Save Truth
         pass
     print("y_pred", y_pred)
+    print("y_pred_int", [y.astype(int) for y in y_pred])
     print("y_true", y_true)
     pass
 
