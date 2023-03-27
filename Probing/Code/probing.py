@@ -1,44 +1,31 @@
-import torch
-import numpy as np
+from abc import ABC
+
 import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix
-import seaborn as sn
+import numpy as np
 import pandas as pd
-from skmultilearn.problem_transform import ClassifierChain
-import json
-import os
-from numpy import array
-from numpy import argmax
-from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import OneHotEncoder
+import seaborn as sn
+import torch
+from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-
 
 if __name__ == "__main__":
 
     X = np.load(
-        "/Users/barry/Library/Mobile Documents/com~apple~CloudDocs/Cornell/Research/Fall 2022-IE/Dataset_Probing/X_embeddings_muc-w-TriggersV0_TANL_t5base_1700x393216_flatten.npy")
+        "../X/X_GTT_layer_last_bert-uncased_epoch20_muc1700.npy")
     Y = np.load(
-        "/../../Y/Y_muc_1700_Input_Len.npy")
+        "../Y/Y_muc_1700_num_events.npy")
 
-    # One Hot Encoding
-    # enc = OneHotEncoder()
-
-    # Y = Y.reshape(-1, 1)
-    # Y = enc.fit_transform(Y.reshape(-1, 1)).toarray().astype(int)
-    Y.reshape(-1, 1)
-
+    Y = Y.reshape(-1, 1)
+    X = X.reshape(1700, -1)
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
 
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
 
-    print(X_test.shape)
 
-
-    class LinearLayerClassification(torch.nn.Module):
+    class LinearLayerClassification(torch.nn.Module, ABC):
         def __init__(self, input_dimension):
             super().__init__()
             self.linear = torch.nn.Linear(input_dimension, 2)
@@ -53,8 +40,6 @@ if __name__ == "__main__":
     model = torch.nn.Linear(input_dimension, output_dimension)
 
     """train the model"""
-
-
     def configure_loss_function():
         return torch.nn.MSELoss()
 
@@ -94,25 +79,24 @@ if __name__ == "__main__":
 
     criterion = configure_loss_function()
     optimizer = configure_optimizer(model)
-    # train_losses, test_losses = full_gd(model, criterion, optimizer, X_train, y_train)
+    train_losses, test_losses = full_gd(model, criterion, optimizer, X_train, y_train)
 
-    # plt.plot(train_losses, label='train loss')
-    # plt.plot(test_losses, label='test loss')
-    # plt.legend()
-    # plt.show()
-    
+    plt.plot(train_losses, label='train loss')
+    plt.plot(test_losses, label='test loss')
+    plt.legend()
+    plt.show()
 
     """evaluate model"""
 
     with torch.no_grad():
         p_train = model(X_train).detach().numpy().astype(int)
         train_acc = np.mean(y_train.numpy().astype(int) == p_train)
-        
+
         p_test = model(X_test).detach().numpy().astype(int)
         test_acc = np.mean(y_test.numpy().astype(int) == p_test)
 
-    print("train_acc",train_acc)
-    print("test_acc",test_acc)
+    print("train_acc", train_acc)
+    print("test_acc", test_acc)
 
     torch.save(model.state_dict(), "./new_name.pt")
 
@@ -128,19 +112,20 @@ if __name__ == "__main__":
 
         labels = labels.data.cpu().numpy()
         y_true.extend(labels)  # Save Truth
+    pass
 
     # constant for classes
     # classes = sorted(list(set(y_true).union(set(y_pred))))
 
     # Build confusion matrix
     # cf_matrix = confusion_matrix(y_true, y_pred)
-    cf_matrix = confusion_matrix([enc.inverse_transform(y) for y in y_true],
-                                 np.array([enc.inverse_transform(y.detach()) for y in y_pred]).astype(np.int),
-                                 labels=enc.categories_[0])
-    df_cm = pd.DataFrame(cf_matrix, index=enc.categories_[0],
-                         columns=enc.categories_[0])
-    plt.figure(figsize=(12, 11))
-    plt.xlabel = "Pred"
-    plt.ylabel = "True"
-    sn.heatmap(df_cm, annot=True)
-    plt.savefig('output_entities.png')
+    # cf_matrix = confusion_matrix([enc.inverse_transform(y) for y in y_true],
+    #                              np.array([enc.inverse_transform(y.detach()) for y in y_pred]).astype(np.int),
+    #                              labels=enc.categories_[0])
+    # df_cm = pd.DataFrame(cf_matrix, index=enc.categories_[0],
+    #                      columns=enc.categories_[0])
+    # plt.figure(figsize=(12, 11))
+    # plt.xlabel = "Pred"
+    # plt.ylabel = "True"
+    # sn.heatmap(df_cm, annot=True)
+    # plt.savefig('output_entities.png')
