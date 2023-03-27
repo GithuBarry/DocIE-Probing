@@ -49,10 +49,7 @@ def full_gd(model, criterion, optimizer, X_train, y_train, n_epochs=2000):
 
 
 if __name__ == "__main__":
-
-    if torch.cuda.is_available():
-        print("Setting CUDA as default")
-        torch.set_default_tensor_type('torch.cuda.FloatTensor')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     print("loading X Y")
     X = np.load(
@@ -70,11 +67,14 @@ if __name__ == "__main__":
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
 
-    print("Torching X Y")
-    X_train = torch.from_numpy(X_train.astype(np.float32))
-    X_test = torch.from_numpy(X_test.astype(np.float32))
-    y_train = torch.from_numpy(y_train.astype(np.float32))
-    y_test = torch.from_numpy(y_test.astype(np.float32))
+    print("Torch-loading X Y")
+    X_train = torch.from_numpy(X_train.astype(np.float32)).to(device)
+
+    X_test = torch.from_numpy(X_test.astype(np.float32)).to(device)
+
+    y_train = torch.from_numpy(y_train.astype(np.float32)).to(device)
+
+    y_test = torch.from_numpy(y_test.astype(np.float32)).to(device)
 
     _, input_dimension = X_train.shape
     _, output_dimension = Y.shape
