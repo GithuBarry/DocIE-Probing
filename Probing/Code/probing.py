@@ -79,7 +79,7 @@ if __name__ == "__main__":
     _, input_dimension = X_train.shape
     _, output_dimension = Y.shape
 
-    model = torch.nn.Linear(input_dimension, output_dimension)
+    model = torch.nn.Linear(input_dimension, output_dimension).to(device)
 
     print("Training X Y")
     criterion = configure_loss_function()
