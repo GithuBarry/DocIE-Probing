@@ -1,32 +1,12 @@
-import os
+import json
 
 import numpy as np
 
-i = -1
-X, Y = [], []
-directory = os.getcwd()
+if __name__ == '__main__':
 
-while i < 1700:
-    i += 1
-    filename = "output_sentence" + str(i) + "_decoder_hidden_states.npy"
-    f = os.path.join(directory, filename)
-    if not os.path.isfile(f):
-        continue
+    muc_1700_input = open("../../Corpora/MUC/muc/processed2/muc_1700_GTT_style-test-dev-train.json")
+    examples = json.load(muc_1700_input)
+    muc_1700_input.close()
 
-    x = np.load(f)
-    x = np.array(x)
-    print(x.shape)
-    x = np.moveaxis(x, [1, 0], [0, 3])
-    x = x[-1][0][0]
-    x = x.flatten()
-    appended = False
-
-    x = np.append(x, (512 * 768 - len(x)) * [0])
-    X.append(x)  # last layer, only batch
-    if len(input[i]['triggers']) > 5:
-        print()
-    # Y.append(len(input[i]['triggers']))
-
-X = np.array(X)
-np.save("X-TANL_MucV1.npy")
-# Y = np.array(Y)
+    num_templates = [len(example['templates']) for example in examples]
+    np.save("Y_num_events_muc1700", np.array(num_templates))
