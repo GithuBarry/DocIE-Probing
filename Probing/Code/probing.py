@@ -8,11 +8,13 @@ from sklearn.preprocessing import StandardScaler
 
 
 class LinearLayerClassification(torch.nn.Module, ABC):
-    def __init__(self, input_dimension):
+    def __init__(self, input_dimension, output_dimension):
         super().__init__()
-        self.linear = torch.nn.Linear(input_dimension, 2)
+        self.linear = torch.nn.Linear(input_dimension, output_dimension)
+        # self.rectifier = torch.nn.ReLU()
 
     def forward(self, input):
+        # return self.rectifier((self.linear(input)))
         return self.linear(input)
 
 
@@ -76,7 +78,7 @@ if __name__ == "__main__":
     _, input_dimension = X_train.shape
     _, output_dimension = Y.shape
 
-    model = torch.nn.Linear(input_dimension, output_dimension).to(device)
+    model = LinearLayerClassification(input_dimension, output_dimension).to(device)
 
     print("Training X Y")
     criterion = configure_loss_function()
@@ -109,7 +111,7 @@ if __name__ == "__main__":
 
     # iterate over test data
     for inputs, labels in [(X_test[i], y_test[i]) for i in range(len(X_test))]:
-        output = model(inputs)  # Feed Network
+        output = torch.relu(model(inputs))  # Feed Network
         y_pred.extend(output.cpu().detach().numpy())  # Save Prediction
         labels = labels.data.cpu().detach().numpy()
         y_true.extend(labels)  # Save Truth
