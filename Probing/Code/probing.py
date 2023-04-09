@@ -9,11 +9,13 @@ from sklearn.preprocessing import StandardScaler
 
 import json
 class LinearLayerClassification(torch.nn.Module, ABC):
-    def __init__(self, input_dimension):
+    def __init__(self, input_dimension, output_dimension):
         super().__init__()
-        self.linear = torch.nn.Linear(input_dimension, 2)
+        self.linear = torch.nn.Linear(input_dimension, output_dimension)
+        # self.rectifier = torch.nn.ReLU()
 
     def forward(self, input):
+        # return self.rectifier((self.linear(input)))
         return self.linear(input)
 
 
