@@ -61,8 +61,6 @@ if __name__ == "__main__":
         for y in os.listdir("../Y/"):
             if x[-4:] != ".npy" or y[-4:] != ".npy":
                 continue
-            if 'dygie' not in x:
-                continue
 
             print("Running on:", x, y)
             x_name = x[:-4]
