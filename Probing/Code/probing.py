@@ -112,10 +112,12 @@ if __name__ == "__main__":
 
             with torch.no_grad():
                 p_train = np.rint(model(X_train).cpu().detach().numpy()).astype(int)
+                p_train = [max(0, p) for p in p_train]
                 train_labels = np.rint(y_train.cpu().detach().numpy()).astype(int)
                 train_acc = np.mean(train_labels == p_train)
 
                 p_test = model(X_test).cpu().detach().numpy().astype(int)
+                p_test = [max(0, p) for p in p_test]
                 test_labels = np.rint(y_test.cpu().detach().numpy()).astype(int)
                 test_acc = np.mean(test_labels == p_test)
 
@@ -130,13 +132,13 @@ if __name__ == "__main__":
 
             # iterate over test data
             for inputs, labels in [(X_test[i], y_test[i]) for i in range(len(X_test))]:
-                output = torch.relu(model(inputs))  # Feed Network
+                output = model(inputs)  # Feed Network
                 y_pred.extend(output.cpu().detach().numpy())  # Save Prediction
                 labels = labels.data.cpu().detach().numpy()
                 y_true.extend(labels)  # Save Truth
                 pass
 
-            result = {"y_pred": [float(y) for y in y_pred], "y_pred_int": [int(np.rint(y).astype(int)) for y in y_pred],
+            result = {"y_pred": [float(y) for y in y_pred], "y_pred_int": [max(int(np.rint(y).astype(int)),0) for y in y_pred],
                       "y_true": [int(y.astype(int)) for y in y_true], "train_acc": float(train_acc),
                       "test_acc": float(test_acc), "X": x_name, "Y": y_name}
             print(result)
