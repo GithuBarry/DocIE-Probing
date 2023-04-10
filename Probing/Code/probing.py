@@ -61,11 +61,12 @@ if __name__ == "__main__":
         for y in os.listdir("../Y/"):
             if x[-4:] != ".npy" or y[-4:] != ".npy":
                 continue
+            if 'dygie' not in x:
+                continue
+
             print("Running on:", x, y)
             x_name = x[:-4]
             y_name = y[:-4]
-            # x_name = "X_TANL_layer_last_bert-uncased_epoch20_muc1700"
-            # y_name = "Y_muc_1700_num_events"
             print("loading X Y")
             X = np.load(
                 f"../X/{x_name}.npy", allow_pickle=True)
@@ -73,13 +74,22 @@ if __name__ == "__main__":
                 f"../Y/{y_name}.npy")
 
             print("Reshaping X Y")
-            Y = Y.reshape(-1, 1)
-            X = X.reshape(1700, -1)
-            lengths = [len(x) for x in X]
+            # Assume each example does not have a dimension of 1, and have more than example
+            pickled_X = X
+            new_X = []
+            while len(pickled_X) == 1:
+                pickled_X = pickled_X[0]
+            for example_X in pickled_X:
+                while len(example_X) == 1:
+                    example_X = example_X[0]
+                new_X.append(example_X.reshape(-1))
+            X = new_X
+            max_length = max([len(x) for x in X])
             for i in range(len(X)):
-                if len(X[i]) < max(lengths):
-                    np.append(X[i], [0] * (max(lengths) - len(X[i])))
-
+                if len(X[i]) < max_length:
+                    X[i] = np.pad(X[i], (0, max_length - len(X[i])), 'constant', constant_values=(0))
+            X = np.array(X)
+            Y = Y.reshape(-1, 1)
             X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
 
             print("Scale-fitting X Y")
@@ -138,7 +148,8 @@ if __name__ == "__main__":
                 y_true.extend(labels)  # Save Truth
                 pass
 
-            result = {"y_pred": [float(y) for y in y_pred], "y_pred_int": [max(int(np.rint(y).astype(int)),0) for y in y_pred],
+            result = {"y_pred": [float(y) for y in y_pred],
+                      "y_pred_int": [max(int(np.rint(y).astype(int)), 0) for y in y_pred],
                       "y_true": [int(y.astype(int)) for y in y_true], "train_acc": float(train_acc),
                       "test_acc": float(test_acc), "X": x_name, "Y": y_name}
             print(result)
