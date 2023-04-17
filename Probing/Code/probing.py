@@ -5,7 +5,6 @@ from abc import ABC
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
 
@@ -30,9 +29,9 @@ def configure_optimizer(model):
     # return torch.optim.SGD(model.parameters(), lr=0.01)
 
 
-def full_gd(model, criterion, optimizer, X_train, y_train, n_epochs):
+def full_gd(model, criterion, optimizer, X_train, y_train, X_val, y_val, n_epochs):
     train_losses = np.zeros(n_epochs)
-    test_losses = np.zeros(n_epochs)
+    val_losses = np.zeros(n_epochs)
 
     for it in range(n_epochs):
         outputs = model(X_train)
@@ -41,17 +40,16 @@ def full_gd(model, criterion, optimizer, X_train, y_train, n_epochs):
         loss.backward()
         optimizer.step()
 
-        outputs_test = model(X_test)
-        loss_test = criterion(outputs_test, y_test)
+        outputs_test = model(X_val)
+        loss_test = criterion(outputs_test, y_val)
 
         train_losses[it] = loss.item()
-        test_losses[it] = loss_test.item()
+        val_losses[it] = loss_test.item()
 
         if (it + 1) % 50 == 0:
             print(
-                f'In this epoch {it + 1}/{n_epochs}, Training loss: {loss.item():.4f}, Test loss: {loss_test.item():.4f}')
-
-    return train_losses, test_losses
+                f'In this epoch {it + 1}/{n_epochs}, Training loss: {loss.item():.4f}, Val loss: {loss_test.item():.4f}')
+    return train_losses, val_losses
 
 
 if __name__ == "__main__":
@@ -88,18 +86,22 @@ if __name__ == "__main__":
                     X[i] = np.pad(X[i], (0, max_length - len(X[i])), 'constant', constant_values=(0))
             X = np.array(X)
             Y = Y.reshape(-1, 1)
-            X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
+            # X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
+            X_train, X_val, X_test, y_train, y_val, y_test = X[400:], X[200:400], X[:200], Y[400:], Y[200:400], Y[:200]
 
             print("Scale-fitting X Y")
             scaler = StandardScaler()
             X_train = scaler.fit_transform(X_train)
+            X_val = scaler.fit_transform(X_val)
             X_test = scaler.transform(X_test)
 
             print("Torch-loading X Y")
             X_train = torch.from_numpy(X_train.astype(np.float32)).to(device)
+            X_val = torch.from_numpy(X_val.astype(np.float32)).to(device)
             X_test = torch.from_numpy(X_test.astype(np.float32)).to(device)
             y_train = torch.from_numpy(y_train.astype(np.float32)).to(device)
             y_test = torch.from_numpy(y_test.astype(np.float32)).to(device)
+            y_val = torch.from_numpy(y_val.astype(np.float32)).to(device)
 
             _, input_dimension = X_train.shape
             _, output_dimension = Y.shape
@@ -109,20 +111,24 @@ if __name__ == "__main__":
             print("Training X Y")
             criterion = configure_loss_function()
             optimizer = configure_optimizer(model)
-            train_losses, test_losses = full_gd(model, criterion, optimizer, X_train, y_train, epoch)
+            train_losses, val_loss = full_gd(model, criterion, optimizer, X_train, y_train, X_val, y_val, epoch)
 
             plt.plot(train_losses, label='train loss')
-            plt.plot(test_losses, label='test loss')
+            plt.plot(val_loss, label='val loss')
             plt.legend()
-            plt.show()
+            # plt.show()
 
             """evaluate model"""
-
             with torch.no_grad():
                 p_train = np.rint(model(X_train).cpu().detach().numpy()).astype(int)
                 p_train = [max(0, p) for p in p_train]
                 train_labels = np.rint(y_train.cpu().detach().numpy()).astype(int)
                 train_acc = np.mean(train_labels == p_train)
+
+                p_val = model(X_val).cpu().detach().numpy().astype(int)
+                p_val = [max(0, p) for p in p_val]
+                val_labels = np.rint(y_val.cpu().detach().numpy()).astype(int)
+                val_acc = np.mean(val_labels == p_val)
 
                 p_test = model(X_test).cpu().detach().numpy().astype(int)
                 p_test = [max(0, p) for p in p_test]
@@ -131,6 +137,7 @@ if __name__ == "__main__":
 
             print("train_acc", train_acc)
             print("test_acc", test_acc)
+            print("val_acc", val_acc)
             epoch_str = str(epoch)
 
             torch.save(model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}.pt")
@@ -149,6 +156,7 @@ if __name__ == "__main__":
             result = {"y_pred": [float(y) for y in y_pred],
                       "y_pred_int": [max(int(np.rint(y).astype(int)), 0) for y in y_pred],
                       "y_true": [int(y.astype(int)) for y in y_true], "train_acc": float(train_acc),
+                      "val_acc": float(val_acc),
                       "test_acc": float(test_acc), "X": x_name, "Y": y_name}
             print(result)
 
