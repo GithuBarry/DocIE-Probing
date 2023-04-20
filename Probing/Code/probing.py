@@ -45,8 +45,7 @@ if __name__ == "__main__":
     epoch = 2000
     for x in os.listdir("../X/"):
         for y in os.listdir("../Y/"):
-            gc.collect()
-            if "bucket" not in y:
+            if x[-4:] != ".npy" or y[-4:] != ".npy":
                 continue
 
             print("Running on:", x, y)
