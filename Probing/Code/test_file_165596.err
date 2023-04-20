@@ -1,0 +1,10 @@
+./probing.py:151: DeprecationWarning: The truth value of an empty array is ambiguous. Returning False, but in future this will result in an error. Use `array.size > 0` to check that an array is not empty.
+  val_acc = np.mean(val_labels == p_val)
+./probing.py:151: DeprecationWarning: The truth value of an empty array is ambiguous. Returning False, but in future this will result in an error. Use `array.size > 0` to check that an array is not empty.
+  val_acc = np.mean(val_labels == p_val)
+./probing.py:151: DeprecationWarning: The truth value of an empty array is ambiguous. Returning False, but in future this will result in an error. Use `array.size > 0` to check that an array is not empty.
+  val_acc = np.mean(val_labels == p_val)
+Traceback (most recent call last):
+  File "./probing.py", line 151, in <module>
+    val_acc = np.mean(val_labels == p_val)
+ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
