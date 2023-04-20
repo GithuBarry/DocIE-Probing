@@ -174,3 +174,4 @@ Probing/X/X_TANL_layer_*_bert-uncased_epoch20_muc1700.npy
 Probing/X/X_TANL_layer_last_bert-uncased_epoch20_muc1700.npy
 Probing/X/X_dygiepp_embedding-unpadded_bert-uncased_epoch21_muc1700.npy
 Probing/Results-ThreeLinearLayers/*.pt
+Probing/OtherX/X_TANL_layer_*_bert-uncased_epoch20_muc1700.npy
