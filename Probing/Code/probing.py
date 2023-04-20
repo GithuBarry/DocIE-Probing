@@ -133,7 +133,11 @@ if __name__ == "__main__":
                     p = np.rint(p)
                     p = [max(0, pi) for pi in p]
                     labels = labels.astype(int)
-                return p,labels
+                else:
+                    p = [np.where(x == max(x))[0] for x in p]
+                    labels = [np.where(x == 1)[0] for x in labels.astype(int)]
+                    print("p,l",p,labels)
+                return np.array(p),np.array(labels)
 
             with torch.no_grad():
                 p_train = model(X_train).cpu().detach().numpy()
@@ -143,12 +147,12 @@ if __name__ == "__main__":
 
                 p_val = model(X_val).cpu().detach().numpy()
                 val_labels = y_val.cpu().detach().numpy()
-                val_labels ,p_val = round_up(val_labels ,p_val )
+                p_val,val_labels = round_up(p_val, val_labels )
                 val_acc = np.mean(val_labels == p_val)
 
                 p_test = model(X_test).cpu().detach().numpy()
                 test_labels = y_test.cpu().detach().numpy()
-                test_labels, p_test = round_up(test_labels, p_test)
+                p_test,test_labels= round_up(p_test,test_labels)
                 test_acc = np.mean(test_labels == p_test)
 
             print("train_acc", train_acc)
@@ -167,16 +171,16 @@ if __name__ == "__main__":
             # iterate over test data
             for inputs, labels in [(X_test[i], y_test[i]) for i in range(len(X_test))]:
                 output = model(inputs)  # Feed Network
-                y_pred.extend(output.cpu().detach().numpy())  # Save Prediction
+                y_pred.append(output.cpu().detach().numpy())  # Save Prediction
                 labels = labels.data.cpu().detach().numpy()
-                y_true.extend(labels)  # Save Truth
+                y_true.append(labels)  # Save Truth
                 pass
 
             for inputs, labels in [(X_val[i], y_val[i]) for i in range(len(X_val))]:
                 output = model(inputs)  # Feed Network
-                y_val_pred.extend(output.cpu().detach().numpy())  # Save Prediction
+                y_val_pred.append(output.cpu().detach().numpy())  # Save Prediction
                 labels = labels.data.cpu().detach().numpy()
-                y_val_true.extend(labels)  # Save Truth
+                y_val_true.append(labels)  # Save Truth
                 pass
 
             result = {"test_pred": np.array(y_pred).tolist(),
