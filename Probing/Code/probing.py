@@ -7,7 +7,6 @@ import torch
 from sklearn.preprocessing import StandardScaler
 
 
-
 def configure_loss_function():
     return torch.nn.MSELoss()
     # return torch.nn.L1Loss()
@@ -18,7 +17,7 @@ def configure_optimizer(model):
     # return torch.optim.SGD(model.parameters(), lr=0.01)
 
 
-def full_gd(model, criterion, optimizer, X_train, y_train, X_val, y_val,n_epochs):
+def full_gd(model, criterion, optimizer, X_train, y_train, X_val, y_val, n_epochs):
     train_losses = np.zeros(n_epochs)
     val_losses = np.zeros(n_epochs)
 
@@ -75,16 +74,16 @@ if __name__ == "__main__":
                         X[i] = np.pad(X[i], (0, max_length - len(X[i])), 'constant', constant_values=(0))
                 X = np.array(X)
             Y = Y.reshape(1700, -1)
-            X = X.reshape(1700,-1)
-            
+            X = X.reshape(1700, -1)
+
             gc.collect()
-            #X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
+            # X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
             X_train, X_val, X_test, y_train, y_val, y_test = X[400:], X[200:400], X[:200], Y[400:], Y[200:400], Y[:200]
 
-            #print("Scale-fitting X Y")
-            #scaler = StandardScaler()
-            #X_train = scaler.fit_transform(X_train)
-            #X_test = scaler.transform(X_test)
+            # print("Scale-fitting X Y")
+            # scaler = StandardScaler()
+            # X_train = scaler.fit_transform(X_train)
+            # X_test = scaler.transform(X_test)
             print("Scale-fitting X Y")
             scaler = StandardScaler()
             X_train = scaler.fit_transform(X_train)
@@ -104,7 +103,7 @@ if __name__ == "__main__":
 
             print("Creating model")
             model = torch.nn.Linear(input_dimension, output_dimension)
-            #model = torch.nn.Sequential(
+            # model = torch.nn.Sequential(
             #    torch.nn.Linear(input_dimension,256),
             #    torch.nn.ReLU(),
             #    torch.nn.Linear(256, output_dimension)
@@ -116,10 +115,10 @@ if __name__ == "__main__":
             optimizer = configure_optimizer(model)
             train_losses, val_loss = full_gd(model, criterion, optimizer, X_train, y_train, X_val, y_val, epoch)
 
-            #plt.plot(train_losses, label='train loss')
-            #plt.plot(test_losses, label='test loss')
-            #plt.legend()
-            #plt.show()
+            # plt.plot(train_losses, label='train loss')
+            # plt.plot(test_losses, label='test loss')
+            # plt.legend()
+            # plt.show()
             plt.plot(train_losses, label='train loss')
             plt.plot(val_loss, label='val loss')
             plt.legend()
@@ -127,16 +126,18 @@ if __name__ == "__main__":
 
             """evaluate model"""
 
+
             def round_up(p, labels):
-                if output_dimension==1:     
+                if output_dimension == 1:
                     p = np.rint(p)
                     p = [max(0, pi) for pi in p]
                     labels = labels.astype(int)
                 else:
                     p = [np.where(x == max(x))[0] for x in p]
                     labels = [np.where(x == 1)[0] for x in labels.astype(int)]
-                    print("p,l",p,labels)
-                return np.array(p),np.array(labels)
+                    print("p,l", p, labels)
+                return np.array(p), np.array(labels)
+
 
             with torch.no_grad():
                 p_train = model(X_train).cpu().detach().numpy()
@@ -146,12 +147,12 @@ if __name__ == "__main__":
 
                 p_val = model(X_val).cpu().detach().numpy()
                 val_labels = y_val.cpu().detach().numpy()
-                p_val,val_labels = round_up(p_val, val_labels )
+                p_val, val_labels = round_up(p_val, val_labels)
                 val_acc = np.mean(val_labels == p_val)
 
                 p_test = model(X_test).cpu().detach().numpy()
                 test_labels = y_test.cpu().detach().numpy()
-                p_test,test_labels= round_up(p_test,test_labels)
+                p_test, test_labels = round_up(p_test, test_labels)
                 test_acc = np.mean(test_labels == p_test)
 
             print("train_acc", train_acc)
@@ -183,7 +184,7 @@ if __name__ == "__main__":
                 pass
 
             result = {"test_pred": np.array(y_pred).tolist(),
-                      "test_true":  np.array(y_true).tolist(),
+                      "test_true": np.array(y_true).tolist(),
                       "train_acc": float(train_acc),
                       "val_pred": np.array(y_val_pred).tolist(),
                       "val_true": np.array(y_val_true).tolist(),
