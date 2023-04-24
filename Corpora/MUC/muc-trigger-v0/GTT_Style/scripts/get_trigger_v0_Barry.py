@@ -5,7 +5,9 @@ from collections import Counter
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
-
+import gensim.downloader as api
+nltk.download('stopwords')
+model = api.load("glove-twitter-25")
 ps = PorterStemmer()
 
 root = "../../../muc/processed/"
@@ -56,12 +58,19 @@ while l:
                             template["incident_type"] = "bombing"
             #Normal case
             else:
-                for trigger in selected_trigger[template["incident_type"]] :
-                    if trigger in j['doctext']:
-                        j["templates"][ii]["Trigger"] = trigger
-                        j["templates"][ii]["ManuallyLabeledTrigger"] = False
-                        c = False
-                        break
+                words = [w for w in doctext if w not in stopwords.words('english')]
+                for w in words:
+                    for trigger in selected_trigger[template["incident_type"]]:
+                        
+                        if w in model:
+                            try:
+                                if model.similarity(w, trigger) > 0.5:
+                                    j["templates"][ii]["Trigger"] = trigger
+                                    j["templates"][ii]["ManuallyLabeledTrigger"] = False
+                                    c = False
+                                    break
+                            except:
+                                print(w)
             if (c):
                 j["templates"][ii]["Trigger"] = "UNKNOWN"
                 j["templates"][ii]["ManuallyLabeledTrigger"] = True
