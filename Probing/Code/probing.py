@@ -1,43 +1,8 @@
+import gc
 import json
 import os
-import gc
-import matplotlib.pyplot as plt
-import numpy as np
-import torch
-from sklearn.preprocessing import StandardScaler
 
-
-def configure_loss_function():
-    return torch.nn.MSELoss()
-    # return torch.nn.L1Loss()
-
-
-def configure_optimizer(model):
-    return torch.optim.Adam(model.parameters())
-    # return torch.optim.SGD(model.parameters(), lr=0.01)
-
-
-def full_gd(model, criterion, optimizer, X_train, y_train, X_val, y_val, n_epochs):
-    train_losses = np.zeros(n_epochs)
-    val_losses = np.zeros(n_epochs)
-
-    for it in range(n_epochs):
-        outputs = model(X_train)
-        loss = criterion(outputs, y_train)
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-
-        outputs_test = model(X_val)
-        loss_test = criterion(outputs_test, y_val)
-
-        train_losses[it] = loss.item()
-        val_losses[it] = loss_test.item()
-        if (it + 1) % 50 == 0:
-            print(
-                f'In this epoch {it + 1}/{n_epochs}, Training loss: {loss.item():.4f}, Val loss: {loss_test.item():.4f}')
-    return train_losses, val_losses
-
+from senteval_classifier import *
 
 if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -83,76 +48,30 @@ if __name__ == "__main__":
             # print("Scale-fitting X Y")
             # scaler = StandardScaler()
             # X_train = scaler.fit_transform(X_train)
+            # X_val = scaler.fit_transform(X_val)
             # X_test = scaler.transform(X_test)
-            print("Scale-fitting X Y")
-            scaler = StandardScaler()
-            X_train = scaler.fit_transform(X_train)
-            X_val = scaler.fit_transform(X_val)
-            X_test = scaler.transform(X_test)
-
-            print("Torch-loading X Y")
-            X_train = torch.from_numpy(X_train.astype(np.float32)).to(device)
-            X_val = torch.from_numpy(X_val.astype(np.float32)).to(device)
-            X_test = torch.from_numpy(X_test.astype(np.float32)).to(device)
-            y_train = torch.from_numpy(y_train.astype(np.float32)).to(device)
-            y_test = torch.from_numpy(y_test.astype(np.float32)).to(device)
-            y_val = torch.from_numpy(y_val.astype(np.float32)).to(device)
 
             _, input_dimension = X_train.shape
             _, output_dimension = Y.shape
 
-            print("Creating model")
-            model = torch.nn.Linear(input_dimension, output_dimension)
-            # model = torch.nn.Sequential(
-            #    torch.nn.Linear(input_dimension,256),
-            #    torch.nn.ReLU(),
-            #    torch.nn.Linear(256, output_dimension)
-            #    )
-            model = model.to(device)
+            params = {"nhid": 200, "optim": "adam", "tenacity": 5, "batch_size": 8, "dropout": 0.1, "max_epoch": 2000}
+            mlp_classifier = MLP(params, input_dimension, output_dimension, cudaEfficient=device == "cpu")
 
-            print("Training X Y")
-            criterion = configure_loss_function()
-            optimizer = configure_optimizer(model)
-            train_losses, val_loss = full_gd(model, criterion, optimizer, X_train, y_train, X_val, y_val, epoch)
-
-            # plt.plot(train_losses, label='train loss')
-            # plt.plot(test_losses, label='test loss')
-            # plt.legend()
-            # plt.show()
-            plt.plot(train_losses, label='train loss')
-            plt.plot(val_loss, label='val loss')
-            plt.legend()
-            # plt.show()
+            mlp_classifier.fit(X_train, y_train, (X_val, y_val), early_stop=True)
 
             """evaluate model"""
 
-
-            def round_up(p, labels):
-                if output_dimension == 1:
-                    p = np.rint(p)
-                    p = [max(0, pi) for pi in p]
-                    labels = labels.astype(int)
-                else:
-                    p = [np.where(x == max(x))[0] for x in p]
-                    labels = [np.where(x == 1)[0] for x in labels.astype(int)]
-                    print("p,l", p, labels)
-                return np.array(p), np.array(labels)
-
-
             with torch.no_grad():
-                p_train = model(X_train).cpu().detach().numpy()
-                train_labels = y_train.cpu().detach().numpy()
-                p_test, train_labels = round_up(p_train, train_labels)
+                p_train = mlp_classifier.predict(X_train)
+                train_labels = y_train
                 train_acc = np.mean(train_labels == p_train)
 
-                p_val = model(X_val).cpu().detach().numpy()
-                val_labels = y_val.cpu().detach().numpy()
-                p_val, val_labels = round_up(p_val, val_labels)
+                p_val = mlp_classifier.predict(X_val)
+                val_labels = y_val
                 val_acc = np.mean(val_labels == p_val)
 
-                p_test = model(X_test).cpu().detach().numpy()
-                test_labels = y_test.cpu().detach().numpy()
-                p_test, test_labels = round_up(p_test, test_labels)
+                p_test = mlp_classifier.predict(X_test)
+                test_labels = y_test
                 test_acc = np.mean(test_labels == p_test)
 
             print("train_acc", train_acc)
@@ -160,7 +79,7 @@ if __name__ == "__main__":
             print("val_acc", val_acc)
             epoch_str = str(epoch)
 
-            torch.save(model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}.pt")
+            # torch.save(model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}.pt")
 
             y_pred = []
             y_true = []
@@ -169,17 +88,14 @@ if __name__ == "__main__":
             y_val_true = []
 
             # iterate over test data
-            for inputs, labels in [(X_test[i], y_test[i]) for i in range(len(X_test))]:
-                output = model(inputs)  # Feed Network
-                y_pred.append(output.cpu().detach().numpy())  # Save Prediction
-                labels = labels.data.cpu().detach().numpy()
+            for output, labels in [(p_test[i], y_test[i]) for i in range(len(X_test))]:
+                # Feed Network
+                y_pred.append(output)  # Save Prediction
                 y_true.append(labels)  # Save Truth
                 pass
 
-            for inputs, labels in [(X_val[i], y_val[i]) for i in range(len(X_val))]:
-                output = model(inputs)  # Feed Network
-                y_val_pred.append(output.cpu().detach().numpy())  # Save Prediction
-                labels = labels.data.cpu().detach().numpy()
+            for output, labels in [(p_val[i], y_val[i]) for i in range(len(X_val))]:
+                y_val_pred.append(output)  # Save Prediction
                 y_val_true.append(labels)  # Save Truth
                 pass
 
