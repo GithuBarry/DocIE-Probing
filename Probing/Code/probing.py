@@ -7,6 +7,7 @@ from senteval_classifier import *
 if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     epoch = 2000
+    probing_classifier_width = 200
     for x in os.listdir("../X/"):
         for y in os.listdir("../Y/"):
             if x[-4:] != ".npy" or y[-4:] != ".npy":
@@ -54,7 +55,8 @@ if __name__ == "__main__":
             _, input_dimension = X_train.shape
             _, output_dimension = Y.shape
 
-            params = {"nhid": 200, "optim": "adam", "tenacity": 5, "batch_size": 8, "dropout": 0.1, "max_epoch": 2000}
+            params = {"nhid": probing_classifier_width, "optim": "adam", "tenacity": 5, "batch_size": 8, "dropout": 0.1,
+                      "max_epoch": 2000}
             mlp_classifier = MLP(params, input_dimension, output_dimension, cudaEfficient=device == "cpu")
 
             mlp_classifier.fit(X_train, y_train, (X_val, y_val), early_stop=True)
