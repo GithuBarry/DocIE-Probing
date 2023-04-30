@@ -24,6 +24,30 @@ from torch import nn
 from util import get_optimizer
 
 
+class WeightedEmbeddingSumLayer(nn.Module):
+    def __init__(self, embedding_dim):
+        super(WeightedEmbeddingSumLayer, self).__init__()
+        self.linear = nn.Linear(embedding_dim, 1)
+        self.softmax = nn.Softmax(dim=1)
+
+    def forward(self, inputs):
+        # inputs shape: (batch_size, sequence_length, hidden_size)
+        
+        # Apply linear layer to get attention weights
+        weights = self.linear(inputs)
+        # weights shape: (batch_size, sequence_length, 1)
+        
+        # Apply softmax activation to get attention probabilities
+        attention_probs = self.softmax(weights)
+        # attention_probs shape: (batch_size, sequence_length, 1)
+        
+        # Compute the weighted sum of embeddings
+        weighted_sum = torch.sum(inputs * attention_probs, dim=1)
+        # weighted_sum shape: (batch_size, hidden_size)
+        
+        return weighted_sum
+
+
 
 class PyTorchClassifier(object):
     def __init__(self, inputdim, nclasses, l2reg=0., batch_size=64, seed=1111,
@@ -114,6 +138,32 @@ class PyTorchClassifier(object):
                 self.optimizer.step()
         self.nepoch += epoch_size
 
+    def score_and_prob(self, devX, devy):
+        self.model.eval()
+        correct = 0
+        probas = []
+        if not isinstance(devX, torch.cuda.FloatTensor) or self.cudaEfficient:
+            devX = torch.FloatTensor(devX).cuda()
+            devy = torch.LongTensor(devy).cuda()
+        with torch.no_grad():
+            for i in range(0, len(devX), self.batch_size):
+                Xbatch = devX[i:i + self.batch_size]
+                ybatch = devy[i:i + self.batch_size]
+                if self.cudaEfficient:
+                    Xbatch = Xbatch.cuda()
+                    ybatch = ybatch.cuda()
+                output = self.model(Xbatch)
+                vals = F.softmax(output.data.cpu().numpy())
+                if not probas:
+                    probas = vals
+                else:
+                    probas = np.concatenate(probas, vals, axis=0)
+                pred = output.data.max(1)[1]
+                ybatch = ybatch.data.max(1)[1]
+                correct += pred.long().eq(ybatch.data.long()).sum().item()
+            accuracy = 1.0 * correct / len(devX)
+        return accuracy, probas    
+
     def score(self, devX, devy):
         self.model.eval()
         correct = 0
@@ -191,11 +241,13 @@ class MLP(PyTorchClassifier):
         self.batch_size = 64 if "batch_size" not in params else params["batch_size"]
 
         if params["nhid"] == 0:
+            print("Regression!")
             self.model = nn.Sequential(
                 nn.Linear(self.inputdim, self.nclasses),
             ).cuda()
         else:
             self.model = nn.Sequential(
+                WeightedEmbeddingSumLayer(inputdim),
                 nn.Linear(self.inputdim, params["nhid"]),
                 nn.Dropout(p=self.dropout),
                 nn.Sigmoid(),
