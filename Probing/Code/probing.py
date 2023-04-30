@@ -117,7 +117,7 @@ if __name__ == "__main__":
                       "test_true": np.array(y_true).tolist(),
                       "val_pred": np.array(p_val).tolist(),
                       "val_true": np.array(y_val_true).tolist(),
-                      "model_param_names": [x for x in mlp_classifier.model.named_modules()][0][1]}
+                      "model_param_names": str([x for x in mlp_classifier.model.named_modules()][0][1])}
 
             print(result)
             torch.save(mlp_classifier.model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}.pt")
