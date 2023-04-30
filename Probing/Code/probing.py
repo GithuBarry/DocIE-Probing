@@ -18,7 +18,7 @@ if __name__ == "__main__":
                 continue
 
             gc.collect()
-            
+
             print("Running on:", x, y)
             x_name = x[:-4]
             y_name = y[:-4]
@@ -80,8 +80,6 @@ if __name__ == "__main__":
             print("val_acc", val_acc)
             epoch_str = str(mlp_classifier.nepoch)
 
-            # torch.save(model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}.pt")
-
             y_pred = []
             y_true = []
 
@@ -122,7 +120,7 @@ if __name__ == "__main__":
                       "model_param_names": [x for x in mlp_classifier.model.named_modules()][0][1]}
 
             print(result)
-
+            torch.save(mlp_classifier.model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}.pt")
             with open(f'probresult_{y_name}_{x_name}_epoch{epoch_str}.json', 'w') as f:
                 json.dump(result, f, indent=4)
             pass
