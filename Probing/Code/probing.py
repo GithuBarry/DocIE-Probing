@@ -6,7 +6,6 @@ from senteval_classifier import *
 
 if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    epoch = 2000
     probing_classifier_width = 200
     params = {"max_epoch": 200, "nhid": probing_classifier_width, "optim": "adam", "tenacity": 10, "batch_size": 8,
               "dropout": 0.0}
@@ -78,7 +77,7 @@ if __name__ == "__main__":
             print("train_acc", train_acc)
             print("test_acc", test_acc)
             print("val_acc", val_acc)
-            epoch_str = str(epoch)
+            epoch_str = str(mlp_classifier.nepoch)
 
             # torch.save(model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}.pt")
 
