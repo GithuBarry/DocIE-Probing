@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "./probing.py", line 68, in <module>
+    p_train = mlp_classifier.predict_proba(X_train)
+  File "/home/zw545/DocIE-Probing/Probing/Code/senteval_classifier.py", line 157, in predict_proba
+    vals = F.softmax(self.model(Xbatch).data.cpu().numpy())
+  File "/home/zw545/.local/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/zw545/.local/lib/python3.8/site-packages/torch/nn/modules/container.py", line 217, in forward
+    input = module(input)
+  File "/home/zw545/.local/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/zw545/.local/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 114, in forward
+    return F.linear(input, self.weight, self.bias)
+TypeError: linear(): argument 'input' (position 1) must be Tensor, not numpy.ndarray

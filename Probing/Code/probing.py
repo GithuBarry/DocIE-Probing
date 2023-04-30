@@ -8,9 +8,13 @@ if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     epoch = 2000
     probing_classifier_width = 200
+    params = {"nhid": probing_classifier_width, "optim": "adam", "tenacity": 10, "batch_size": 8, "dropout": 0.0,        "max_epoch": 200}
+    
     for x in os.listdir("../X/"):
         for y in os.listdir("../Y/"):
             if x[-4:] != ".npy" or y[-4:] != ".npy":
+                continue
+            if  "bucket" not in y:
                 continue
 
             print("Running on:", x, y)
@@ -42,39 +46,40 @@ if __name__ == "__main__":
             Y = Y.reshape(1700, -1)
             X = X.reshape(1700, -1)
 
-            gc.collect()
-            # X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
-            X_train, X_val, X_test, y_train, y_val, y_test = X[400:], X[200:400], X[:200], Y[400:], Y[200:400], Y[:200]
+            _, input_dimension = X.shape
 
-            # print("Scale-fitting X Y")
-            # scaler = StandardScaler()
-            # X_train = scaler.fit_transform(X_train)
-            # X_val = scaler.fit_transform(X_val)
-            # X_test = scaler.transform(X_test)
+            #Y = np.array([[0,0,0]+list(y) for y in Y])
 
-            _, input_dimension = X_train.shape
             _, output_dimension = Y.shape
 
-            params = {"nhid": probing_classifier_width, "optim": "adam", "tenacity": 5, "batch_size": 8, "dropout": 0.1,
-                      "max_epoch": 2000}
-            mlp_classifier = MLP(params, input_dimension, output_dimension, cudaEfficient=device == "cpu")
+            assert output_dimension > 1
 
+            gc.collect()
+            X_train, X_val, X_test, y_train, y_val, y_test = X[400:], X[200:400], X[:200], Y[400:], Y[200:400], Y[:200]
+
+            mlp_classifier = MLP(params=params, inputdim=input_dimension, nclasses=output_dimension, cudaEfficient= not torch.cuda.is_available() )
+
+            print("Fitting MLP Classifier")
             mlp_classifier.fit(X_train, y_train, (X_val, y_val), early_stop=True)
 
             """evaluate model"""
 
             with torch.no_grad():
-                p_train = mlp_classifier.predict(X_train)
+                x_torch, y_torch = torch.from_numpy(X_train).to(device, dtype=torch.float32), torch.from_numpy(y_train).to(device, dtype=torch.int64)
+                p_train = mlp_classifier.predict_proba(x_torch)
                 train_labels = y_train
-                train_acc = np.mean(train_labels == p_train)
+                print(train_labels, y_train)
+                train_acc = mlp_classifier.score(x_torch, y_torch)
 
-                p_val = mlp_classifier.predict(X_val)
+                x_torch, y_torch = torch.from_numpy(X_val).to(device, dtype=torch.float32), torch.from_numpy(y_val).to(device, dtype=torch.int64)
+                p_val = mlp_classifier.predict_proba(x_torch)
                 val_labels = y_val
-                val_acc = np.mean(val_labels == p_val)
+                val_acc = mlp_classifier.score(x_torch, y_torch)
 
-                p_test = mlp_classifier.predict(X_test)
+                x_torch, y_torch = torch.from_numpy(X_test).to(device, dtype=torch.float32), torch.from_numpy(y_test).to(device, dtype=torch.int64)
+                p_test = mlp_classifier.predict_proba(x_torch)
                 test_labels = y_test
-                test_acc = np.mean(test_labels == p_test)
+                test_acc = mlp_classifier.score(x_torch, y_torch)
 
             print("train_acc", train_acc)
             print("test_acc", test_acc)
@@ -101,15 +106,16 @@ if __name__ == "__main__":
                 y_val_true.append(labels)  # Save Truth
                 pass
 
-            result = {"test_pred": np.array(y_pred).tolist(),
+            result = {"test_pred": np.array(p_test).tolist(),
                       "test_true": np.array(y_true).tolist(),
                       "train_acc": float(train_acc),
-                      "val_pred": np.array(y_val_pred).tolist(),
+                      "val_pred": np.array(p_val).tolist(),
                       "val_true": np.array(y_val_true).tolist(),
                       "val_acc": float(val_acc),
                       "test_acc": float(test_acc), "X": x_name, "Y": y_name}
             print(result)
-
-            with open(f'result_{y_name}_{x_name}_epoch{epoch_str}.json', 'w') as f:
+            
+            
+            with open(f'probresult_{y_name}_{x_name}_epoch{epoch_str}.json', 'w') as f:
                 json.dump(result, f, indent=4)
             pass
