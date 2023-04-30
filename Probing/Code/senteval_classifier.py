@@ -153,16 +153,14 @@ class PyTorchClassifier(object):
                     Xbatch = Xbatch.cuda()
                     ybatch = ybatch.cuda()
                 output = self.model(Xbatch)
-                vals = F.softmax(output.data.cpu().numpy())
-                if not probas:
-                    probas = vals
-                else:
-                    probas = np.concatenate(probas, vals, axis=0)
+                vals = F.softmax(output).data.cpu().numpy()
+                
+                probas.append( vals)
                 pred = output.data.max(1)[1]
                 ybatch = ybatch.data.max(1)[1]
                 correct += pred.long().eq(ybatch.data.long()).sum().item()
             accuracy = 1.0 * correct / len(devX)
-        return accuracy, probas    
+        return accuracy, np.array(probas    )
 
     def score(self, devX, devy):
         self.model.eval()
