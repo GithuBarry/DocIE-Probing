@@ -99,13 +99,27 @@ if __name__ == "__main__":
                 y_val_true.append(labels)  # Save Truth
                 pass
 
-            result = {"test_pred": np.array(p_test).tolist(),
-                      "test_true": np.array(y_true).tolist(),
+            result = {"X": x_name, "Y": y_name,
                       "train_acc": float(train_acc),
+                      "val_acc": float(val_acc),
+                      "test_acc": float(test_acc),
+                      "hidden_size": mlp_classifier.nhid,
+                      "inputdim/embeddim": mlp_classifier.inputdim,
+                      "output_dimension": output_dimension,
+                      "nclasses": mlp_classifier.nclasses,
+                      "batch_size": mlp_classifier.batch_size,
+                      "dropout": mlp_classifier.dropout,
+                      "l2reg": mlp_classifier.l2reg,
+                      "optim": mlp_classifier.optim,
+                      "tenacity": mlp_classifier.tenacity,
+                      "max_epoch": mlp_classifier.max_epoch,
+                      "actual_epoch": mlp_classifier.nepoch,
+                      "test_pred": np.array(p_test).tolist(),
+                      "test_true": np.array(y_true).tolist(),
                       "val_pred": np.array(p_val).tolist(),
                       "val_true": np.array(y_val_true).tolist(),
-                      "val_acc": float(val_acc),
-                      "test_acc": float(test_acc), "X": x_name, "Y": y_name}
+                      "model_param_names": [x for x in mlp_classifier.model.named_modules()][0][1]}
+
             print(result)
 
             with open(f'probresult_{y_name}_{x_name}_epoch{epoch_str}.json', 'w') as f:
