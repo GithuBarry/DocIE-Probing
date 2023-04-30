@@ -8,13 +8,14 @@ if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     epoch = 2000
     probing_classifier_width = 200
-    params = {"max_epoch": 200,"nhid": probing_classifier_width, "optim": "adam", "tenacity": 10, "batch_size": 8, "dropout": 0.0}
-    
+    params = {"max_epoch": 200, "nhid": probing_classifier_width, "optim": "adam", "tenacity": 10, "batch_size": 8,
+              "dropout": 0.0}
+
     for x in os.listdir("../X/"):
         for y in os.listdir("../Y/"):
             if x[-4:] != ".npy" or y[-4:] != ".npy":
                 continue
-            if  "bucket" not in y:
+            if "bucket" not in y:
                 continue
 
             print("Running on:", x, y)
@@ -41,12 +42,12 @@ if __name__ == "__main__":
                 max_length = max([len(x) for x in X])
                 for i in range(len(X)):
                     if len(X[i]) < max_length:
-                        X[i] = np.pad(X[i], (0, max_length - len(X[i])), 'constant', constant_values=(0))
+                        X[i] = np.pad(X[i], ((0, max_length - len(X[i])), (0, 0)), 'constant', constant_values=(0))
                 X = np.array(X)
             Y = Y.reshape(1700, -1)
-            #X = X.reshape(1700, -1)
+            # X = X.reshape(1700, -1)
 
-            _, _,embedding_dimension = X.shape
+            _, _, embedding_dimension = X.shape
             _, output_dimension = Y.shape
 
             assert output_dimension > 1
@@ -54,21 +55,25 @@ if __name__ == "__main__":
             gc.collect()
             X_train, X_val, X_test, y_train, y_val, y_test = X[400:], X[200:400], X[:200], Y[400:], Y[200:400], Y[:200]
 
-            mlp_classifier = MLP(params=params, inputdim=embedding_dimension, nclasses=output_dimension, cudaEfficient= not torch.cuda.is_available() )
+            mlp_classifier = MLP(params=params, inputdim=embedding_dimension, nclasses=output_dimension,
+                                 cudaEfficient=not torch.cuda.is_available())
 
             print("Fitting MLP Classifier")
             mlp_classifier.fit(X_train, y_train, (X_val, y_val), early_stop=True)
 
             """evaluate model"""
 
-            x_torch, y_torch = torch.from_numpy(X_train).to(device, dtype=torch.float32), torch.from_numpy(y_train).to(device, dtype=torch.int64)
-            train_acc,p_train  = mlp_classifier.score_and_prob(x_torch, y_torch)
+            x_torch, y_torch = torch.from_numpy(X_train).to(device, dtype=torch.float32), torch.from_numpy(y_train).to(
+                device, dtype=torch.int64)
+            train_acc, p_train = mlp_classifier.score_and_prob(x_torch, y_torch)
 
-            x_torch, y_torch = torch.from_numpy(X_val).to(device, dtype=torch.float32), torch.from_numpy(y_val).to(device, dtype=torch.int64)
-            val_acc,p_val  = mlp_classifier.score_and_prob(x_torch, y_torch)
+            x_torch, y_torch = torch.from_numpy(X_val).to(device, dtype=torch.float32), torch.from_numpy(y_val).to(
+                device, dtype=torch.int64)
+            val_acc, p_val = mlp_classifier.score_and_prob(x_torch, y_torch)
 
-            x_torch, y_torch = torch.from_numpy(X_test).to(device, dtype=torch.float32), torch.from_numpy(y_test).to(device, dtype=torch.int64)
-            test_acc,p_test  = mlp_classifier.score_and_prob(x_torch, y_torch)
+            x_torch, y_torch = torch.from_numpy(X_test).to(device, dtype=torch.float32), torch.from_numpy(y_test).to(
+                device, dtype=torch.int64)
+            test_acc, p_test = mlp_classifier.score_and_prob(x_torch, y_torch)
 
             print("train_acc", train_acc)
             print("test_acc", test_acc)
@@ -103,8 +108,7 @@ if __name__ == "__main__":
                       "val_acc": float(val_acc),
                       "test_acc": float(test_acc), "X": x_name, "Y": y_name}
             print(result)
-            
-            
+
             with open(f'probresult_{y_name}_{x_name}_epoch{epoch_str}.json', 'w') as f:
                 json.dump(result, f, indent=4)
             pass
