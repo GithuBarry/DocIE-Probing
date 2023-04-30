@@ -14,13 +14,12 @@ Classifiers include Logistic Regression and MLP
 from __future__ import absolute_import, division, unicode_literals
 
 import copy
-import inspect
-import re
 
 import numpy as np
 import torch
 import torch.nn.functional as F
 from torch import nn
+
 from util import get_optimizer
 
 
@@ -32,21 +31,20 @@ class WeightedEmbeddingSumLayer(nn.Module):
 
     def forward(self, inputs):
         # inputs shape: (batch_size, sequence_length, hidden_size)
-        
+
         # Apply linear layer to get attention weights
         weights = self.linear(inputs)
         # weights shape: (batch_size, sequence_length, 1)
-        
+
         # Apply softmax activation to get attention probabilities
         attention_probs = self.softmax(weights)
         # attention_probs shape: (batch_size, sequence_length, 1)
-        
+
         # Compute the weighted sum of embeddings
         weighted_sum = torch.sum(inputs * attention_probs, dim=1)
         # weighted_sum shape: (batch_size, hidden_size)
-        
-        return weighted_sum
 
+        return weighted_sum
 
 
 class PyTorchClassifier(object):
@@ -99,7 +97,7 @@ class PyTorchClassifier(object):
         # Training
         while not stop_train and self.nepoch <= self.max_epoch:
             self.trainepoch(trainX, trainy, epoch_size=self.epoch_size)
-            
+
             accuracy = self.score(devX, devy)
             print(f"In epoch {self.nepoch}, val accuracy was {accuracy}, while best is {bestaccuracy}")
             if accuracy > bestaccuracy:
@@ -141,7 +139,7 @@ class PyTorchClassifier(object):
     def score_and_prob(self, devX, devy):
         self.model.eval()
         correct = 0
-        probas = []
+        probas = None
         if not isinstance(devX, torch.cuda.FloatTensor) or self.cudaEfficient:
             devX = torch.FloatTensor(devX).cuda()
             devy = torch.LongTensor(devy).cuda()
@@ -153,14 +151,16 @@ class PyTorchClassifier(object):
                     Xbatch = Xbatch.cuda()
                     ybatch = ybatch.cuda()
                 output = self.model(Xbatch)
-                vals = F.softmax(output).data.cpu().numpy()
-                
-                probas.append( vals)
+                vals = F.softmax(output, dim=0).data.cpu().numpy()
+                if probas is None:
+                    probas = vals
+                else:
+                    probas = np.append(arr=probas, values= vals, axis=0)
                 pred = output.data.max(1)[1]
                 ybatch = ybatch.data.max(1)[1]
                 correct += pred.long().eq(ybatch.data.long()).sum().item()
             accuracy = 1.0 * correct / len(devX)
-        return accuracy, np.array(probas    )
+        return accuracy, np.array(probas)
 
     def score(self, devX, devy):
         self.model.eval()
