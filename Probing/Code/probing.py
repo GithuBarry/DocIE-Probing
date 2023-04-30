@@ -17,6 +17,8 @@ if __name__ == "__main__":
             if "bucket" not in y:
                 continue
 
+            gc.collect()
+            
             print("Running on:", x, y)
             x_name = x[:-4]
             y_name = y[:-4]
@@ -51,7 +53,6 @@ if __name__ == "__main__":
 
             assert output_dimension > 1
 
-            gc.collect()
             X_train, X_val, X_test, y_train, y_val, y_test = X[400:], X[200:400], X[:200], Y[400:], Y[200:400], Y[:200]
 
             mlp_classifier = MLP(params=params, inputdim=embedding_dimension, nclasses=output_dimension,
