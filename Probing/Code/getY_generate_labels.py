@@ -1,4 +1,5 @@
 import json
+from collections import Counter
 
 import nltk
 import numpy as np
@@ -6,36 +7,35 @@ import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 
 if __name__ == '__main__':
+    dataset_name = "muc1700"
     muc_1700_input = open("../../Corpora/MUC/muc/processed2/muc_1700_GTT_style-test-dev-train.json")
     examples = json.load(muc_1700_input)
     muc_1700_input.close()
 
-    num_templates = [len(example['templates']) for example in examples]
-    np.save("Y_num_events_muc1700", np.array(num_templates))
+    label_sets = {"num_events": [len(example['templates']) for example in examples],
+                  "num_words": [len(nltk.word_tokenize(example['doctext'])) for example in examples],
+                  "num_sent": [len(nltk.sent_tokenize(example['doctext'])) for example in examples]
+                  }
 
-    cuts = pd.qcut(num_templates, q=10, duplicates='drop').categories
-    num_templates_10 = [[nt in cut for cut in cuts].index(True) for nt in num_templates]
-    enc = OneHotEncoder()
-    reshaped_array = np.array(num_templates_10).reshape(-1, 1)
-    num_templates_10 = enc.fit_transform(reshaped_array).toarray()
-    np.save("Y_bucket_num_events_bucket_muc1700", np.array(num_templates_10))
+    data = dict()
+    for key in label_sets:
+        labels = label_sets[key]
+        np.save(f"Y_{key}_{dataset_name}", np.array(labels))
 
-    num_words = [len(nltk.word_tokenize(example['doctext'])) for example in examples]
-    np.save("Y_num_tokens_muc1700", np.array(num_words))
+        # Using negative number to prioritize bucketing long tail.
+        # Otherwise
+        cuts = pd.qcut([-l for l in labels], q=10, duplicates='drop').categories
+        labels_bucketed_10 = [len(cuts) - [-nt in cut for cut in cuts].index(True) - 1 for nt in labels]
 
-    cuts = pd.qcut(num_words, q=10, duplicates='drop').categories
-    num_words_10 = [[nt in cut for cut in cuts].index(True) for nt in num_words]
-    enc = OneHotEncoder()
-    reshaped_array = np.array(num_words_10).reshape(-1, 1)
-    num_words_10 = enc.fit_transform(reshaped_array).toarray()
-    np.save("Y_bucket_num_tokens_muc1700", np.array(num_words_10))
+        enc = OneHotEncoder()
+        reshaped_array = np.array(labels_bucketed_10).reshape(-1, 1)
+        labels_bucketed_10_onehot = enc.fit_transform(reshaped_array).toarray()
+        np.save(f"Y_bucket_{key}_{dataset_name}", np.array(labels_bucketed_10_onehot))
 
-    num_sent = [len(nltk.sent_tokenize(example['doctext'])) for example in examples]
-    np.save("Y_num_sent_muc1700", np.array(num_sent))
+        print(key)
+        data[key] = dict(Counter(labels))
+        print(data[key])
+        data[key + "bucket"] = dict(Counter(labels_bucketed_10))
+        print(data[key + "bucket"])
 
-    cuts = pd.qcut(num_sent, q=10, duplicates='drop').categories
-    num_sent_10 = [[nt in cut for cut in cuts].index(True) for nt in num_sent]
-    enc = OneHotEncoder()
-    reshaped_array = np.array(num_sent_10).reshape(-1, 1)
-    num_sent_10 = enc.fit_transform(reshaped_array).toarray()
-    np.save("Y_bucket_num_sent_muc1700", np.array(num_sent_10))
+    json.dump(data, open("./label_stats.json", "w+"))
