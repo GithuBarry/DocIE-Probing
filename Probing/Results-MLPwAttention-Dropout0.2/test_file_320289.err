@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "./probing.py", line 64, in <module>
+    mlp_classifier.fit(X_train, y_train, (X_val, y_val), early_stop=True)
+  File "/home/zw545/DocIE-Probing/Probing/Code/senteval_classifier.py", line 94, in fit
+    trainX, trainy, devX, devy = self.prepare_split(X, y, validation_data,
+  File "/home/zw545/DocIE-Probing/Probing/Code/senteval_classifier.py", line 79, in prepare_split
+    trainX = torch.from_numpy(trainX).to(device, dtype=torch.float32)
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 6.29 GiB (GPU 0; 11.90 GiB total capacity; 1008.27 MiB already allocated; 3.14 GiB free; 8.21 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+Traceback (most recent call last):
+  File "./probing.py", line 64, in <module>
+    mlp_classifier.fit(X_train, y_train, (X_val, y_val), early_stop=True)
+  File "/home/zw545/DocIE-Probing/Probing/Code/senteval_classifier.py", line 94, in fit
+    trainX, trainy, devX, devy = self.prepare_split(X, y, validation_data,
+  File "/home/zw545/DocIE-Probing/Probing/Code/senteval_classifier.py", line 79, in prepare_split
+    trainX = torch.from_numpy(trainX).to(device, dtype=torch.float32)
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 6.29 GiB (GPU 0; 11.90 GiB total capacity; 1009.46 MiB already allocated; 5.02 GiB free; 6.33 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
