@@ -28,8 +28,9 @@ if __name__ == '__main__':
             train_acc = result['train_acc']
             val_acc = result['val_acc']
             test_acc = result['test_acc']
+            epoch = result["actual_epoch"]
 
-            txt = f"Val acc {val_acc:.2f}, Test acc {test_acc:.2f}, Train acc {train_acc:.2f}"
+            txt = f"Val acc {val_acc:.2f}, Test acc {test_acc:.2f}, Train acc {train_acc:.2f}\nEpoch {epoch}"
             cm_display.plot()
             cm_display.ax_.set_title(txt)
 
