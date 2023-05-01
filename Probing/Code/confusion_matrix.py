@@ -25,6 +25,12 @@ if __name__ == '__main__':
 
             cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=confusion_matrix,
                                                         display_labels=sorted(list(set(list(labels) + list(preds)))))
+            train_acc = result['train_acc']
+            val_acc = result['val_acc']
+            test_acc = result['test_acc']
 
+            txt = f"Val acc {val_acc:.2f}, Test acc {test_acc:.2f}, Train acc {train_acc:.2f}"
             cm_display.plot()
+            cm_display.ax_.set_title(txt)
+
             plt.savefig(file[:-5] + ".png")
