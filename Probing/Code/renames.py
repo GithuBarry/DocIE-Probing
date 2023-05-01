@@ -9,7 +9,7 @@ if __name__ == '__main__':
         ###################
         prefix = "probresult"
         if file[:len(prefix)] == prefix:
-            if file[-4:] == ".png":
+            if file[-5:] == ".json":
                 file_path = os.path.join(results_path, file)
-                new_path = file_path[:-4] + "_nhid200" + file_path[-4:]
-                os.renames(file_path, new_path)
+                new_path = file_path[:-5] + "_nhid200" + file_path[-5:]
+                os.renames(file_path)
