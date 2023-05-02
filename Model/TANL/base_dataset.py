@@ -3,6 +3,7 @@
 
 
 import os
+import json
 import logging
 import random
 from typing import Dict, Generator, Tuple, List
@@ -177,7 +178,8 @@ class BaseDataset(Dataset, ABC):
     def compute_features(self, max_input_length: int, max_output_length: int, multitask: bool = False):
         input_sentences = [self.input_format.format_input(example, multitask=multitask) for example in self.examples]
         output_sentences = [self.output_format.format_output(example) for example in self.examples]
-
+        print("tokenizer:", self.tokenizer)
+        l = []
         input_tok = self.tokenizer.batch_encode_plus(
             input_sentences,
             max_length=max_input_length,
@@ -185,6 +187,8 @@ class BaseDataset(Dataset, ABC):
             padding='max_length',
             truncation=True,
         )
+        for enc in input_tok._encodings:
+            l.append(enc.tokens)
         self._warn_max_sequence_length(max_input_length, input_sentences, "input")
 
         output_tok = self.tokenizer.batch_encode_plus(
@@ -195,7 +199,15 @@ class BaseDataset(Dataset, ABC):
             truncation=True,
         )
         self._warn_max_sequence_length(max_output_length, output_sentences, "output")
+        def uniquify(path):
+            filename, extension = os.path.splitext(path)
+            counter = 1
+            while os.path.exists(path):
+                path = filename + "_" + str(counter) + extension
+                counter += 1
+            return path
 
+        json.dump(l, open(uniquify("./tokens.json"),"w+"))
         assert input_tok.input_ids.size(0) == output_tok.input_ids.size(0)
     
         features = []
@@ -238,10 +250,10 @@ class BaseDataset(Dataset, ABC):
                 np.save(prefix+"_encoder_hidden_states.npy",tuple_to_numpy(predictions.encoder_hidden_states))
                 if not os.getenv("NO_DECODER_HIDDEN_STATE"):
                     np.save(prefix+"_decoder_hidden_states.npy",tuple_to_numpy(predictions.decoder_hidden_states))
-                if predictions.encoder_attentions:
-                    np.save(prefix+"_encoder_attentions.npy",tuple_to_numpy(predictions.encoder_attentions))
-                if predictions.cross_attentions:
-                    np.save(prefix+"_cross_attentions.npy",tuple_to_numpy(predictions.cross_attentions))
+                #if predictions.encoder_attentions:
+                #    np.save(prefix+"_encoder_attentions.npy",tuple_to_numpy(predictions.encoder_attentions))
+                #if predictions.cross_attentions:
+                #    np.save(prefix+"_cross_attentions.npy",tuple_to_numpy(predictions.cross_attentions))
                 np.save(prefix+"_sequences.npy",tuple_to_numpy(predictions.sequences))
             
             predictions = predictions.sequences

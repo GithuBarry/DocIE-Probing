@@ -15,19 +15,17 @@
 # limitations under the License.
 """ Named entity recognition fine-tuning: utilities to work with CoNLL-2003 task. """
 
-import json
+
 import logging
 import os
+import json
 import time
-from collections import OrderedDict
-
 import numpy as np
-
-incident_token_to_type = {'kidnapping': 'kidnapping', 'attack': 'attack', 'bombing': 'bombing', 'robbery': 'robbery',
-                          'arson': 'arson', 'forced': 'forced work stoppage'}  # for decoding
+from collections import OrderedDict
+incident_token_to_type = {'kidnapping': 'kidnapping', 'attack': 'attack', 'bombing': 'bombing', 'robbery': 'robbery', 'arson': 'arson', 'forced': 'forced work stoppage'} # for decoding
 
 logger = logging.getLogger(__name__)
-
+file_mode = None
 
 class InputExample(object):
     """A single training/test example for token classification."""
@@ -65,14 +63,12 @@ def find_sub_list(m_tokens, doctext_tokens):
             return idx, idx + m_len - 1
     return -1, -1
 
-
 def not_sub_string(candidate_str, entitys):
     for entity in entitys:
         mention_string = entity[0]
         if candidate_str in mention_string:
             return False
     return True
-
 
 def read_golds_from_test_file(data_dir, tokenizer, debug=False):
     golds = OrderedDict()
@@ -82,11 +78,10 @@ def read_golds_from_test_file(data_dir, tokenizer, debug=False):
         example_cnt = 0
         for line in f:
             example_cnt += 1
-            if example_cnt > 3 and debug:
+            if example_cnt >3 and debug:
                 break
             line = json.loads(line)
-            docid = int(line["docid"].split("-")[0][-1]) * 10000 + int(
-                line["docid"].split("-")[-1])  # transform TST1-MUC3-0001 to int(0001)
+            docid = int(line["docid"].split("-")[0][-1])*10000 + int(line["docid"].split("-")[-1]) # transform TST1-MUC3-0001 to int(0001)
             doctext, templates_raw = line["doctext"], line["templates"]
 
             templates = []
@@ -104,7 +99,7 @@ def read_golds_from_test_file(data_dir, tokenizer, debug=False):
                             #     template[role].append([start, end])
                             entity = []
                             for mention_offset_pair in entity_raw:
-                                entity.append(mention_offset_pair[0])
+                                entity.append(mention_offset_pair[0]) 
                             if entity:
                                 template[role].append(entity)
 
@@ -125,20 +120,20 @@ def read_golds_from_test_file(data_dir, tokenizer, debug=False):
     # import ipdb; ipdb.set_trace()
     return doctexts_tokens, golds
 
-
 def read_examples_from_file(data_dir, mode, tokenizer, debug=False):
     file_path = os.path.join(data_dir, "{}.json".format(mode))
     examples = []
     with open(file_path, encoding="utf-8") as f:
         for line in f:
-            if len(examples) > 3 and debug:
+            if len(examples) >3 and debug:
                 break
             line = json.loads(line)
             if mode == "train":
-                docid = int(line["docid"].split("-")[-1])  # transform DEV-MUC3-0001 to 1
+                docid = int(line["docid"].split("-")[-1]) # transform DEV-MUC3-0001 to 1
             else:
-                docid = int(line["docid"].split("-")[0][-1]) * 10000 + int(
-                    line["docid"].split("-")[-1])  # transform TST1-MUC3-0001 to 10001
+                
+                first_label  = line["docid"].split("-")[0][-1]
+                docid = int(first_label if first_label.isdigit() else 5)*10000 + int(line["docid"].split("-")[-1]) # transform TST1-MUC3-0001 to 10001
 
             doctext, templates_raw = line["doctext"], line["templates"]
             doctext_tokens = tokenizer.tokenize(doctext)
@@ -174,37 +169,36 @@ def read_examples_from_file(data_dir, mode, tokenizer, debug=False):
 
 
 def convert_examples_to_features(
-        examples,
-        # label_list,
-        max_seq_length_src,
-        max_seq_length_tgt,
-        tokenizer,
-        cls_token_at_end=False,
-        cls_token="[CLS]",
-        cls_token_segment_id=1,
-        sep_token="[SEP]",
-        sep_token_extra=False,
-        sep_template="[unused0]",
-        pad_on_left=False,
-        pad_token=0,
-        pad_token_segment_id=0,
-        pad_token_label_id=-100,
-        sequence_a_segment_id=0,
-        mask_padding_with_zero=True,
+    examples,
+    # label_list,
+    max_seq_length_src,
+    max_seq_length_tgt,
+    tokenizer,
+    cls_token_at_end=False,
+    cls_token="[CLS]",
+    cls_token_segment_id=1,
+    sep_token="[SEP]",
+    sep_token_extra=False,
+    sep_template="[unused0]",
+    pad_on_left=False,
+    pad_token=0,
+    pad_token_segment_id=0,
+    pad_token_label_id=-100,
+    sequence_a_segment_id=0,
+    mask_padding_with_zero=True,
 ):
     """ Loads a data file into a list of `InputBatch`s
         `cls_token_at_end` define the location of the CLS token:
             - False (Default, BERT/XLM pattern): [CLS] + A + [SEP] + B + [SEP]
             - True (XLNet/GPT pattern): A + [SEP] + B + [SEP] + [CLS]
         `cls_token_segment_id` define the segment id associated to the CLS token (0 for BERT, 2 for XLNet)
-    """
+    """   
 
     features = []
     # max_num_entity_tgt = (max_seq_length_tgt - (1 + 5)) // 2 # excluding [CLS], [SEP] * 5
     max_num_entity_tgt = 15
     max_num_templates = 5
-    saved_for_probing = {}
-
+    saved_for_probing = dict()
     for (ex_index, example) in enumerate(examples):
         if ex_index % 10000 == 0:
             logger.info("Writing example %d of %d", ex_index, len(examples))
@@ -295,7 +289,7 @@ def convert_examples_to_features(
         num_templates = 0
         for template in templates:
             num_templates += 1
-            if num_templates > max_num_templates:
+            if num_templates >  max_num_templates:
                 break
             for role in template:
                 if role == "incident_type":
@@ -306,18 +300,18 @@ def convert_examples_to_features(
                     tgt_position_ids.append(incident_type_to_src_token_offset[incident_t_token])
                 else:
                     for span in template[role]:
-                        if num_entity_span < max_num_entity_tgt and span[0] in range(len(tokens)) and span[1] in range(
-                                len(tokens)):
+                        if num_entity_span < max_num_entity_tgt and span[0] in range(len(tokens)) and span[1] in range(len(tokens)):
                             num_entity_span += 1
-                            tgt_tokens.append(tokens[span[0]])  # span start token
+                            tgt_tokens.append(tokens[span[0]]) # span start token
                             tgt_position_ids.append(token_offset_to_src_token_offset[span[0]])
-                            tgt_tokens.append(tokens[span[1]])  # span end token
+                            tgt_tokens.append(tokens[span[1]]) # span end token
                             tgt_position_ids.append(token_offset_to_src_token_offset[span[1]])
                 tgt_tokens.append(sep_token)
-                tgt_position_ids.append(len(src_tokens) - 1)  # to confirm
+                tgt_position_ids.append(len(src_tokens) - 1) # to confirm
 
             tgt_tokens.append(sep_template)
             tgt_position_ids.append(sep_template_offset)
+
 
         # [CLS] (as end)
         tgt_tokens.append(cls_token)
@@ -325,10 +319,7 @@ def convert_examples_to_features(
 
         tgt_segment_ids = [1 - sequence_a_segment_id] * len(tgt_tokens)
         label_ids = tgt_position_ids[1:]
-        global file_mode
-        saved_for_probing[f"{file_mode}_{str(ex_index)}"] = dict()
-        saved_for_probing["src_tokens"] = src_tokens
-        saved_for_probing["tgt_tokens"] = tgt_tokens
+
         # convert to ids and padding
         tgt_tokens_ids = tokenizer.convert_tokens_to_ids(tgt_tokens)
         tgt_mask = [1 if mask_padding_with_zero else 0] * len(tgt_tokens_ids)
@@ -336,9 +327,16 @@ def convert_examples_to_features(
         padding_length = max_seq_length_tgt - len(tgt_tokens)
         tgt_tokens_ids += [pad_token] * padding_length
         tgt_mask += [0 if mask_padding_with_zero else 1] * padding_length
-        tgt_segment_ids += [pad_token_segment_id] * padding_length
+        tgt_segment_ids += [pad_token_segment_id] * padding_length 
         tgt_position_ids += [0] * padding_length
         label_ids += [pad_token_label_id] * (padding_length + 1)
+
+
+        global file_mode
+        doc_index = f"{file_mode}_{str(ex_index)}"
+        saved_for_probing[doc_index] = dict()
+        saved_for_probing[doc_index]["src_tokens"] = src_tokens
+        saved_for_probing[doc_index]["tgt_tokens"] = tgt_tokens
 
         # import ipdb; ipdb.set_trace()
 
@@ -348,11 +346,9 @@ def convert_examples_to_features(
         src_tgt_mask = np.full((max_seq_length_src, max_seq_length_tgt), 0 if mask_padding_with_zero else 1)
         seq_ids = np.array(list(range(len(tgt_tokens_ids))))
         try:
-            tgt_tgt_causal_mask = seq_ids[None, :].repeat(max_seq_length_tgt, axis=0) <= seq_ids[:, None].repeat(
-                max_seq_length_tgt, axis=1)
+            tgt_tgt_causal_mask = seq_ids[None, :].repeat(max_seq_length_tgt, axis=0) <= seq_ids[:, None].repeat(max_seq_length_tgt, axis=1)
         except ValueError:
-            import ipdb;
-            ipdb.set_trace()
+            import ipdb; ipdb.set_trace()
         tgt_tgt_mask = tgt_mask * tgt_tgt_causal_mask
         src_mask_2d = np.concatenate((src_src_mask, src_tgt_mask), axis=1)
         tgt_mask_2d = np.concatenate((tgt_src_mask, tgt_tgt_mask), axis=1)
@@ -363,8 +359,7 @@ def convert_examples_to_features(
         position_ids = src_position_ids + tgt_position_ids
 
         if len(input_ids) != 510:
-            import ipdb;
-            ipdb.set_trace()
+            import ipdb; ipdb.set_trace()
 
         # import ipdb; ipdb.set_trace()
 
@@ -379,8 +374,7 @@ def convert_examples_to_features(
             logger.info("label_ids: %s", " ".join([str(x) for x in label_ids]))
 
         features.append(
-            InputFeatures(input_ids=input_ids, input_mask=input_mask, segment_ids=segment_ids,
-                          position_ids=position_ids, label_ids=label_ids, docid=docid)
+            InputFeatures(input_ids=input_ids, input_mask=input_mask, segment_ids=segment_ids, position_ids=position_ids, label_ids=label_ids, docid=docid)
         )
         # import ipdb; ipdb.set_trace()
     json.dump(saved_for_probing, open(f"parsed_outputs{time.time():.0f}", "w+"))

@@ -5,26 +5,29 @@ import os
 from senteval_classifier import *
 
 if __name__ == "__main__":
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    
     probing_classifier_width = int(os.getenv("nhid"))
     params = {"max_epoch": 200, "nhid": probing_classifier_width, "optim": "adam", "tenacity": 10, "batch_size": 8,
               "dropout": 0.0}
-
-    for x in os.listdir("../X/"):
+    xpath = os.getenv("x")
+    for x in os.listdir(xpath):
         for y in os.listdir("../Y/"):
             if x[-4:] != ".npy" or y[-4:] != ".npy":
                 continue
             if "bucket" not in y:
                 continue
 
+            device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
             gc.collect()
+            with torch.no_grad():
+                torch.cuda.empty_cache()
 
             print("Running on:", x, y)
             x_name = x[:-4]
             y_name = y[:-4]
             print("loading X Y")
             X = np.load(
-                f"../X/{x_name}.npy", allow_pickle=True)
+                f"{xpath}{x_name}.npy", allow_pickle=True)
             Y = np.load(
                 f"../Y/{y_name}.npy")
 

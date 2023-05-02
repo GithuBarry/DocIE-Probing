@@ -1,32 +1,36 @@
 import logging
 import os
 import random
-
 import numpy as np
 import pytorch_lightning as pl
 import torch
-
+import time
 from transformers import (
-    ALL_PRETRAINED_MODEL_ARCHIVE_MAP,
     AdamW,
     AutoConfig,
     AutoModel,
     AutoModelForPreTraining,
     AutoModelForQuestionAnswering,
+    AutoModelForSeq2SeqLM,
     AutoModelForSequenceClassification,
     AutoModelForTokenClassification,
     AutoModelWithLMHead,
     AutoTokenizer,
-    get_linear_schedule_with_warmup,
+    PretrainedConfig,
+    PreTrainedTokenizer,
 )
-from transformers.modeling_auto import MODEL_MAPPING
-
+from transformers.optimization import (
+    Adafactor,
+    get_cosine_schedule_with_warmup,
+    get_cosine_with_hard_restarts_schedule_with_warmup,
+    get_linear_schedule_with_warmup,
+    get_polynomial_decay_schedule_with_warmup,
+)
+from transformers.utils.versions import require_version
 
 logger = logging.getLogger(__name__)
 
-
-ALL_MODELS = tuple(ALL_PRETRAINED_MODEL_ARCHIVE_MAP)
-MODEL_CLASSES = tuple(m.model_type for m in MODEL_MAPPING)
+require_version("pytorch_lightning>=1.0.4")
 
 MODEL_MODES = {
     "base": AutoModel,
@@ -39,41 +43,47 @@ MODEL_MODES = {
 
 
 def set_seed(args):
-    random.seed(args.seed)
-    np.random.seed(args.seed)
-    torch.manual_seed(args.seed)
-    if args.n_gpu > 0:
-        torch.cuda.manual_seed_all(args.seed)
+    random.seed(args['seed'])
+    np.random.seed(args['seed'])
+    torch.manual_seed(args['seed'])
+    if args['n_gpu'] > 0:
+        torch.cuda.manual_seed_all(args['seed'])
 
 
 class BaseTransformer(pl.LightningModule):
+    @property
+    def hparams(self):
+        return self._hparams
+
     def __init__(self, hparams, num_labels=None, mode="base"):
         "Initialize a model."
 
         super(BaseTransformer, self).__init__()
         self.hparams = hparams
-        self.hparams.model_type = self.hparams.model_type.lower()
+        self.hparams['model_type'] = self.hparams['model_type'].lower()
         config = AutoConfig.from_pretrained(
-            self.hparams.config_name if self.hparams.config_name else self.hparams.model_name_or_path,
-            **({"num_labels": num_labels} if num_labels is not None else {}),
-            cache_dir=self.hparams.cache_dir if self.hparams.cache_dir else None,
-            output_hidden_states=True
+            self.hparams['config_name'] if self.hparams['config_name'] else self.hparams['model_name_or_path'],
+            **({}),  # TODO changed from **({"num_labels": num_labels} if num_labels is not None else {}),
+            cache_dir=self.hparams['cache_dir'] if self.hparams['cache_dir'] else None,
+            output_hidden_states = True
         )
         tokenizer = AutoTokenizer.from_pretrained(
-            self.hparams.tokenizer_name if self.hparams.tokenizer_name else self.hparams.model_name_or_path,
-            do_lower_case=self.hparams.do_lower_case,
-            cache_dir=self.hparams.cache_dir if self.hparams.cache_dir else None,
+            self.hparams['tokenizer_name'] if self.hparams['tokenizer_name'] else self.hparams['model_name_or_path'],
+            do_lower_case=self.hparams['do_lower_case'],
+            cache_dir=self.hparams['cache_dir'] if self.hparams['cache_dir'] else None,
+            # sep_token='[SEP]',cls_token='[CLS]',
+            additional_special_tokens=['madeupword0000']
         )
         model = MODEL_MODES[mode].from_pretrained(
-            self.hparams.model_name_or_path,
-            from_tf=bool(".ckpt" in self.hparams.model_name_or_path),
+            self.hparams['model_name_or_path'],
+            from_tf=bool(".ckpt" in self.hparams['model_name_or_path']),
             config=config,
-            cache_dir=self.hparams.cache_dir if self.hparams.cache_dir else None,
+            cache_dir=self.hparams['cache_dir'] if self.hparams['cache_dir'] else None,
         )
         self.config, self.tokenizer, self.model = config, tokenizer, model
 
     def is_logger(self):
-        return self.trainer.proc_rank <= 0
+        return self.trainer.global_rank <= 0
 
     def configure_optimizers(self):
         "Prepare optimizer and schedule (linear warmup and decay)"
@@ -83,22 +93,36 @@ class BaseTransformer(pl.LightningModule):
         optimizer_grouped_parameters = [
             {
                 "params": [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
-                "weight_decay": self.hparams.weight_decay,
+                "weight_decay": self.hparams['weight_decay'],
             },
             {
                 "params": [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)],
                 "weight_decay": 0.0,
             },
         ]
-        optimizer = AdamW(optimizer_grouped_parameters, lr=self.hparams.learning_rate, eps=self.hparams.adam_epsilon)
+        optimizer = AdamW(optimizer_grouped_parameters, lr=self.hparams['learning_rate'],
+                          eps=self.hparams['adam_epsilon'])
         self.opt = optimizer
         return [optimizer]
 
-    def optimizer_step(self, epoch, batch_idx, optimizer, optimizer_idx, second_order_closure=None):
-        if self.trainer.use_tpu:
-            xm.optimizer_step(optimizer)
-        else:
-            optimizer.step()
+    # def optimizer_step(self, epoch, batch_idx, optimizer, optimizer_idx, second_order_closure=None):
+    #     if self.trainer.use_tpu:
+    #         xm.optimizer_step(optimizer)
+    #     else:
+    #         optimizer.step()
+    #     optimizer.zero_grad()
+    #     self.lr_scheduler.step()
+    def optimizer_step(self,
+                       epoch=None,
+                       batch_idx=None,
+                       optimizer=None,
+                       optimizer_idx=None,
+                       optimizer_closure=None,
+                       on_tpu=None,
+                       using_native_amp=None,
+                       using_lbfgs=None
+                       ):
+        optimizer.step(closure=optimizer_closure)
         optimizer.zero_grad()
         self.lr_scheduler.step()
 
@@ -108,40 +132,40 @@ class BaseTransformer(pl.LightningModule):
         return tqdm_dict
 
     # def test_step(self, batch, batch_nb):
-        # return self.validation_step(batch, batch_nb)
+    # return self.validation_step(batch, batch_nb)
 
     # def test_end(self, outputs):
-        # return self.validation_end(outputs)
+    # return self.validation_end(outputs)
 
     def train_dataloader(self):
-        train_batch_size = self.hparams.train_batch_size
+        train_batch_size = self.hparams['train_batch_size']
         dataloader = self.load_dataset("train", train_batch_size)
 
         t_total = (
-            (len(dataloader.dataset) // (train_batch_size * max(1, self.hparams.n_gpu)))
-            // self.hparams.gradient_accumulation_steps
-            * float(self.hparams.num_train_epochs)
+                (len(dataloader.dataset) // (train_batch_size * max(1, self.hparams['n_gpu'])))
+                // self.hparams['gradient_accumulation_steps']
+                * float(self.hparams['num_train_epochs'])
         )
         scheduler = get_linear_schedule_with_warmup(
-            self.opt, num_warmup_steps=self.hparams.warmup_steps, num_training_steps=t_total
+            self.opt, num_warmup_steps=self.hparams['warmup_steps'], num_training_steps=t_total
         )
         self.lr_scheduler = scheduler
         return dataloader
 
     def val_dataloader(self):
-        return self.load_dataset("dev", self.hparams.eval_batch_size)
+        return self.load_dataset("dev", self.hparams['eval_batch_size'])
 
     def test_dataloader(self):
-        return self.load_dataset("test", self.hparams.eval_batch_size)
+        return self.load_dataset("test", self.hparams['eval_batch_size'])
 
     def _feature_file(self, mode):
         return os.path.join(
-            self.hparams.data_dir,
+            self.hparams['data_dir'],
             "cached_{}_{}_{}_{}".format(
                 mode,
                 "gtt",
-                list(filter(None, self.hparams.model_name_or_path.split("/"))).pop(),
-                str(self.hparams.max_seq_length_src),
+                list(filter(None, self.hparams['model_name_or_path'].split("/"))).pop(),
+                str(self.hparams['max_seq_length_src']),
             ),
         )
 
@@ -152,14 +176,14 @@ class BaseTransformer(pl.LightningModule):
             default=None,
             type=str,
             required=True,
-            help="Model type selected in the list: " + ", ".join(MODEL_CLASSES),
+            help="Model type selected in the list",
         )
         parser.add_argument(
             "--model_name_or_path",
             default=None,
             type=str,
             required=True,
-            help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(ALL_MODELS),
+            help="Path to pre-trained model or shortcut name selected in the list",
         )
         parser.add_argument(
             "--config_name", default="", type=str, help="Pretrained config name or path if not the same as model_name"
@@ -190,6 +214,10 @@ class BaseTransformer(pl.LightningModule):
         parser.add_argument("--train_batch_size", default=32, type=int)
         parser.add_argument("--eval_batch_size", default=32, type=int)
 
+    @hparams.setter
+    def hparams(self, value):
+        self._hparams = value
+
 
 class LoggingCallback(pl.Callback):
     def on_validation_end(self, trainer, pl_module):
@@ -208,7 +236,7 @@ class LoggingCallback(pl.Callback):
             metrics = trainer.callback_metrics
 
             # Log and save results to file
-            output_test_results_file = os.path.join(pl_module.hparams.output_dir, "test_results.txt")
+            output_test_results_file = os.path.join(pl_module.hparams['output_dir'], "test_results.txt")
             with open(output_test_results_file, "w") as writer:
                 for key in sorted(metrics):
                     if key not in ["log", "progress_bar"]:
@@ -236,7 +264,7 @@ def add_generic_args(parser, root_dir):
         type=str,
         default="O1",
         help="For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3']."
-        "See details at https://nvidia.github.io/apex/amp.html",
+             "See details at https://nvidia.github.io/apex/amp.html",
     )
 
     parser.add_argument("--n_gpu", type=int, default=1)
@@ -261,48 +289,62 @@ def generic_train(model, args):
     set_seed(args)
 
     # Setup distant debugging if needed
-    if args.server_ip and args.server_port:
+    if args['server_ip'] and args['server_port']:
         # Distant debugging - see https://code.visualstudio.com/docs/python/debugging#_attach-to-a-local-script
         import ptvsd
 
         print("Waiting for debugger attach")
-        ptvsd.enable_attach(address=(args.server_ip, args.server_port), redirect_output=True)
+        ptvsd.enable_attach(address=(args['server_ip'], args['server_port']), redirect_output=True)
         ptvsd.wait_for_attach()
 
-    if os.path.exists(args.output_dir) and os.listdir(args.output_dir) and args.do_train:
-        raise ValueError("Output directory ({}) already exists and is not empty.".format(args.output_dir))
+    # if os.path.exists(args['output_dir']) and os.listdir(args['output_dir']) and args['do_train']:
+    #     raise ValueError("Output directory ({}) already exists and is not empty.".format(args['output_dir']))
 
-    checkpoint_callback = pl.callbacks.ModelCheckpoint(
-        filepath=args.output_dir, prefix="checkpoint", monitor="val_accuracy", mode="max", save_top_k=5
+    checkpoint_callback = pl.callbacks.model_checkpoint.ModelCheckpoint(
+        # filepath=args['output_dir'], prefix="checkpoint", monitor="val_accuracy", mode="max", save_top_k=5
+        dirpath=args['output_dir'], monitor="val_loss", mode="min",
+        filename='checkpoint_'+"time={0:.0f}".format(time.time())+'_{epoch:d}_{val_loss:.2f}',
+        save_on_train_epoch_end=True,
+        save_top_k=5,
+        every_n_epochs=1,
+        verbose=True,
+        save_last = True
+        # period=1 # Deprecated in pl V1.5
     )
 
     train_params = dict(
-        accumulate_grad_batches=args.gradient_accumulation_steps,
-        gpus=args.n_gpu,
-        max_epochs=args.num_train_epochs,
-        early_stop_callback=False,
-        gradient_clip_val=args.max_grad_norm,
-        checkpoint_callback=checkpoint_callback,
-        callbacks=[LoggingCallback()],
+        accumulate_grad_batches=args['gradient_accumulation_steps'],
+        gpus=args['n_gpu'],
+        max_epochs=args['num_train_epochs'],
+        # default_root_dir=args['output_dir'],
+        # early_stop_callback=False,
+        gradient_clip_val=args['max_grad_norm'],
+        # checkpoint_callback=checkpoint_callback,
+        # callbacks=[LoggingCallback()],
+
+        # checkpoint_callback=True,
+        # callbacks=[checkpoint_callback, LoggingCallback()],
+        # check_val_every_n_epoch=1,
+        callbacks=[checkpoint_callback],
+        log_every_n_steps=1
     )
 
-    if args.fp16:
-        train_params["use_amp"] = args.fp16
-        train_params["amp_level"] = args.fp16_opt_level
+    if args['fp16']:
+        train_params["use_amp"] = args['fp16']
+        train_params["amp_level"] = args['fp16_opt_level']
 
-    if args.n_tpu_cores > 0:
+    if args['n_tpu_cores'] > 0:
         global xm
-        import torch_xla.core.xla_model as xm
 
-        train_params["num_tpu_cores"] = args.n_tpu_cores
+        train_params["num_tpu_cores"] = args['n_tpu_cores']
         train_params["gpus"] = 0
 
-    if args.n_gpu > 1:
+    if args['n_gpu'] > 1:
         train_params["distributed_backend"] = "ddp"
 
     trainer = pl.Trainer(**train_params)
 
-    if args.do_train:
+    if args['do_train']:
         trainer.fit(model)
 
     return trainer
