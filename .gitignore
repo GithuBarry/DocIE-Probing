@@ -180,5 +180,4 @@ Model/TANL/data/mucevent/cached_mucevent_trigger_*_T5TokenizerFast_512_512_multi
 Model/TANL/data/mucevent/cached_mucevent_argument_*_T5TokenizerFast_512_512_multitask.pth
 Model/TANL/data/mucevent/cached_mucevent_*_T5TokenizerFast_512_512_multitask.pth
 Corpora/MUC/muc/processed/cached_*_gtt_bert-base-uncased_435
-
-
+Model/GTT/model_GTT_18/saved_model
