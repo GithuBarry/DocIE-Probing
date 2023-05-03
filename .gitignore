@@ -171,8 +171,8 @@ Model/GTT/HiddenStates-Old/train_hidden_states/*
 Probing/OtherX/X_TANL_layer_*_bert-uncased_epoch20_muc1700.npy
 Probing/ResultsDeprecated-RandomDataSplitResults/Results-ThreeLinearLayers/*.pt
 Model/GTT/HiddenStates/hiddenstates_*_alllayers.npy
-Model/TANL/epoch20/output_sentence*_sequences.npy
-Model/TANL/epoch20/output_sentence*_encoder_hidden_states.npy
+Model/TANL/HiddenStates/epoch20_new/output_sentence*_sequences.npy
+Model/TANL/HiddenStates/epoch20_new/output_sentence*_encoder_hidden_states.npy
 Probing/X/*.npy
 Probing/X/*/*.npy
 Model/GTT/model_GTT_18/*.ckpt
@@ -181,3 +181,4 @@ Model/TANL/data/mucevent/cached_mucevent_argument_*_T5TokenizerFast_512_512_mult
 Model/TANL/data/mucevent/cached_mucevent_*_T5TokenizerFast_512_512_multitask.pth
 Corpora/MUC/muc/processed/cached_*_gtt_bert-base-uncased_435
 Model/GTT/model_GTT_18/saved_model
+

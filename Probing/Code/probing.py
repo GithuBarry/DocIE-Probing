@@ -83,21 +83,21 @@ if __name__ == "__main__":
             print("val_acc", val_acc)
             epoch_str = str(mlp_classifier.nepoch)
 
-            y_pred = []
+            #y_pred = []
             y_true = []
 
-            y_val_pred = []
+            #y_val_pred = []
             y_val_true = []
 
             # iterate over test data
             for output, labels in [(p_test[i], y_test[i]) for i in range(len(X_test))]:
                 # Feed Network
-                y_pred.append(output)  # Save Prediction
+                #y_pred.append(output)  # Save Prediction
                 y_true.append(labels)  # Save Truth
                 pass
 
             for output, labels in [(p_val[i], y_val[i]) for i in range(len(X_val))]:
-                y_val_pred.append(output)  # Save Prediction
+                #y_val_pred.append(output)  # Save Prediction
                 y_val_true.append(labels)  # Save Truth
                 pass
 
@@ -123,7 +123,7 @@ if __name__ == "__main__":
                       "model_param_names": str([x for x in mlp_classifier.model.named_modules()][0][1])}
 
             print(result)
-            torch.save(mlp_classifier.model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}.pt")
+            #torch.save(mlp_classifier.model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}.pt")
             with open(f'probresult_{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}.json', 'w') as f:
                 json.dump(result, f, indent=4)
             pass

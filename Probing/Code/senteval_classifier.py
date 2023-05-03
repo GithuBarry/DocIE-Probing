@@ -96,7 +96,7 @@ def get_optimizer(s):
 
 
 class PyTorchClassifier(object):
-    def __init__(self, inputdim, nclasses, l2reg=0., batch_size=64, seed=1111,
+    def __init__(self, inputdim, nclasses, l2reg=0., batch_size=64, seed=111,
                  cudaEfficient=False):
         # fix seed
         np.random.seed(seed)
@@ -199,7 +199,7 @@ class PyTorchClassifier(object):
                     Xbatch = Xbatch.cuda()
                     ybatch = ybatch.cuda()
                 output = self.model(Xbatch)
-                vals = F.softmax(output, dim=0).data.cpu().numpy()
+                vals = F.softmax(output, dim=1).data.cpu().numpy()
                 if probas is None:
                     probas = vals
                 else:
