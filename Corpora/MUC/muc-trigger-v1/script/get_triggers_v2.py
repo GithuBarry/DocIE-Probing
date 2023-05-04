@@ -2,6 +2,10 @@
 
 import json
 from collections import Counter
+import spacy
+import numpy as np
+nlp = spacy.load("en_core_web_sm")
+
 
 old_triggered_muc1700_path = "../../muc-trigger-v0/GTT_Style/muc_1700_v0.1_GTT_style_triggered-test-dev-train.json"
 new_muc1700_path = "muc_1700_v1.1.1_GTT_style_triggered-test-dev-train.json"
@@ -95,6 +99,10 @@ if __name__ == "__main__":
 
                         for trigger_candidate in selected_trigger[incident_type]:
                             if trigger_candidate in e['doctext']:
+
+                                trigger_doc = nlp(trigger_candidate)
+                                trigger_vec = trigger_doc.vector
+
                                 trigger_indices = find_all(text, trigger_candidate)
 
                                 distance = float('inf')
@@ -102,10 +110,14 @@ if __name__ == "__main__":
 
                                 for trigger_index in trigger_indices:
                                     # Choose best occurrence
-
-                                    new_distance = -sum(
-                                        [1 / (abs(role_index - trigger_index) + 0.000001) for role_index in indices])
-
+                                    # print([e['doctext'][index] for index in indices])
+                                    #indices are the role filler positions
+                                    indices_vecs = [nlp(e['doctext'][role_index]).vector for role_index in indices]
+                                    # Now consider shared role fillers, that will increase the count
+                                    
+                                    indices_vecs.append(trigger_vec)
+                                    sims = np.dot(indices_vecs, trigger_vec.T) / np.linalg.norm(indices_vecs, axis=1) / np.linalg.norm(trigger_vec)
+                                    new_distance = 1 - np.max(sims)
                                     if repeated_templates <= 0 and trigger_index in selected_trigger_indices:
                                         new_distance = float('inf')
                                     if not indices:

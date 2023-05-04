@@ -2,6 +2,18 @@
 
 import json
 from collections import Counter
+import spacy
+import numpy as np
+nlp = spacy.load("en_core_web_sm")
+import torch
+from transformers import BertModel, BertTokenizer
+import torch
+from sklearn.metrics.pairwise import cosine_similarity
+model_name = 'bert-base-uncased'
+tokenizer = BertTokenizer.from_pretrained(model_name)
+model = BertModel.from_pretrained(model_name)
+
+
 
 old_triggered_muc1700_path = "../../muc-trigger-v0/GTT_Style/muc_1700_v0.1_GTT_style_triggered-test-dev-train.json"
 new_muc1700_path = "muc_1700_v1.1.1_GTT_style_triggered-test-dev-train.json"
@@ -95,6 +107,12 @@ if __name__ == "__main__":
 
                         for trigger_candidate in selected_trigger[incident_type]:
                             if trigger_candidate in e['doctext']:
+                                trigger_tokens = tokenizer.tokenize(trigger_candidate)
+                                trigger_ids = tokenizer.convert_tokens_to_ids(trigger_tokens)
+                                trigger_ids = torch.tensor(trigger_ids).unsqueeze(0)
+                                with torch.no_grad():
+                                    bert_output = model(trigger_ids)[0].squeeze(0)
+                                trigger_vec = bert_output.detach().numpy()
                                 trigger_indices = find_all(text, trigger_candidate)
 
                                 distance = float('inf')
@@ -102,9 +120,23 @@ if __name__ == "__main__":
 
                                 for trigger_index in trigger_indices:
                                     # Choose best occurrence
-
-                                    new_distance = -sum(
-                                        [1 / (abs(role_index - trigger_index) + 0.000001) for role_index in indices])
+                                    # print([e['doctext'][index] for index in indices])
+                                    #indices are the role filler position
+                                    sims = []
+                                    for index in indices:
+                                        filler_tokens = tokenizer.tokenize(text[index])
+                                        filler_ids = tokenizer.convert_tokens_to_ids(filler_tokens)
+                                        filler_ids = torch.tensor(filler_ids).unsqueeze(0)
+                                        with torch.no_grad():
+                                            bert_output = model(filler_ids)[0].squeeze(0)
+                                        filler_vec = bert_output.detach().numpy()
+                                        # get cosine similarity from bert
+                                      
+                                        sims.append(cosine_similarity(trigger_vec, filler_vec)[0][0])
+                                    if sims:
+                                        new_distance = sum(sims) / len(sims)
+                                    else:
+                                        new_distance = 0
 
                                     if repeated_templates <= 0 and trigger_index in selected_trigger_indices:
                                         new_distance = float('inf')
