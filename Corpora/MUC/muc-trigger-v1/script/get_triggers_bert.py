@@ -104,17 +104,23 @@ if __name__ == "__main__":
                         # Use glove vectors and cosine similarity for best distance
                         
                         best_index = None if not selected_trigger_indices else selected_trigger_indices[-1]
-
+                        trigger_candidate_dict = dict()
+                        #while tokenising, add the index to the dictionary
+                        encoded_dict = tokenizer.encode_plus(text, max_length=512, truncation=True, padding='max_length', add_special_tokens=True)
+                        input_ids = torch.tensor(encoded_dict['input_ids']).unsqueeze(0)
+                        attention_mask = torch.tensor(encoded_dict['attention_mask']).unsqueeze(0)
+                        with torch.no_grad():
+                            bert_output = model(input_ids, attention_mask=attention_mask)[0].squeeze(0)
+                        text_vec = bert_output.detach().numpy()
+                        
                         for trigger_candidate in selected_trigger[incident_type]:
                             if trigger_candidate in e['doctext']:
-                                trigger_tokens = tokenizer.tokenize(trigger_candidate)
-                                trigger_ids = tokenizer.convert_tokens_to_ids(trigger_tokens)
-                                trigger_ids = torch.tensor(trigger_ids).unsqueeze(0)
-                                with torch.no_grad():
-                                    bert_output = model(trigger_ids)[0].squeeze(0)
-                                trigger_vec = bert_output.detach().numpy()
+                                trigger_candidate_dict[trigger_candidate] = e['doctext'].index(trigger_candidate)
+                                ind = trigger_candidate_dict[trigger_candidate]    
+                                if(ind >=512):
+                                    ind = 0                                          
+                                trigger_vec = text_vec[ind]
                                 trigger_indices = find_all(text, trigger_candidate)
-
                                 distance = float('inf')
                                 trigger_index_best = 0
 
@@ -131,8 +137,7 @@ if __name__ == "__main__":
                                             bert_output = model(filler_ids)[0].squeeze(0)
                                         filler_vec = bert_output.detach().numpy()
                                         # get cosine similarity from bert
-                                      
-                                        sims.append(cosine_similarity(trigger_vec, filler_vec)[0][0])
+                                        sims.append(cosine_similarity(trigger_vec.reshape(1, -1), filler_vec.reshape(1, -1))[0][0])
                                     if sims:
                                         new_distance = sum(sims) / len(sims)
                                     else:
