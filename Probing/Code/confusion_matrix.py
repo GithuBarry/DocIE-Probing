@@ -6,7 +6,7 @@ import numpy as np
 from sklearn import metrics
 
 if __name__ == '__main__':
-    results_path = "../Results-MLPwAttention-Bucketed/"
+    results_path = "../Results-MLPwAttention-FixedSoftmax/"
     for file in os.listdir(results_path):
         #####Filtering#####
         if "nhid400" not in file:

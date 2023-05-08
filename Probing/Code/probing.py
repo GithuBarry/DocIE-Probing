@@ -10,8 +10,9 @@ if __name__ == "__main__":
     params = {"max_epoch": 200, "nhid": probing_classifier_width, "optim": "adam", "tenacity": 10, "batch_size": 8,
               "dropout": 0.0}
     xpath = os.getenv("x")
+    ypath = os.getenv("y")
     for x in os.listdir(xpath):
-        for y in os.listdir("../Y/"):
+        for y in os.listdir(ypath):
             if x[-4:] != ".npy" or y[-4:] != ".npy":
                 continue
             if "bucket" not in y:
@@ -29,7 +30,7 @@ if __name__ == "__main__":
             X = np.load(
                 f"{xpath}{x_name}.npy", allow_pickle=True)
             Y = np.load(
-                f"../Y/{y_name}.npy")
+                f"{ypath}{y_name}.npy")
 
             print("Reshaping X Y")
             # Assume each example does not have a dimension of 1, and have more than example
