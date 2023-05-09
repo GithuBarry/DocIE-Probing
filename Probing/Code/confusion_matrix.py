@@ -6,7 +6,7 @@ import numpy as np
 from sklearn import metrics
 
 if __name__ == '__main__':
-    results_path = "../Results-MLPwAttention-FixedSoftmax/"
+    results_path = "../Results-MLPwAttention/"
     for file in os.listdir(results_path):
         #####Filtering#####
         if "nhid400" not in file:
@@ -34,4 +34,4 @@ if __name__ == '__main__':
             cm_display.plot()
             cm_display.ax_.set_title(txt)
 
-            plt.savefig(results_path+file[:-5] + ".png")
+            plt.savefig(results_path + file[:-5] + ".png")
