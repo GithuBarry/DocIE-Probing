@@ -118,7 +118,7 @@ if __name__ == "__main__":
                                 trigger_candidate_dict[trigger_candidate] = e['doctext'].index(trigger_candidate)
                                 ind = trigger_candidate_dict[trigger_candidate]    
                                 if(ind >=512):
-                                    ind = 0                                          
+                                    ind = -1                                         
                                 trigger_vec = text_vec[ind]
                                 trigger_indices = find_all(text, trigger_candidate)
                                 distance = float('inf')
