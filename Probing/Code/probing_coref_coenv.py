@@ -10,10 +10,10 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 if __name__ == "__main__":
 
-    probing_classifier_width = 400  # int(os.getenv("nhid"))
+    probing_classifier_width = int(os.getenv("nhid"))
     params = {"max_epoch": 200, "nhid": probing_classifier_width, "optim": "adam", "tenacity": 10, "batch_size": 8,
               "dropout": 0.0}
-    xpath = "../X/"  # os.getenv("x")
+    xpath = os.getenv("x")
     annotation_path = "../XY/"  # os.getenv("annotation")
     for x in os.listdir(xpath):
         for y in os.listdir(annotation_path):
