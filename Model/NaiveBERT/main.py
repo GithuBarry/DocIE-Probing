@@ -22,14 +22,16 @@ text_list = [example['doctext'] for example in examples]
 
 # Initialize an empty list to store the hidden states for each layer
 hidden_states_list = [[] for _ in range(13)]
+tokenized= []
 
 # Loop over each text in the list and embed them individually
-for text_idx, text in enumerate(tqdm(text_list)):
+for text_idx, text in tqdm(enumerate(text_list)):
     # Truncate the text to 512 tokens
-    truncated_text = text[:512]
+    truncated_text = text
 
     # Tokenize the truncated text
-    tokenized_text = tokenizer.tokenize(truncated_text)
+    tokenized_text = tokenizer.tokenize(truncated_text)[:512]
+    tokenized.append(tokenized_text)
 
     # Convert the tokenized text to input IDs
     input_ids = tokenizer.convert_tokens_to_ids(tokenized_text)
@@ -55,6 +57,8 @@ for text_idx, text in enumerate(tqdm(text_list)):
     memory_usage = process.memory_info().rss / 1024 / 1024
     tqdm.write(f'Memory usage for text {text_idx+1}: {memory_usage:.2f} MB')
 
+
+
 # Convert each list of hidden states to a NumPy array
 hidden_states_array = [np.array(layer_list) for layer_list in hidden_states_list]
 
@@ -63,6 +67,8 @@ output_dir = 'hidden_states'
 os.makedirs(output_dir, exist_ok=True)
 
 for i, layer_array in enumerate(hidden_states_array):
-    output_path = os.path.join(output_dir, f'X_raw_layer_{i+1}_bert-uncased.npy')
+    output_path = os.path.join(output_dir, f'X_raw_layer_{i}_bert-uncased.npy')
     np.save(output_path, layer_array)
-    print(f'Saved hidden state array for layer {i+1} to {output_path}.')
+    print(f'Saved hidden state array for layer {i} to {output_path}.')
+
+json.dump(tokenized, open("tokenized_muc1700.json", "w+"))

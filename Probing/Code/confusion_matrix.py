@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import metrics
 
+new_only = True
+
 if __name__ == '__main__':
     results_path = "../Results-MLPwAttention/"
     for file in os.listdir(results_path):
@@ -16,6 +18,9 @@ if __name__ == '__main__':
         prefix = "probresult"
         if file[:len(prefix)] == prefix and file[-5:] == ".json":
             print(os.path.join(results_path, file))
+            file_name = results_path + file[:-5] + ".png"
+            if os.path.exists(file_name) and new_only:
+                continue
             with open(os.path.join(results_path, file)) as f:
                 result = json.load(f)
             labels = np.array([l.index(max(l)) for l in result["val_true"]])
@@ -34,4 +39,4 @@ if __name__ == '__main__':
             cm_display.plot()
             cm_display.ax_.set_title(txt)
 
-            plt.savefig(results_path + file[:-5] + ".png")
+            plt.savefig(file_name)
