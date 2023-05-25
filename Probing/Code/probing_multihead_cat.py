@@ -5,15 +5,15 @@ import os
 from senteval_classifier import *
 
 num_attention_embedding = int(os.getenv("num_attention_embedding"))
-
+variant = f"multi_head{str(num_attention_embedding)}"
 
 class WeightedEmbeddingSumLayer(nn.Module):
-    def __init__(self, embedding_dim):
+    def __init__(self, embedding_dim, device):
         super(WeightedEmbeddingSumLayer, self).__init__()
         self.softmax = nn.Softmax(dim=1)
         self.linears = []
-        for i in range(num_attention_embedding):
-            self.linears.append(nn.Linear(embedding_dim, 1))
+        for _ in range(num_attention_embedding):
+            self.linears.append(nn.Linear(embedding_dim, 1).to(device))
 
     def forward(self, inputs):
         # inputs shape: (batch_size, sequence_length, hidden_size)
@@ -68,8 +68,8 @@ class MLP(PyTorchClassifier):
             ).to(device)
         else:
             self.model = nn.Sequential(
-                WeightedEmbeddingSumLayer(inputdim),
-                nn.Linear(self.inputdim, params["nhid"]),
+                WeightedEmbeddingSumLayer(inputdim, device),
+                nn.Linear(self.inputdim * num_attention_embedding, params["nhid"]),
                 nn.Dropout(p=self.dropout),
                 nn.Sigmoid(),
                 nn.Linear(params["nhid"], self.nclasses),
@@ -181,7 +181,7 @@ if __name__ == "__main__":
                 y_val_true.append(labels)  # Save Truth
                 pass
 
-            result = {"X": x_name, "Y": y_name,
+            result = {"X": x_name, "Y": y_name,"prob_model_variant": variant,
                       "train_acc": float(train_acc),
                       "val_acc": float(val_acc),
                       "test_acc": float(test_acc),
@@ -205,7 +205,7 @@ if __name__ == "__main__":
             print(result)
             # torch.save(mlp_classifier.model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}.pt")
             with open(
-                    f'probresult_{str(num_attention_embedding)}attentokens_{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}.json',
+                    f'probresult_{variant}_{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}.json',
                     'w') as f:
                 json.dump(result, f, indent=4)
             pass
