@@ -11,7 +11,7 @@ import nltk
 
 path_gtt_style_muc_with_trigger = "../muc_1700_v1.1.1_GTT_style_triggered-test-dev-train.json"
 muc_dygie_trigger_path = "../muc_dygie/muc_trigger"
-muc_dygie_event_path = "../muc_dygie/muc_event"  # TODO
+muc_dygie_event_path = "../muc_dygie/muc_event_w_ner"  # TODO
 
 
 def find_word_index(text, word, char_i):
@@ -89,3 +89,5 @@ if __name__ == '__main__':
                     trigger_f.write("\n")
                     event_f.write(json.dumps(event_file.pop(0)))
                     event_f.write("\n")
+    assert len(trigger_file) == 0
+    assert len(event_file) == 0
