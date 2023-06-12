@@ -11,7 +11,6 @@ import nltk
 
 path_gtt_style_muc_with_trigger = "../muc_1700_v1.1.1_GTT_style_triggered-test-dev-train.json"
 muc_dygie_trigger_path = "../muc_dygie/muc_trigger"
-muc_dygie_event_path = "../muc_dygie/muc_event"  # TODO
 
 if __name__ == '__main__':
     f = open(path_gtt_style_muc_with_trigger)
