@@ -1,0 +1,30 @@
+#!/bin/bash
+#SBATCH -J GTT_Probing                         # Job name
+#SBATCH -o test_file_%j_GTT.out                  # output file (%j expands to jobID)
+#SBATCH -e test_file_%j.err                  # error log file (%j expands to jobID)
+#SBATCH --mail-type=ALL                      # Request status by email 
+#SBATCH --mail-user=zw545@cornell.edu        # Email address to send results to.
+#SBATCH -N 1                                 # Total number of nodes requested
+#SBATCH -n 1                                 # Total number of cores requested
+#SBATCH --get-user-env                       # retrieve the users login environment
+#SBATCH --mem=50g                           # server memory requested (per node)
+#SBATCH -t 20:00:00                           # Time limit (hh:mm:ss)
+#SBATCH --partition=gpu       # Request partition
+#SBATCH --gres=gpu:titanrtx:1                # Type/number of GPUs needed
+
+#titanrtx
+#titanxp
+
+
+export NUM_EPOCHS=20
+export PrePad=EPOCH$NUM_EPOCHS
+export OUTPUT_DIR_NAME=model_GTT_$NUM_EPOCHS
+
+export SaveHiddenState=1
+export DATA_DIR=../../Corpora/MUC/muc/processed
+
+cd '/home/zw545/DocIE-Probing/Model/GTT'
+source /share/apps/anaconda3/2021.05/bin/activate
+conda activate longformer
+
+/home/zw545/DocIE-Probing/Model/GTT/run_pl.sh

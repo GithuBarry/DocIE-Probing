@@ -5,12 +5,13 @@ export MAX_LENGTH_TGT=75
 export BERT_MODEL=bert-base-uncased
 
 export BATCH_SIZE=1
-export NUM_EPOCHS=18
+#export NUM_EPOCHS=18
 export SEED=1
 
-export OUTPUT_DIR_NAME=model_GTT_18
+#export OUTPUT_DIR_NAME=model_GTT_$NUM_EPOCHS
 export CURRENT_DIR=${PWD}
 export OUTPUT_DIR=${CURRENT_DIR}/${OUTPUT_DIR_NAME}
+#export DATA_DIR=../../../Corpora/MUC/muc/processed
 rm -r "${OUTPUT_DIR}"
 mkdir -p "${OUTPUT_DIR}"
 #rm ../data/scirex/processed/cached*
@@ -24,7 +25,7 @@ echo "==========================================================================
 echo "                                           threshold (${th})                              "
 echo "=========================================================================================="
 python3 run_pl_gtt.py \
-  --data_dir ../../../Corpora/MUC/muc/processed \
+  --data_dir $DATA_DIR \
   --model_type bert \
   --model_name_or_path $BERT_MODEL \
   --output_dir "${OUTPUT_DIR}" \

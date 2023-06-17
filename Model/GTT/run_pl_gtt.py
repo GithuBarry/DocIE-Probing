@@ -206,12 +206,11 @@ class NERTransformer(BaseTransformer):
                       "position_ids": position_ids}
             outputs = self(**inputs)
             logits = outputs[0][0]
-            if hidden_states is None:
+            if hidden_states is None and os.getenv("SaveHiddenState"):
                 hidden_states = outputs[1]
                 hidden_states = np.array([tensor.cpu().numpy() for tensor in hidden_states])
-                np.save(f"./hiddenstates_{testid}_alllayers", hidden_states)
-            
-
+                prepad = os.getenv("PrePad") if os.getenv("PrePad") else ""
+                np.save(f"./{prepad}hiddenstates_{testid}_alllayers", hidden_states)
 
             ## option 1: setting the decoding constraints (!!!)
             # # (constraint 1) on decoding offset (length and larger offset)

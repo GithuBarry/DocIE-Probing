@@ -81,7 +81,14 @@ def read_golds_from_test_file(data_dir, tokenizer, debug=False):
             if example_cnt >3 and debug:
                 break
             line = json.loads(line)
-            docid = int(line["docid"].split("-")[0][-1])*10000 + int(line["docid"].split("-")[-1]) # transform TST1-MUC3-0001 to int(0001)
+            if "#" not in line["docid"]:
+                docid = int(line["docid"].split("-")[0][-1])*10000 + int(line["docid"].split("-")[-1]) # transform TST1-MUC3-0001 to int(0001)
+            else:
+                docid = int(line["docid"].split("-")[0][-1])*10000 + int(line["docid"].split("-")[-1].split("#")[0]) + (1+int(line["docid"].split("-")[-1].split("#")[1])) *100000
+                # transform TST1-MUC3-0001#1 to 210001
+
+            
+
             doctext, templates_raw = line["doctext"], line["templates"]
 
             templates = []
@@ -133,7 +140,13 @@ def read_examples_from_file(data_dir, mode, tokenizer, debug=False):
             else:
                 
                 first_label  = line["docid"].split("-")[0][-1]
-                docid = int(first_label if first_label.isdigit() else 5)*10000 + int(line["docid"].split("-")[-1]) # transform TST1-MUC3-0001 to 10001
+                #docid = int(first_label if first_label.isdigit() else 5)*10000 + int(line["docid"].split("-")[-1]) # transform TST1-MUC3-0001 to 10001
+                print("docid", line["docid"])
+                if "#" not in line["docid"]:
+                    docid = int(first_label if first_label.isdigit() else 5)*10000 + int(line["docid"].split("-")[-1]) # transform TST1-MUC3-0001 to 10001
+                else:
+                    docid = int(first_label if first_label.isdigit() else 5)*10000 + int(line["docid"].split("-")[-1].split("#")[0]) + (1+int(line["docid"].split("-")[-1].split("#")[1])) *100000
+                    # transform TST1-MUC3-0001 to 010001
 
             doctext, templates_raw = line["doctext"], line["templates"]
             doctext_tokens = tokenizer.tokenize(doctext)

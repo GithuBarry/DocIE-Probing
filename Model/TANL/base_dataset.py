@@ -13,6 +13,7 @@ from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset
 from tqdm import tqdm
 from transformers import PreTrainedTokenizer, torch_distributed_zero_first, default_data_collator
+import gzip
 
 from arguments import DataTrainingArguments
 from input_example import InputFeatures, InputExample
@@ -122,10 +123,14 @@ class BaseDataset(Dataset, ABC):
         return self.examples[self.indices[i]]
 
     def data_dir(self):
+        suffix = ""
+        if os.getenv("DataDirOverrideSuffix"):
+            suffix = os.getenv("DataDirOverrideSuffix")
+
         if self.data_name is not None:
-            return os.path.join(self.data_path, self.data_name)
+            return os.path.join(self.data_path, self.data_name + suffix)
         else:
-            return os.path.join(self.data_path, self.name)
+            return os.path.join(self.data_path, self.name + suffix)
 
     def load_cached_data(self, cached_data_file: str):
         d = torch.load(cached_data_file)
@@ -243,18 +248,29 @@ class BaseDataset(Dataset, ABC):
             )
             def tuple_to_numpy(x):
                 return tuple(t.cpu().numpy() if not isinstance(t, tuple) else tuple_to_numpy(t) for t in x)
-            #TODO
-            if os.getenv("HIDDENSTATE_FOLDERNAME"):
+            def np_compress_save(file_name, data):
+                f = gzip.GzipFile(f"{file_name}.npy.gz", "w")
+                np.save(file=f, arr=data)
+                f.close()            
+            if os.getenv("SaveHiddenState"):
                 tmp_i = i
-                prefix = os.path.join(".",os.getenv("HIDDENSTATE_FOLDERNAME"),"output_sentence"+str(tmp_i))
-                np.save(prefix+"_encoder_hidden_states.npy",tuple_to_numpy(predictions.encoder_hidden_states))
+                
+                folder_name = os.getenv("HIDDENSTATE_FOLDERNAME") if os.getenv("HIDDENSTATE_FOLDERNAME") else "hidden_state"
+                os.makedirs(folder_name, exist_ok = True) 
+
+                prepad = os.getenv("PrePad") if os.getenv("PrePad") else ""
+                prefix = os.path.join(".",folder_name,f"{prepad}output_sentence"+str(tmp_i))
+                if not os.getenv("LAST_LAYER_ONLY"):
+                    np_compress_save(prefix+"_encoder_hidden_states",tuple_to_numpy(predictions.encoder_hidden_states))
+                else:
+                    np_compress_save(prefix+"_encoder_embedding",tuple_to_numpy(predictions.encoder_hidden_states)[-1])
                 if not os.getenv("NO_DECODER_HIDDEN_STATE"):
-                    np.save(prefix+"_decoder_hidden_states.npy",tuple_to_numpy(predictions.decoder_hidden_states))
+                    np_compress_save(prefix+"_decoder_hidden_states",tuple_to_numpy(predictions.decoder_hidden_states))
                 #if predictions.encoder_attentions:
                 #    np.save(prefix+"_encoder_attentions.npy",tuple_to_numpy(predictions.encoder_attentions))
                 #if predictions.cross_attentions:
                 #    np.save(prefix+"_cross_attentions.npy",tuple_to_numpy(predictions.cross_attentions))
-                np.save(prefix+"_sequences.npy",tuple_to_numpy(predictions.sequences))
+                #np.save(prefix+"_sequences.npy",tuple_to_numpy(predictions.sequences))
             
             predictions = predictions.sequences
             for j, (input_ids, label_ids, prediction) in enumerate(

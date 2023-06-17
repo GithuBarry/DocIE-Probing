@@ -203,7 +203,8 @@ class DyGIE(Model):
         text_embeddings = self._debatch(text_embeddings)
 
         if os.getenv("SaveHiddenState"):
-            np.save("./"+metadata.doc_key,text_embeddings.cpu().detach().numpy() )
+            prepad = os.getenv("PrePad") if os.getenv("PrePad") else ""
+            np.save(f"./{prepad}"+metadata.doc_key,text_embeddings.cpu().detach().numpy() )
 
         # (n_sents, max_sentence_length)
         text_mask = self._debatch(util.get_text_field_mask(text, num_wrapping_dims=1).float())
