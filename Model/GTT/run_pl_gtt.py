@@ -1,5 +1,6 @@
 import argparse
 import glob
+import gzip
 import json
 import logging
 import os
@@ -116,8 +117,8 @@ class NERTransformer(BaseTransformer):
                     pad_token_segment_id=4 if args['model_type'] in ["xlnet"] else 0,
                     pad_token_label_id=self.pad_token_label_id,
                 )
-                logger.info("Saving features into cached file %s", cached_features_file)
-                torch.save(features, cached_features_file)
+                #logger.info("Saving features into cached file %s", cached_features_file)
+                #torch.save(features, cached_features_file)
         # import ipdb; ipdb.set_trace()
 
     def load_dataset(self, mode, batch_size):
@@ -210,7 +211,11 @@ class NERTransformer(BaseTransformer):
                 hidden_states = outputs[1]
                 hidden_states = np.array([tensor.cpu().numpy() for tensor in hidden_states])
                 prepad = os.getenv("PrePad") if os.getenv("PrePad") else ""
-                np.save(f"./{prepad}hiddenstates_{testid}_alllayers", hidden_states)
+                f = gzip.GzipFile(f"./{prepad}hiddenstates_{testid}_alllayers.npy.gz", "w")
+                np.save(file=f, arr=hidden_states)
+                f.close()
+                if os.getenv("DummyReturn"):
+                    return {"pred_seq": [['[CLS]']], "pred_extract": [[]], "docid": batch[5].detach().cpu().tolist()}
 
             ## option 1: setting the decoding constraints (!!!)
             # # (constraint 1) on decoding offset (length and larger offset)

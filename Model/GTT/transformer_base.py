@@ -1,36 +1,30 @@
 import logging
 import os
 import random
+import time
+
 import numpy as np
 import pytorch_lightning as pl
 import torch
-import time
 from transformers import (
     AdamW,
     AutoConfig,
     AutoModel,
     AutoModelForPreTraining,
     AutoModelForQuestionAnswering,
-    AutoModelForSeq2SeqLM,
     AutoModelForSequenceClassification,
     AutoModelForTokenClassification,
     AutoModelWithLMHead,
     AutoTokenizer,
-    PretrainedConfig,
-    PreTrainedTokenizer,
 )
 from transformers.optimization import (
-    Adafactor,
-    get_cosine_schedule_with_warmup,
-    get_cosine_with_hard_restarts_schedule_with_warmup,
     get_linear_schedule_with_warmup,
-    get_polynomial_decay_schedule_with_warmup,
 )
-from transformers.utils.versions import require_version
+#from transformers.utils.versions import require_version
 
 logger = logging.getLogger(__name__)
 
-require_version("pytorch_lightning>=1.0.4")
+#require_version("pytorch_lightning>=1.0.4")
 
 MODEL_MODES = {
     "base": AutoModel,
