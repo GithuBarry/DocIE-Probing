@@ -62,7 +62,7 @@ class NERTransformer(BaseTransformer):
 
         outputs = self.model(**inputs)  # sequence_output, pooled_output, (hidden_states), (attentions)
         sequence_output = outputs[0]
-        
+
         src_sequence_output = sequence_output[:, :args['max_seq_length_src'], :]
         src_sequence_output = torch.transpose(src_sequence_output, 1, 2)  # hidden * doc_length
         tgt_sequence_output = sequence_output[:, args['max_seq_length_src']:, :]  # tgt_length * hidden
@@ -117,8 +117,8 @@ class NERTransformer(BaseTransformer):
                     pad_token_segment_id=4 if args['model_type'] in ["xlnet"] else 0,
                     pad_token_label_id=self.pad_token_label_id,
                 )
-                #logger.info("Saving features into cached file %s", cached_features_file)
-                #torch.save(features, cached_features_file)
+                logger.info("Saving features into cached file %s", cached_features_file)
+                torch.save(features, cached_features_file)
         # import ipdb; ipdb.set_trace()
 
     def load_dataset(self, mode, batch_size):
@@ -137,13 +137,13 @@ class NERTransformer(BaseTransformer):
         all_label_ids = torch.tensor([f.label_ids for f in features], dtype=torch.long)
         all_docid = torch.tensor([f.docid for f in features], dtype=torch.long)
         return DataLoader(
-            TensorDataset(all_input_ids, all_input_mask, all_segment_ids, all_position_ids, all_label_ids, all_docid), 
+            TensorDataset(all_input_ids, all_input_mask, all_segment_ids, all_position_ids, all_label_ids, all_docid),
             batch_size=batch_size
         )
 
     def validation_step(self, batch, batch_nb):
         "Compute validation"
-                          
+
         inputs = {"input_ids": batch[0], "attention_mask": batch[1], "token_type_ids": batch[2], "position_ids": batch[3], "labels": batch[4]}
         outputs = self(**inputs)
         tmp_eval_loss, logits = outputs[:2]
@@ -544,9 +544,9 @@ if __name__ == "__main__":
         model.hparams = args
     else:
         model = NERTransformer(args)
-    
+
     trainer = generic_train(model, args)
-    if args['do_train']:    
+    if args['do_train']:
         torch.save(model.state_dict(),os.path.join(args['output_dir'], "saved_model"))
     else:
         print("***Not training***")
