@@ -1,17 +1,15 @@
-from typing import List
-import numpy as np
-import warnings
-
-from overrides import overrides
-import numpy
 import json
+import os
+import warnings
+from typing import List
 
 from allennlp.common.util import JsonDict
-from allennlp.nn import util
 from allennlp.data import Batch
 from allennlp.data import DatasetReader
 from allennlp.models import Model
+from allennlp.nn import util
 from allennlp.predictors.predictor import Predictor
+from overrides import overrides
 
 
 @Predictor.register("dygie")
@@ -23,6 +21,7 @@ class DyGIEPredictor(Predictor):
     once. This risks overflowing memory on large documents.
     If the model was trained without coref, prediction is done by sentence.
     """
+
     def __init__(
             self, model: Model, dataset_reader: DatasetReader) -> None:
         super().__init__(model, dataset_reader)
@@ -53,6 +52,10 @@ class DyGIEPredictor(Predictor):
             dataset = Batch([instance])
             dataset.index_instances(model.vocab)
             model_input = util.move_to_device(dataset.as_tensor_dict(), cuda_device)
+            if os.getenv("SaveHiddenState"):
+                prepad = os.getenv("PrePad") if os.getenv("PrePad") else ""
+                dockey = dataset.instances[0].fields['metadata'].metadata.doc_key
+                json.dump([str(s) for s in dataset.instances[0].fields['text'][0].tokens], open(f"{prepad}{dockey}", "w+"))
             prediction = model.make_output_human_readable(model(**model_input)).to_json()
         # If we run out of GPU memory, warn user and indicate that this document failed.
         # This way, prediction doesn't grind to a halt every time we run out of GPU.
