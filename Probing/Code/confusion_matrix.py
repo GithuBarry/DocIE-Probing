@@ -11,7 +11,7 @@ if __name__ == '__main__':
     results_path = "../Results-MLPwAttention/"
     for file in os.listdir(results_path):
         #####Filtering#####
-        if "nhid400" not in file:
+        if "nhid800" not in file:
             continue
         ###################
 

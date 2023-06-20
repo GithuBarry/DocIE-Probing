@@ -6,10 +6,18 @@ from senteval_classifier import *
 
 if __name__ == "__main__":
     
+    torch.manual_seed(11)
+    np.random.seed(11)
+    torch.cuda.manual_seed(11) 
+    torch.cuda.manual_seed_all(11)
+
+
     probing_classifier_width = int(os.getenv("nhid"))
     params = {"max_epoch": 200, "nhid": probing_classifier_width, "optim": "adam", "tenacity": 10, "batch_size": 8,
               "dropout": 0.0}
     xpath = os.getenv("x")
+    if xpath[-1] != "/":
+        xpath+="/"
     ypath = os.getenv("y")
     for x in os.listdir(xpath):
         for y in os.listdir(ypath):
@@ -34,11 +42,14 @@ if __name__ == "__main__":
 
             print("Reshaping X Y")
             # Assume each example does not have a dimension of 1, and have more than example
-            if "dygie" in x_name:
+            if "dygie" in x_name or (not hasattr(X, "shape")):
                 pickled_X = X
                 new_X = []
                 while len(pickled_X) == 1:
-                    pickled_X = pickled_X[0]
+                    if isinstance(pickled_X, np.ndarray):
+                        pickled_X = pickled_X[0]
+                    else:
+                        pickled_X = pickled_X["arr_0"]
                 for example_X in pickled_X:
                     while len(example_X) == 1:
                         example_X = example_X[0]
