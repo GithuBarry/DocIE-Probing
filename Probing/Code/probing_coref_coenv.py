@@ -35,11 +35,14 @@ if __name__ == "__main__":
 
             print("Reshaping X Y")
             # Assume each example does not have a dimension of 1, and have more than example
-            if "dygie" in x_name:
+            if "dygie" in x_name or (not hasattr(X, "shape")):
                 pickled_X = X
                 new_X = []
                 while len(pickled_X) == 1:
-                    pickled_X = pickled_X[0]
+                    if isinstance(pickled_X, np.ndarray):
+                        pickled_X = pickled_X[0]
+                    else:
+                        pickled_X = pickled_X["arr_0"]
                 for example_X in pickled_X:
                     while len(example_X) == 1:
                         example_X = example_X[0]
@@ -51,7 +54,7 @@ if __name__ == "__main__":
                         X[i] = np.pad(X[i], ((0, max_length - len(X[i])), (0, 0)), 'constant', constant_values=(0))
                 X = np.array(X)
 
-            for model_name in annotation:
+            for model_name in sorted(list(annotation.keys()),key=len, reverse=True):
                 if model_name in x_name.lower():
                     annotation = annotation[model_name]
                     break
