@@ -17,7 +17,7 @@ if __name__ == "__main__":
     params = {"max_epoch": 200, "nhid": probing_classifier_width, "optim": "adam", "tenacity": 10, "batch_size": 8,
               "dropout": 0.0}
     xpath = os.getenv("x")
-    annotation_path = "../XY/"  # os.getenv("annotation")
+    annotation_path = "../XY/" if not os.getenv("XY") else os.getenv("XY") # os.getenv("annotation")
     for x in os.listdir(xpath):
         for y in os.listdir(annotation_path):
             if x[-4:] != ".npy" or y[-5:] != ".json":
