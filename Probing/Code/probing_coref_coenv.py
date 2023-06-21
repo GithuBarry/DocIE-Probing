@@ -9,7 +9,10 @@ from senteval_classifier import *
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 if __name__ == "__main__":
-
+    torch.manual_seed(11)
+    np.random.seed(11)
+    torch.cuda.manual_seed(11)
+    torch.cuda.manual_seed_all(11)
     probing_classifier_width = int(os.getenv("nhid"))
     params = {"max_epoch": 200, "nhid": probing_classifier_width, "optim": "adam", "tenacity": 10, "batch_size": 8,
               "dropout": 0.0}
