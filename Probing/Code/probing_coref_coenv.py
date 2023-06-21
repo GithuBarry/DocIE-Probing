@@ -54,7 +54,7 @@ if __name__ == "__main__":
                         X[i] = np.pad(X[i], ((0, max_length - len(X[i])), (0, 0)), 'constant', constant_values=(0))
                 X = np.array(X)
 
-            for model_name in sorted(list(annotation.keys()),key=len, reverse=True):
+            for model_name in sorted(list(annotation.keys()), key=len, reverse=True):
                 if model_name in x_name.lower():
                     annotation = annotation[model_name]
                     break
@@ -64,13 +64,16 @@ if __name__ == "__main__":
             print("Processing Annotations")
             for partition in annotation.keys():
                 for example in tqdm(annotation[partition], desc=partition):
+                    l = []
+                    idx = 0
+                    while f"index{idx}" in example:
+                        l.append(X[example['doc_i']][example[f"index{idx}"]])
+                        idx += 1
                     if partition not in X_annotated:
-                        X_annotated[partition] = np.array(
-                            [[X[example['doc_i']][example['index0']], X[example['doc_i']][example['index1']]]])
+                        X_annotated[partition] = np.array([l])
                         Y[partition] = np.array([[0, 1] if example['label'] == 1 else [0, 1]])
                     else:
-                        X_annotated[partition] = np.concatenate((X_annotated[partition], np.array(
-                            [[X[example['doc_i']][example['index0']], X[example['doc_i']][example['index1']]]])))
+                        X_annotated[partition] = np.concatenate((X_annotated[partition], np.array([l])))
                         Y[partition] = np.concatenate((Y[partition], [[0, 1] if example['label'] == 1 else [1, 0]]))
 
             _, _, embedding_dimension = list(X_annotated.values())[0].shape
