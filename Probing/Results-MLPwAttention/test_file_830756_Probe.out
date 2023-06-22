@@ -1,0 +1,6 @@
+X: ../X/X15/
+y: ../Y/Y2/
+nhid: 400
+Running on: X_GTT_Sent_layer_12_bert-uncased_epoch10_muc1700.npy Y_bucket_num_sent_muc1700.npy
+loading X Y
+Reshaping X Y
