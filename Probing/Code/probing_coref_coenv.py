@@ -33,12 +33,12 @@ if __name__ == "__main__":
 
             print("loading X Y")
             X = np.load(
-                f"{xpath}{x_name}.npy", allow_pickle=True)
+                f"{xpath}{x}", allow_pickle=True)
             annotation = json.load(open(f"{annotation_path}{y_name}.json"))
 
             print("Reshaping X Y")
             # Assume each example does not have a dimension of 1, and have more than example
-            if "dygie" in x_name or (not hasattr(X, "shape")):
+            if "dygie" in x_name.lower() or "sent" in x_name.lower() or (not hasattr(X, "shape")) or len(X.shape) < 2:
                 pickled_X = X
                 new_X = []
                 while len(pickled_X) == 1:

@@ -5,23 +5,22 @@ import os
 from senteval_classifier import *
 
 if __name__ == "__main__":
-    
+
     torch.manual_seed(11)
     np.random.seed(11)
-    torch.cuda.manual_seed(11) 
+    torch.cuda.manual_seed(11)
     torch.cuda.manual_seed_all(11)
-
 
     probing_classifier_width = int(os.getenv("nhid"))
     params = {"max_epoch": 200, "nhid": probing_classifier_width, "optim": "adam", "tenacity": 10, "batch_size": 8,
               "dropout": 0.0}
     xpath = os.getenv("x")
     if xpath[-1] != "/":
-        xpath+="/"
+        xpath += "/"
     ypath = os.getenv("y")
     for x in os.listdir(xpath):
         for y in os.listdir(ypath):
-            if x[-4:] != ".npy" or y[-4:] != ".npy":
+            if (x[-4:] != ".npy" and x[-4:] != ".npz") or y[-4:] != ".npy":
                 continue
             if "bucket" not in y:
                 continue
@@ -36,13 +35,13 @@ if __name__ == "__main__":
             y_name = y[:-4]
             print("loading X Y")
             X = np.load(
-                f"{xpath}{x_name}.npy", allow_pickle=True)
+                f"{xpath}{x}", allow_pickle=True)
             Y = np.load(
                 f"{ypath}{y_name}.npy")
 
             print("Reshaping X Y")
             # Assume each example does not have a dimension of 1, and have more than example
-            if "dygie" in x_name or (not hasattr(X, "shape")):
+            if "dygie" in x_name.lower() or "sent" in x_name.lower() or (not hasattr(X, "shape")) or len(X.shape) < 2:
                 pickled_X = X
                 new_X = []
                 while len(pickled_X) == 1:
@@ -95,21 +94,21 @@ if __name__ == "__main__":
             print("val_acc", val_acc)
             epoch_str = str(mlp_classifier.nepoch)
 
-            #y_pred = []
+            # y_pred = []
             y_true = []
 
-            #y_val_pred = []
+            # y_val_pred = []
             y_val_true = []
 
             # iterate over test data
             for output, labels in [(p_test[i], y_test[i]) for i in range(len(X_test))]:
                 # Feed Network
-                #y_pred.append(output)  # Save Prediction
+                # y_pred.append(output)  # Save Prediction
                 y_true.append(labels)  # Save Truth
                 pass
 
             for output, labels in [(p_val[i], y_val[i]) for i in range(len(X_val))]:
-                #y_val_pred.append(output)  # Save Prediction
+                # y_val_pred.append(output)  # Save Prediction
                 y_val_true.append(labels)  # Save Truth
                 pass
 
@@ -135,7 +134,8 @@ if __name__ == "__main__":
                       "model_param_names": str([x for x in mlp_classifier.model.named_modules()][0][1])}
 
             print(result)
-            #torch.save(mlp_classifier.model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}.pt")
-            with open(f'probresult_{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}.json', 'w') as f:
+            # torch.save(mlp_classifier.model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}.pt")
+            with open(f'probresult_{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}.json',
+                      'w') as f:
                 json.dump(result, f, indent=4)
             pass
