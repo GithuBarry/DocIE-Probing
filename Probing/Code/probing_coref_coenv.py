@@ -64,7 +64,13 @@ if __name__ == "__main__":
             Y = dict()
             X_annotated = dict()
 
+
             print("Processing Annotations")
+            label_set = set()
+            for partition in annotation:
+                for example in annotation[partition]:
+                    label_set.add(example['label'])
+            label_list = sorted(list(label_set))
             for partition in annotation.keys():
                 for example in tqdm(annotation[partition], desc=partition):
                     l = []
@@ -72,12 +78,14 @@ if __name__ == "__main__":
                     while f"index{idx}" in example:
                         l.append(X[example['doc_i']][example[f"index{idx}"]])
                         idx += 1
+                    idx = label_list.index(example['label'])
+                    label = [[1 if idx == i else 0 for i in range(len(label_list))]]
                     if partition not in X_annotated:
                         X_annotated[partition] = np.array([l])
-                        Y[partition] = np.array([[0, 1] if example['label'] == 1 else [0, 1]])
+                        Y[partition] = np.array(label)
                     else:
                         X_annotated[partition] = np.concatenate((X_annotated[partition], np.array([l])))
-                        Y[partition] = np.concatenate((Y[partition], [[0, 1] if example['label'] == 1 else [1, 0]]))
+                        Y[partition] = np.concatenate((Y[partition], label))
 
             _, _, embedding_dimension = list(X_annotated.values())[0].shape
             _, output_dimension = list(Y.values())[0].shape
