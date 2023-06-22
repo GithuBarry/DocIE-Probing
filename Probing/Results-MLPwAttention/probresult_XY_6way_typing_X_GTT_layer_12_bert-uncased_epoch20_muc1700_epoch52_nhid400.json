@@ -19543,13 +19543,5 @@
             0
         ]
     ],
-    "model_param_names": "Sequential(\n  (0): WeightedEmbeddingSumLayer(\n    (linear): Linear(in_features=768, out_features=1, bias=True)\n    (softmax): Softmax(dim=1)\n  )\n  (1): Linear(in_features=768, out_features=400, bias=True)\n  (2): Dropout(p=0.0, inplace=False)\n  (3): Sigmoid()\n  (4): Linear(in_features=400, out_features=6, bias=True)\n)",
-    "label_list": [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5
-    ]
+    "model_param_names": "Sequential(\n  (0): WeightedEmbeddingSumLayer(\n    (linear): Linear(in_features=768, out_features=1, bias=True)\n    (softmax): Softmax(dim=1)\n  )\n  (1): Linear(in_features=768, out_features=400, bias=True)\n  (2): Dropout(p=0.0, inplace=False)\n  (3): Sigmoid()\n  (4): Linear(in_features=400, out_features=6, bias=True)\n)"
 }
