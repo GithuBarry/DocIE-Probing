@@ -20,7 +20,7 @@ if __name__ == "__main__":
     annotation_path = "../XY/" if not os.getenv("XY") else os.getenv("XY") # os.getenv("annotation")
     for x in os.listdir(xpath):
         for y in os.listdir(annotation_path):
-            if x[-4:] != ".npy" or y[-5:] != ".json":
+            if (x[-4:] != ".npy" and x[-4:] != ".npz") or y[-5:] != ".json":
                 continue
 
             gc.collect()
