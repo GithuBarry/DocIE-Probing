@@ -23,7 +23,7 @@ if __name__ == "__main__":
             if (x[-4:] != ".npy" and x[-4:] != ".npz") or y[-4:] != ".npy":
                 continue
             if "bucket" not in y:
-                continue
+                print(f"Warning: bucket not in y name {y}")
 
             device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
             gc.collect()
