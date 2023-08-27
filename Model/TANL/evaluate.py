@@ -45,7 +45,7 @@ def print_results(results: dict):
 
 
 def evaluate(model, dataset_name: str, data_args: DataTrainingArguments, tokenizer: PreTrainedTokenizer, split: str,
-             seed: int, gpu: int, batch_size: int) -> Dict[str, float]:
+             seed: int, gpu: int, batch_size: int, log_file: str = None) -> Dict[str, float]:
     """
     Evaluate a model on some dataset.
     """
@@ -66,4 +66,4 @@ def evaluate(model, dataset_name: str, data_args: DataTrainingArguments, tokeniz
         tokenizer=tokenizer, split=split, seed=seed, shuffle=False, is_eval=True,
     )
 
-    return test_dataset.evaluate_dataset(data_args=data_args, model=model, device=device, batch_size=batch_size)
+    return test_dataset.evaluate_dataset(data_args=data_args, model=model, device=device, batch_size=batch_size, log_file=log_file)

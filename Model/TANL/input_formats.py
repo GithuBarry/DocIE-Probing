@@ -3,6 +3,7 @@
 
 
 from abc import ABC, abstractmethod
+from typing import List
 import copy
 
 from input_example import InputExample
@@ -29,7 +30,10 @@ class BaseInputFormat(ABC):
         res = self._format_input(example=example)
         if multitask:
             name = task_descriptor or example.dataset.task_descriptor or example.dataset.name
-            res = f'{name} {self.QUERY_SEPARATOR_TOKEN} ' + res
+            if isinstance(res, list):
+                res = [f'{name} {self.QUERY_SEPARATOR_TOKEN} ' + r for r in res]
+            else:
+                res = f'{name} {self.QUERY_SEPARATOR_TOKEN} ' + res
         return res
 
     @abstractmethod
@@ -79,12 +83,29 @@ class EventInputFormat(BaseInputFormat):
     """
     Input format for event extraction, where an input example contains exactly one trigger.
     """
-    #name = 'ace2005_event_with_trigger'
+    # name = 'ace2005_event_with_trigger'
     name = 'muc_event_with_trigger'
+
+    def _format_input(self, example: InputExample) -> List[str]:
+        triggers = example.triggers
+        assert len(triggers) <= 1
+        if len(triggers) <= 1:
+            augmentations = [([(entity.type.natural,)], entity.start,
+                            entity.end) for entity in triggers]
+
+            return augment_sentence(example.tokens, augmentations, self.BEGIN_ENTITY_TOKEN, self.SEPARATOR_TOKEN,
+                                    self.RELATION_SEPARATOR_TOKEN, self.END_ENTITY_TOKEN)
+
+@register_input_format
+class ACE2005EventInputFormat(BaseInputFormat):
+    """
+    Input format for event extraction, where an input example contains exactly one trigger.
+    """
+    name = 'ace2005_event_with_trigger'
 
     def _format_input(self, example: InputExample) -> str:
         triggers = example.triggers
-        #assert len(triggers) <= 1
+        assert len(triggers) <= 1
         augmentations = [([(entity.type.natural,)], entity.start, entity.end) for entity in triggers]
 
         return augment_sentence(example.tokens, augmentations, self.BEGIN_ENTITY_TOKEN, self.SEPARATOR_TOKEN,

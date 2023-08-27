@@ -103,6 +103,10 @@ class InputExample:
     belief_state: Union[Dict[str, Any], str] = None
     utterance_tokens: str = None
 
+    # ADD ON
+    input_entities: List[Entity] = None
+    input_relations: List[Relation] = None
+    input_triggers: List[Entity] = None
 
 @dataclass
 class CorefDocument:

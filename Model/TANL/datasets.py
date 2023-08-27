@@ -1790,6 +1790,69 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
     default_input_format = 'muc_event_with_trigger'
     default_output_format = 'muc_event'
 
+    def yield_single_document(self, x, tokens):
+        if len(x['triggers']) <= 1:
+            entities = [
+                Entity(
+                    id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
+                for j, y in enumerate(x['entities'])
+            ]
+
+            triggers = [
+                Entity(
+                    id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
+                for j, y in enumerate(x['triggers'])
+            ]
+
+            relations = [
+                # the trigger is the tail, and the entity is the head
+                Relation(
+                    type=self.relation_types[y['type']
+                                            ], head=entities[y['head']], tail=triggers[y['tail']]
+                )
+                for y in x['relations']
+            ]
+            
+            return [InputExample(
+                                    id=x['id'],
+                                    tokens=tokens,
+                                    entities=entities,
+                                    triggers=triggers,
+                                    relations=relations,
+                                )]
+                
+        else:
+            inputs = []
+            for trig_id, trig in enumerate(x['triggers']):
+                triggers = [
+                    Entity(id=trig_id, type=self.entity_types[trig['type']], start=trig['start'], end=trig['end'])
+                ]
+
+                entities = [
+                    Entity(
+                        id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
+                    for j, y in enumerate(x['entities']) if any(rel['head'] == j and rel['tail'] == trig_id for rel in x['relations'])
+                ]
+
+                relations = [
+                    Relation(
+                        type=self.relation_types[y['type']
+                                                ], head=[ent for ent in entities if ent.id == y['head']][0], tail=triggers[0]
+                    )
+                    for y in x['relations'] if y['tail'] == trig_id
+                ]
+            
+                inputs.append(InputExample(
+                                        id="{} {}".format(x['id'], trig_id),
+                                        tokens=tokens,
+                                        entities=entities,
+                                        triggers=triggers,
+                                        relations=relations,
+                                    ))
+            
+            return inputs
+
+
     def load_data_single_split(self, split: str, seed: int = None) -> List[InputExample]:
         """
         Load data for a single split (train, dev, or test).
@@ -1803,39 +1866,22 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
             logging.info(f"Loaded {len(data)} sentences for split {split} of {self.name}")
 
             for i, x in enumerate(data):
-                entities = [
-                    Entity(id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
-                    for j, y in enumerate(x['entities'])
-                ]
+                if not 'outputs' in x:
+                    examples += self.yield_single_document(x, x['tokens'])
+                else:
+                    input_exs = self.yield_single_document(x['inputs'], x['tokens'])
+                    if len(x['outputs']):
+                        output_exs = self.yield_single_document(x['outputs'], x['tokens'])
+                        for input_ex, output_ex in zip(input_exs, output_exs):
+                            input_ex.output_entities = output_ex.entities
+                            input_ex.output_triggers = output_ex.triggers
+                            input_ex.output_relations = output_ex.relations
 
-                triggers = [
-                    Entity(id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
-                    for j, y in enumerate(x['triggers'])
-                ]
-
-                relations = [
-                    # the trigger is the tail, and the entity is the head
-                    Relation(
-                        type=self.relation_types[y['type']], head=entities[y['head']], tail=triggers[y['tail']]
-                    )
-                    for y in x['relations']
-                ]
-
-                tokens = x['tokens']
-
-                example = InputExample(
-                    id=f'{split}-{i}',
-                    tokens=tokens,
-                    entities=entities,
-                    triggers=triggers,
-                    relations=relations,
-                )
-
-                examples.append(example)
+                    examples += input_exs
 
         return examples
 
-    def evaluate_example(self, example: InputExample, output_sentence: str, model=None, tokenizer=None) -> Counter:
+    def evaluate_example(self, example: InputExample, output_sentence: str, model=None, tokenizer=None, log_file=None) -> Counter:
         """
         Evaluate an output sentence on a single example of this dataset.
         """
@@ -1846,42 +1892,47 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
                 output_sentence,
                 entity_types=self.entity_types,
                 relation_types=self.relation_types,
+                log_file=log_file,
+                tokenizer=tokenizer
             )
 
         # filter relation tuples for argument classification
         # since we don't need the entity type to be predicted correct
 
-        def filter_relation_tuple(relation_tuple):
-            return relation_tuple[0], relation_tuple[1][1:], relation_tuple[2]
+        # def filter_relation_tuple(relation_tuple):
+        #     return relation_tuple[0], relation_tuple[1][1:], relation_tuple[2]
 
-        gt_relations = set(filter_relation_tuple(relation.to_tuple()) for relation in example.relations)
-        gt_relations_no_type = set([relation[1:] for relation in gt_relations])
+        # gt_relations = set(filter_relation_tuple(relation.to_tuple())
+        #                    for relation in example.relations)
+        # gt_relations_no_type = set([relation[1:] for relation in gt_relations])
 
-        # load ground truth relations that only have valid relations (exist in relation_schema)
-        filtered_predicted_relations = set()
-        for relation in predicted_relations:
-            if relation[2][0] in self.relation_schemas and relation[0] in self.relation_schemas[relation[2][0]]:
-                filtered_predicted_relations.add(filter_relation_tuple(relation))
+        # # load ground truth relations that only have valid relations (exist in relation_schema)
+        # filtered_predicted_relations = set()
+        # for relation in predicted_relations:
+        #     if relation[2][0] in self.relation_schemas and relation[0] in self.relation_schemas[relation[2][0]]:
+        #         filtered_predicted_relations.add(
+        #             filter_relation_tuple(relation))
 
-        predicted_relations = filtered_predicted_relations
-        predicted_relations_no_type = set(relation[1:] for relation in predicted_relations)
+        # predicted_relations = filtered_predicted_relations
+        # predicted_relations_no_type = set(
+        #     relation[1:] for relation in predicted_relations)
 
-        # compute correct relations
-        correct_relations = predicted_relations & gt_relations
-        correct_relations_no_type = predicted_relations_no_type & gt_relations_no_type
+        # # compute correct relations
+        # correct_relations = predicted_relations & gt_relations
+        # correct_relations_no_type = predicted_relations_no_type & gt_relations_no_type
 
-        return Counter({
-            'num_sentences': 1,
-            'wrong_reconstructions': 1 if wrong_reconstruction else 0,
-            'gt_relations': len(gt_relations),
-            'predicted_relations': len(predicted_relations),
-            'correct_relations': len(correct_relations),
-            'gt_relations_no_type': len(gt_relations_no_type),
-            'predicted_relations_no_type': len(predicted_relations_no_type),
-            'correct_relations_no_type': len(correct_relations_no_type),
-        })
+        # return Counter({
+        #     'num_sentences': 1,
+        #     'wrong_reconstructions': 1 if wrong_reconstruction else 0,
+        #     'gt_relations': len(gt_relations),
+        #     'predicted_relations': len(predicted_relations),
+        #     'correct_relations': len(correct_relations),
+        #     'gt_relations_no_type': len(gt_relations_no_type),
+        #     'predicted_relations_no_type': len(predicted_relations_no_type),
+        #     'correct_relations_no_type': len(correct_relations_no_type),
+        # })
 
-    def evaluate_dataset(self, data_args: DataTrainingArguments, model, device, batch_size: int, macro: bool = False) \
+    def evaluate_dataset(self, data_args: DataTrainingArguments, model, device, batch_size: int, macro: bool = False, log_file: str = None) \
             -> Dict[str, float]:
         """
         Evaluate model on this dataset.
@@ -1889,13 +1940,13 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
         results = Counter()
 
         for example, output_sentence in self.generate_output_sentences(data_args, model, device, batch_size):
-            print("output_sentence", output_sentence)
+            # print("output_sentence", output_sentence)
             new_result = self.evaluate_example(
-                    example=example,
-                    output_sentence=output_sentence,
-                    tokenizer=self.tokenizer,
-                )
-            results += new_result
+                example=example,
+                output_sentence=output_sentence,
+                tokenizer=self.tokenizer,
+                log_file=log_file
+            )
 
         """
         relation_precision, relation_recall, relation_f1 = get_precision_recall_f1(
@@ -1935,8 +1986,8 @@ class MUCEventDataset(MUCEventArgumentDataset):
     task_descriptor = 'mucevent_trigger'
     default_input_format = 'plain'
     default_output_format = 'joint_er'
-    argument_input_format = 'muc_event_with_trigger'
-    argument_output_format = 'muc_event'
+    argument_input_format = 'ace2005_event_with_trigger'
+    argument_output_format = 'ace2005_event'
 
     def load_data_single_split(self, split: str, seed: int = None) -> List[InputExample]:
         """
@@ -1984,7 +2035,7 @@ class MUCEventDataset(MUCEventArgumentDataset):
         return examples
 
     def evaluate_argument(self, output_format, example_argument_single_trigger: InputExample, example: InputExample,
-                          argument_output_sentence: str) -> Tuple[Set[tuple], Set[tuple], Set[tuple]]:
+                          argument_output_sentence: str, log_file: str = None) -> Tuple[Set[tuple], Set[tuple], Set[tuple]]:
         """
         Perform argument prediction.
         """
@@ -2009,14 +2060,18 @@ class MUCEventDataset(MUCEventArgumentDataset):
                 filtered_predicted_relations.add(filter_relation_tuple(relation))
 
         predicted_relations = filtered_predicted_relations
-        print("predicted_relations",predicted_relations,"\n gt_relations",gt_relations)
+
+        if log_file:
+            with open(log_file, "a") as f:
+                f.write("arguments {}\n".format(
+                    list(predicted_relations)))
 
         # compute correct relations
         correct_relations = predicted_relations & gt_relations
 
         return predicted_relations, gt_relations, correct_relations
 
-    def evaluate_dataset(self, data_args: DataTrainingArguments, model, device, batch_size: int, macro: bool = False) \
+    def evaluate_dataset(self, data_args: DataTrainingArguments, model, device, batch_size: int, macro: bool = False, log_file: str = None) \
             -> Dict[str, float]:
         """
         Evaluate model on this dataset.
@@ -2039,6 +2094,9 @@ class MUCEventDataset(MUCEventArgumentDataset):
             predicted_triggers_notype = set()
             gt_triggers_notype = set()
             # trigger tuple format: (type, start, end) -- resetting all types to the same as 'TYPE'
+            if log_file:
+                with open(log_file, "a") as f:
+                    f.write("id {}\ntriggers {}\n".format(example.id, list(predicted_triggers)))
             for trig in predicted_triggers:
                 trig_list = list(trig)
                 trig_list[0] = 'TYPE'
@@ -2082,7 +2140,7 @@ class MUCEventDataset(MUCEventArgumentDataset):
 
                 gt_relations, predicted_relations, correct_relations = \
                     self.evaluate_argument(argument_output_format, example_argument_single_trigger, example,
-                                           argument_output_sentence)
+                                           argument_output_sentence, log_file)
                 all_gt_relations = all_gt_relations.union(gt_relations)
                 all_predicted_relations = all_predicted_relations.union(predicted_relations)
                 all_correct_relations = all_correct_relations.union(correct_relations)
