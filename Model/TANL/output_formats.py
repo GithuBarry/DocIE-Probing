@@ -428,6 +428,110 @@ class EventOutputFormat(JointEROutputFormat):
     #name = 'ace2005_event'
     name = "muc_event"
 
+    def format_output(self, example: InputExample) -> List[str]:
+        """
+        Get output in augmented natural language, similarly to JointEROutputFormat (but we also consider triggers).
+        """
+        # organize relations by head entity
+        relations_by_entity = {entity: [] for entity in example.entities + example.triggers}
+        for relation in example.relations:
+            relations_by_entity[relation.head].append((relation.type, relation.tail))
+
+        augmentations = []
+        for entity in (example.entities + example.triggers):
+            if not relations_by_entity[entity]:
+                continue
+
+            tags = [(entity.type.natural,)]
+            for relation_type, tail in relations_by_entity[entity]:
+                tags.append((relation_type.natural, ' '.join(example.tokens[tail.start:tail.end])))
+
+            augmentations.append((
+                tags,
+                entity.start,
+                entity.end,
+            ))
+
+        return augment_sentence(example.tokens, augmentations, self.BEGIN_ENTITY_TOKEN, self.SEPARATOR_TOKEN,
+                                self.RELATION_SEPARATOR_TOKEN, self.END_ENTITY_TOKEN)
+
+    def run_inference(self, example: InputExample, output_sentence: str,
+                      entity_types: Dict[str, EntityType] = None, relation_types: Dict[str, RelationType] = None,
+                      log_file = None) \
+            -> Tuple[set, set, bool]:
+        """
+        Process an output sentence to extract arguments, given as entities and relations.
+        """
+        entity_types = set(
+            entity_type.natural for entity_type in entity_types.values())
+        relation_types = set(relation_type.natural for relation_type in relation_types.values()) \
+            if relation_types is not None else {}
+
+        triggers = example.triggers
+        # assert len(triggers) <= 1
+        if len(triggers) == 0:
+            if log_file:
+                with open(log_file, "a") as f:
+                    f.write("id {}\ntriggers []\narguments []\n".format(example.id))
+            # we do not have triggers
+            return set(), set(), False
+
+        trigger = triggers[0]
+
+        # parse output sentence
+        raw_predicted_entities, wrong_reconstruction = self.parse_output_sentence(
+            example, output_sentence)
+        if log_file:
+            args = []
+            trigs = [[trig.type.natural, trig.start, trig.end] for trig in example.triggers]
+            for ent in raw_predicted_entities:
+                if len(ent[1]) > 1:
+                    args.append([ent[1][1][0], (ent[-2], ent[-1]), tuple(trigs[0])])
+
+            with open(log_file, "a") as f:
+                f.write("id {}\ntriggers {}\narguments {}\n".format(
+                    example.id,
+                    [tuple(trig) for trig in trigs],
+                    args
+                    ))
+
+            return 0, 0, 0
+
+        # update predicted entities with the positions in the original sentence
+        predicted_entities = set()
+        predicted_relations = set()
+
+        # process and filter entities
+        for entity_name, tags, start, end in raw_predicted_entities:
+            if len(tags) == 0 or len(tags[0]) > 1:
+                # we do not have a tag for the entity type
+                continue
+
+            entity_type = tags[0][0]
+
+            if entity_type in entity_types:
+                entity_tuple = (entity_type, start, end)
+                predicted_entities.add(entity_tuple)
+
+                # process tags to get relations
+                for tag in tags[1:]:
+                    if len(tag) == 2:
+                        relation_type, related_entity = tag
+                        if relation_type in relation_types:
+                            predicted_relations.add(
+                                (relation_type, entity_tuple,
+                                 (trigger.type.natural, trigger.start, trigger.end))
+                            )
+
+        return predicted_entities, predicted_relations, wrong_reconstruction
+
+@register_output_format
+class ACE2005EventOutputFormat(JointEROutputFormat):
+    """
+    Output format for event extraction, where an input example contains exactly one trigger.
+    """
+    name = 'ace2005_event'
+
     def format_output(self, example: InputExample) -> str:
         """
         Get output in augmented natural language, similarly to JointEROutputFormat (but we also consider triggers).
