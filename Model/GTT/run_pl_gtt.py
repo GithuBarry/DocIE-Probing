@@ -118,7 +118,7 @@ class NERTransformer(BaseTransformer):
                     pad_token_label_id=self.pad_token_label_id,
                 )
                 logger.info("Saving features into cached file %s", cached_features_file)
-                torch.save(features, cached_features_file)
+                torch.save(features, cached_features_file, pickle_protocol=4)
         # import ipdb; ipdb.set_trace()
 
     def load_dataset(self, mode, batch_size):
