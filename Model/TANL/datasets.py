@@ -85,7 +85,7 @@ class JointERDataset(BaseDataset):
             'relation_types': self.relation_types,
             'examples': self.examples,
             'features': self.features,
-        }, cached_features_file, pickle_protocol=4)
+        }, cached_features_file)
 
     def load_schema(self):
         """
