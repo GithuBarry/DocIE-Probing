@@ -140,7 +140,7 @@ class BaseDataset(Dataset, ABC):
         torch.save({
             'examples': self.examples,
             'features': self.features,
-        }, cached_data_file)
+        }, cached_data_file, pickle_protocol=4)
 
     def load_schema(self):
         """
