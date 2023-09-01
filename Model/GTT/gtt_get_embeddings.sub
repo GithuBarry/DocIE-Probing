@@ -1,0 +1,67 @@
+#!/bin/bash
+#SBATCH -J GTT_get_embedding                         # Job name
+#SBATCH -o test_file_%j_GTT.out                  # output file (%j expands to jobID)
+#SBATCH -e test_file_%j.err                  # error log file (%j expands to jobID)
+#SBATCH --mail-type=ALL                      # Request status by email 
+#SBATCH --mail-user=zw545@cornell.edu        # Email address to send results to.
+#SBATCH -N 1                                 # Total number of nodes requested
+#SBATCH -n 1                                 # Total number of cores requested
+#SBATCH --get-user-env                       # retrieve the users login environment
+#SBATCH --mem=50g                           # server memory requested (per node)
+#SBATCH -t 3:30:00                           # Time limit (hh:mm:ss)
+#SBATCH --partition=gpu       # Request partition
+#SBATCH --gres=gpu:titanxp:1                # Type/number of GPUs needed
+
+#titanrtx
+#titanxp
+
+##### USAGE v ##### 
+# for NUM_EPOCHS in 5 10 15 20; do for batch in {0..25}; do export NUM_EPOCHS=$NUM_EPOCHS; export batch=$batch; sbatch --requeue ./gtt_test.sub; done; done
+##### USAGE ^ ##### 
+
+#export NUM_EPOCHS=20
+#export batch=0~25
+
+echo NUM_EPOCHS$NUM_EPOCHS
+echo batch$batch
+
+#export Folder=./NewHidden/epoch$NUM_EPOCHS
+#export PrePad=EPOCH${NUM_EPOCHS}batch$batch
+export OUTPUT_DIR_NAME=model_epoch_$NUM_EPOCHS
+
+#export SaveHiddenState=1
+#export DATA_DIR=../../Corpora/MUC/muc/sentbatch/batch$batch
+
+cd '/home/zw545/DocIE-Probing/Model/GTT'
+source /share/apps/anaconda3/2021.05/bin/activate
+conda activate longformer
+export MAX_LENGTH_SRC=435
+export MAX_LENGTH_TGT=75
+export BERT_MODEL=bert-base-uncased
+export DummyReturn=1
+export BATCH_SIZE=1
+export SEED=1
+
+# Add parent directory to python path to access transformer_base.py
+export PYTHONPATH="../":"${PYTHONPATH}"
+
+export th=80
+echo "=========================================================================================="
+echo "                                           threshold (${th})                              "
+echo "=========================================================================================="
+python3 run_pl_gtt.py \
+  --data_dir $DATA_DIR \
+  --model_type bert \
+  --model_name_or_path $BERT_MODEL \
+  --output_dir ${OUTPUT_DIR_NAME} \
+  --max_seq_length_src $MAX_LENGTH_SRC \
+  --max_seq_length_tgt $MAX_LENGTH_TGT \
+  --num_train_epochs $NUM_EPOCHS \
+  --train_batch_size $BATCH_SIZE \
+  --eval_batch_size $BATCH_SIZE \
+  --seed $SEED \
+  --n_gpu 1 \
+  --thresh $th \
+  --do_predict
+#done
+

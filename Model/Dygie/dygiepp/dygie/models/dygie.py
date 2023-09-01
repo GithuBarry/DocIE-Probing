@@ -6,7 +6,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from overrides import overrides
-
+from pathlib import Path
 from allennlp.data import Vocabulary
 from allennlp.common.params import Params
 from allennlp.models.model import Model
@@ -204,7 +204,10 @@ class DyGIE(Model):
 
         if os.getenv("SaveHiddenState"):
             prepad = os.getenv("PrePad") if os.getenv("PrePad") else ""
-            np.save(f"./{prepad}"+metadata.doc_key,text_embeddings.cpu().detach().numpy() )
+            folder = os.getenv("HIDDENSTATE_FOLDERNAME") if os.getenv("HIDDENSTATE_FOLDERNAME") else ""
+            if len(folder) > 0:
+                Path(os.path.join(".",folder)).mkdir(parents=True, exist_ok=True)
+            np.save(os.path.join(".",folder,prepad+metadata.doc_key), text_embeddings.cpu().detach().numpy())
 
         # (n_sents, max_sentence_length)
         text_mask = self._debatch(util.get_text_field_mask(text, num_wrapping_dims=1).float())
