@@ -45,3 +45,7 @@ The triggers Wayne used was done with Barry in Spring 2022, using a manual list 
 
 Barry later updated triggers to the muc gtt dataset so triggers more adjacent to template role fillers are used when an example has multiple templates.
 Script on upgrading the TANL triggers relies on `muc-trigger-v0` because the MUC-GTT to MUC-TANL was not available. 
+
+## sentmuc
+
+Sentence MUC is only splitting each document into sentences, each being a document with empty templates. Only used in obtaining embeddings for `SentCat` described in the paper (concatenated sentence embeddings as full text embeddings).
