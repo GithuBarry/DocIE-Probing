@@ -11,8 +11,8 @@ def search_sublst(sublst, lst, start=0):
     return return_lst
 
 
-relation_names = []
-entity_names = []
+relation_names = set()
+entity_names = set()
 incident_type_to_relations = defaultdict(set)
 
 if __name__ == '__main__':
@@ -31,15 +31,16 @@ if __name__ == '__main__':
             for gtt_template, raw_template in zip(gtt_dict["templates"], raw_dicts['event_mentions']):
                 new_dictionary["triggers"].append(
                     {"type": gtt_template["incident_type"], **raw_template['trigger']})
+                entity_names.add(gtt_template["incident_type"])
 
                 for argument in raw_template['arguments']:
                     k = argument['role']
-                    entity_names.append(k)
+                    entity_names.add(k)
                     entity_entry = {"type": k, "start": entity_ids[argument['entity_id']]['start'],
                                     "end": entity_ids[argument['entity_id']]['end']}
                     matched = False
                     relation_name = k + ": " + gtt_template["incident_type"]
-                    relation_names.append(relation_name)
+                    relation_names.add(relation_name)
                     incident_type_to_relations[gtt_template["incident_type"]].add(relation_name)
                     for entity_ind, entity in enumerate(new_dictionary["entities"]):
                         if entity == entity_entry:
@@ -60,9 +61,9 @@ if __name__ == '__main__':
 
         with open("wikievents_{}.json".format(file), "w") as new_f:
             new_f.write(json.dumps(write_lst))
-    with open("wikievents_schema.json.json", "w") as f:
+    with open("wikievents_schema.json", "w") as f:
         incident_type_to_relations = {k: list(v) for k, v in incident_type_to_relations.items()}
         json.dump(incident_type_to_relations, f)
     with open("wikievents_types.json", "w") as f:
         json.dump({"relations": {relation_name: {"verbose": relation_name} for relation_name in relation_names},
-                   "entities": {entity_name: {"verbose": entity_name} for entity_name in entity_names}}, f, )
+                   "entities": {entity_name: {"verbose": entity_name} for entity_name in (entity_names)}}, f, )
