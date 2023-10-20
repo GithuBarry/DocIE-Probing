@@ -1850,7 +1850,6 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
                 ]
 
                 inputs.append(InputExample(
-<<<<<<< HEAD
                                         id="{} {}".format(id_prefix, trig_id),
                                         tokens=tokens,
                                         entities=entities,
@@ -1859,16 +1858,7 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
                                     ))
             
             return inputs
-=======
-                    id="{} {}".format(x['id'], trig_id),
-                    tokens=tokens,
-                    entities=entities,
-                    triggers=triggers,
-                    relations=relations,
-                ))
->>>>>>> fe855cdae82f1b34295c23428473507055250539
 
-            return inputs
 
     def load_data_single_split(self, split: str, seed: int = None) -> List[InputExample]:
         """
