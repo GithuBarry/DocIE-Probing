@@ -32,6 +32,7 @@ if __name__ == '__main__':
                 new_dictionary["triggers"].append(
                     {"type": gtt_template["incident_type"], **raw_template['trigger']})
                 entity_names.add(gtt_template["incident_type"])
+                print(gtt_template["incident_type"])
 
                 for argument in raw_template['arguments']:
                     k = argument['role']
@@ -61,9 +62,11 @@ if __name__ == '__main__':
 
         with open("wikievents_{}.json".format(file), "w") as new_f:
             new_f.write(json.dumps(write_lst))
+
     with open("wikievents_schema.json", "w") as f:
         incident_type_to_relations = {k: list(v) for k, v in incident_type_to_relations.items()}
         json.dump(incident_type_to_relations, f)
+
     with open("wikievents_types.json", "w") as f:
         json.dump({"relations": {relation_name: {"verbose": relation_name} for relation_name in relation_names},
                    "entities": {entity_name: {"verbose": entity_name} for entity_name in (entity_names)}}, f, )
