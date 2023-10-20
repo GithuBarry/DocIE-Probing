@@ -2,6 +2,7 @@ import json
 import os
 
 import nltk
+from tqdm.auto import tqdm
 
 path_gtt_style_with_trigger = ["../gtt_format/dev.jsonl", "../gtt_format/train.jsonl", "../gtt_format/test.jsonl"]
 dygie_event_path = "../dygie_format/"
@@ -16,7 +17,7 @@ def find_word_index(text, word, char_i):
             c += 1
             text = text[1:]
         if text[char_i + c:].replace(" ", "").startswith(word.replace(" ", "")):
-            return char_i + c
+            return len(nltk.casual_tokenize(text[:char_i + c]))-1
 
     index = len(nltk.casual_tokenize(text[:char_i])) - 1
     assert word.replace(" ", "") in "".join(nltk.casual_tokenize(text)[index:index + len(nltk.casual_tokenize(word))])
@@ -33,7 +34,7 @@ def process_file(file):
 
     event_file = []
 
-    for example in gtt_examples:
+    for example in tqdm(gtt_examples):
         full_casual_tokenized = nltk.casual_tokenize(example['doctext'])
         all_ners_d = {}
 
