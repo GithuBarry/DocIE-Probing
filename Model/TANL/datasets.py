@@ -1790,7 +1790,7 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
     default_input_format = 'muc_event_with_trigger'
     default_output_format = 'muc_event'
 
-    def yield_single_document(self, x, tokens):
+    def yield_single_document(self, x, tokens, id_prefix=""):
         if len(x['triggers']) <= 1:
             entities = [
                 Entity(
@@ -1814,7 +1814,7 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
             ]
             
             return [InputExample(
-                                    id=x['id'],
+                                    id=id_prefix,
                                     tokens=tokens,
                                     entities=entities,
                                     triggers=triggers,
@@ -1843,7 +1843,7 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
                 ]
             
                 inputs.append(InputExample(
-                                        id="{} {}".format(x['id'], trig_id),
+                                        id="{} {}".format(id_prefix, trig_id),
                                         tokens=tokens,
                                         entities=entities,
                                         triggers=triggers,
@@ -1866,12 +1866,13 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
             logging.info(f"Loaded {len(data)} sentences for split {split} of {self.name}")
 
             for i, x in enumerate(data):
+                id_prefix=f'{split}-{i}'
                 if not 'outputs' in x:
-                    examples += self.yield_single_document(x, x['tokens'])
+                    examples += self.yield_single_document(x, x['tokens'],id_prefix)
                 else:
-                    input_exs = self.yield_single_document(x['inputs'], x['tokens'])
+                    input_exs = self.yield_single_document(x['inputs'], x['tokens'],id_prefix)
                     if len(x['outputs']):
-                        output_exs = self.yield_single_document(x['outputs'], x['tokens'])
+                        output_exs = self.yield_single_document(x['outputs'], x['tokens'],id_prefix)
                         for input_ex, output_ex in zip(input_exs, output_exs):
                             input_ex.output_entities = output_ex.entities
                             input_ex.output_triggers = output_ex.triggers
