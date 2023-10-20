@@ -2233,6 +2233,509 @@ class MUCEventDataset(MUCEventArgumentDataset):
         return full_results
 
 
+
+@register_dataset
+class WikiEventEventTriggerDataset(JointERDataset):
+    """
+    MUC dataset (event extraction), trigger extraction component.
+    """
+    name = 'wikievent_trigger'
+    data_name = 'wikievents'
+
+    relation_schemas = None
+
+    def load_schema(self):
+        types_file_name = os.path.join(self.data_dir(), f'{self.data_name}_types.json')
+        with open(types_file_name, 'r') as f:
+            types = json.load(f)
+
+            self.entity_types = {name: EntityType(
+                short=name,
+                natural=x['verbose'],
+            ) for name, x in types['entities'].items()}
+
+            self.relation_types = {name: RelationType(
+                short=name,
+                natural=x['verbose'],
+            ) for name, x in types['relations'].items()}
+
+        schema_file_name = os.path.join(self.data_dir(), f'{self.data_name}_schema.json')
+        with open(schema_file_name, 'r') as f:
+            schema = json.load(f)
+            self.relation_schemas = dict()
+            for trigger_type, role_types in schema.items():
+                trigger_type = self.entity_types[trigger_type].natural
+                self.relation_schemas[trigger_type] = \
+                    set(self.relation_types[role_type].natural for role_type in role_types)
+
+    def load_data_single_split(self, split: str, seed: int = None) -> List[InputExample]:
+        """
+        Load data for a single split (train, dev, or test).
+        """
+        examples = []
+        file_path = os.path.join(self.data_dir(), f'{self.data_name}_{split}.json')
+
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+            logging.info(f"Loaded {len(data)} sentences for split {split} of {self.name}")
+
+            for i, x in enumerate(data):
+                triggers = [
+                    Entity(id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
+                    for j, y in enumerate(x['triggers'])
+                ]
+
+                tokens = x['tokens']
+
+                example = InputExample(
+                    id=f'{split}-{i}',
+                    tokens=tokens,
+                    entities=triggers,
+                    relations=[],
+                )
+
+                examples.append(example)
+
+        return examples
+
+
+@register_dataset
+class WikiEventEventArgumentDataset(WikiEventEventTriggerDataset):
+    """
+    MUC dataset (event extraction), argument extraction component.
+    """
+    name = 'wikievent_argument'
+    data_name = 'wikievents'
+
+    default_input_format = 'muc_event_with_trigger'
+    default_output_format = 'muc_event'
+
+    def yield_single_document(self, x, tokens):
+        if len(x['triggers']) <= 1:
+            entities = [
+                Entity(
+                    id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
+                for j, y in enumerate(x['entities'])
+            ]
+
+            triggers = [
+                Entity(
+                    id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
+                for j, y in enumerate(x['triggers'])
+            ]
+
+            relations = [
+                # the trigger is the tail, and the entity is the head
+                Relation(
+                    type=self.relation_types[y['type']
+                    ], head=entities[y['head']], tail=triggers[y['tail']]
+                )
+                for y in x['relations']
+            ]
+
+            return [InputExample(
+                id=x['id'],
+                tokens=tokens,
+                entities=entities,
+                triggers=triggers,
+                relations=relations,
+            )]
+
+        else:
+            inputs = []
+            for trig_id, trig in enumerate(x['triggers']):
+                triggers = [
+                    Entity(id=trig_id, type=self.entity_types[trig['type']], start=trig['start'], end=trig['end'])
+                ]
+
+                entities = [
+                    Entity(
+                        id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
+                    for j, y in enumerate(x['entities']) if
+                    any(rel['head'] == j and rel['tail'] == trig_id for rel in x['relations'])
+                ]
+
+                relations = [
+                    Relation(
+                        type=self.relation_types[y['type']
+                        ], head=[ent for ent in entities if ent.id == y['head']][0], tail=triggers[0]
+                    )
+                    for y in x['relations'] if y['tail'] == trig_id
+                ]
+
+                inputs.append(InputExample(
+                    id="{} {}".format(x['id'], trig_id),
+                    tokens=tokens,
+                    entities=entities,
+                    triggers=triggers,
+                    relations=relations,
+                ))
+
+            return inputs
+
+    def load_data_single_split(self, split: str, seed: int = None) -> List[InputExample]:
+        """
+        Load data for a single split (train, dev, or test).
+        """
+        examples = []
+        name = self.name if self.data_name is None else self.data_name
+        file_path = os.path.join(self.data_dir(), f'{name}_{split}.json')
+
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+            logging.info(f"Loaded {len(data)} sentences for split {split} of {self.name}")
+
+            for i, x in enumerate(data):
+                if not 'outputs' in x:
+                    examples += self.yield_single_document(x, x['tokens'])
+                else:
+                    input_exs = self.yield_single_document(x['inputs'], x['tokens'])
+                    if len(x['outputs']):
+                        output_exs = self.yield_single_document(x['outputs'], x['tokens'])
+                        for input_ex, output_ex in zip(input_exs, output_exs):
+                            input_ex.output_entities = output_ex.entities
+                            input_ex.output_triggers = output_ex.triggers
+                            input_ex.output_relations = output_ex.relations
+
+                    examples += input_exs
+
+        return examples
+
+    def evaluate_example(self, example: InputExample, output_sentence: str, model=None, tokenizer=None,
+                         log_file=None) -> Counter:
+        """
+        Evaluate an output sentence on a single example of this dataset.
+        """
+        # extract natural name of entity and relation types
+        predicted_entities, predicted_relations, wrong_reconstruction = \
+            self.output_format.run_inference(
+                example,
+                output_sentence,
+                entity_types=self.entity_types,
+                relation_types=self.relation_types,
+                log_file=log_file,
+                tokenizer=tokenizer
+            )
+
+        # filter relation tuples for argument classification
+        # since we don't need the entity type to be predicted correct
+
+        # def filter_relation_tuple(relation_tuple):
+        #     return relation_tuple[0], relation_tuple[1][1:], relation_tuple[2]
+
+        # gt_relations = set(filter_relation_tuple(relation.to_tuple())
+        #                    for relation in example.relations)
+        # gt_relations_no_type = set([relation[1:] for relation in gt_relations])
+
+        # # load ground truth relations that only have valid relations (exist in relation_schema)
+        # filtered_predicted_relations = set()
+        # for relation in predicted_relations:
+        #     if relation[2][0] in self.relation_schemas and relation[0] in self.relation_schemas[relation[2][0]]:
+        #         filtered_predicted_relations.add(
+        #             filter_relation_tuple(relation))
+
+        # predicted_relations = filtered_predicted_relations
+        # predicted_relations_no_type = set(
+        #     relation[1:] for relation in predicted_relations)
+
+        # # compute correct relations
+        # correct_relations = predicted_relations & gt_relations
+        # correct_relations_no_type = predicted_relations_no_type & gt_relations_no_type
+
+        # return Counter({
+        #     'num_sentences': 1,
+        #     'wrong_reconstructions': 1 if wrong_reconstruction else 0,
+        #     'gt_relations': len(gt_relations),
+        #     'predicted_relations': len(predicted_relations),
+        #     'correct_relations': len(correct_relations),
+        #     'gt_relations_no_type': len(gt_relations_no_type),
+        #     'predicted_relations_no_type': len(predicted_relations_no_type),
+        #     'correct_relations_no_type': len(correct_relations_no_type),
+        # })
+
+    def evaluate_dataset(self, data_args: DataTrainingArguments, model, device, batch_size: int, macro: bool = False,
+                         log_file: str = None) \
+            -> Dict[str, float]:
+        """
+        Evaluate model on this dataset.
+        """
+        results = Counter()
+
+        for example, output_sentence in self.generate_output_sentences(data_args, model, device, batch_size):
+            # print("output_sentence", output_sentence)
+            new_result = self.evaluate_example(
+                example=example,
+                output_sentence=output_sentence,
+                tokenizer=self.tokenizer,
+                log_file=log_file
+            )
+
+        """
+        relation_precision, relation_recall, relation_f1 = get_precision_recall_f1(
+            num_correct=results['correct_relations'],
+            num_predicted=results['predicted_relations'],
+            num_gt=results['gt_relations'],
+        )
+
+        relation_precision_no_type, relation_recall_no_type, relation_f1_no_type = get_precision_recall_f1(
+            num_correct=results['correct_relations_no_type'],
+            num_predicted=results['predicted_relations_no_type'],
+            num_gt=results['gt_relations_no_type'],
+        )
+
+        res = {
+            'relation_precision': relation_precision,
+            'relation_recall': relation_recall,
+            'relation_f1': relation_f1,
+            'relation_precision_no_type': relation_precision_no_type,
+            'relation_recall_no_type': relation_recall_no_type,
+            'relation_f1_no_type': relation_f1_no_type,
+            'num_gt_triggers': results['gt_entities'],
+            'num_pred_triggers': results['predicted_entities'],
+            'num_gt_relations': results['gt_relations'],
+            'num_pred_relations': results['predicted_relations'],
+        }
+
+        return res
+        """
+
+
+@register_dataset
+class WikiEventEventDataset(WikiEventEventArgumentDataset):
+    """
+    MUC dataset (event extraction), for evaluation only.
+    """
+    name = 'wikievents'
+    task_descriptor = 'wikievent_trigger'
+    default_input_format = 'plain'
+    default_output_format = 'joint_er'
+    argument_input_format = 'ace2005_event_with_trigger'
+    argument_output_format = 'ace2005_event'
+
+    def load_data_single_split(self, split: str, seed: int = None) -> List[InputExample]:
+        """
+        Load data for a single split (train, dev, or test).
+        """
+        examples = []
+        name = self.name if self.data_name is None else self.data_name
+        file_path = os.path.join(self.data_dir(), f'{name}_{split}.json')
+
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+            logging.info(f"Loaded {len(data)} sentences for split {split} of {self.name}")
+
+            for i, x in enumerate(data):
+                entities = [
+                    Entity(id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
+                    for j, y in enumerate(x['entities'])
+                ]
+
+                triggers = [
+                    Entity(id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
+                    for j, y in enumerate(x['triggers'])
+                ]
+
+                relations = [
+                    # the trigger is the tail, and the entity is the head
+                    Relation(
+                        type=self.relation_types[y['type']], head=entities[y['head']], tail=triggers[y['tail']]
+                    )
+                    for y in x['relations']
+                ]
+
+                tokens = x['tokens']
+
+                example = InputExample(
+                    id=f'{split}-{i}',
+                    tokens=tokens,
+                    entities=entities,
+                    triggers=triggers,
+                    relations=relations,
+                )
+
+                examples.append(example)
+
+        return examples
+
+    def evaluate_argument(self, output_format, example_argument_single_trigger: InputExample, example: InputExample,
+                          argument_output_sentence: str, log_file: str = None) -> Tuple[
+        Set[tuple], Set[tuple], Set[tuple]]:
+        """
+        Perform argument prediction.
+        """
+        predicted_entities, predicted_relations, wrong_reconstruction = \
+            output_format.run_inference(example_argument_single_trigger,
+                                        argument_output_sentence,
+                                        entity_types=self.entity_types,
+                                        relation_types=self.relation_types)
+
+        # filter relation tuples for argument classification
+        # since we don't need the entity type to be predicted correct
+
+        def filter_relation_tuple(relation_tuple):
+            return relation_tuple[0], relation_tuple[1][1:], relation_tuple[2]
+
+        gt_relations = set(filter_relation_tuple(relation.to_tuple()) for relation in example.relations)
+
+        # load ground truth relations to only have relations that are valid (exist in relation_schema)
+        filtered_predicted_relations = set()
+        for relation in predicted_relations:
+            if relation[2][0] in self.relation_schemas and relation[0] in self.relation_schemas[relation[2][0]]:
+                filtered_predicted_relations.add(filter_relation_tuple(relation))
+
+        predicted_relations = filtered_predicted_relations
+
+        if log_file:
+            with open(log_file, "a") as f:
+                f.write("arguments {}\n".format(
+                    list(predicted_relations)))
+
+        # compute correct relations
+        correct_relations = predicted_relations & gt_relations
+
+        return predicted_relations, gt_relations, correct_relations
+
+    def evaluate_dataset(self, data_args: DataTrainingArguments, model, device, batch_size: int, macro: bool = False,
+                         log_file: str = None) \
+            -> Dict[str, float]:
+        """
+        Evaluate model on this dataset.
+        """
+        results = Counter()
+        idx = 0
+        for example, trigger_output_sentence in self.generate_output_sentences(data_args, model, device, batch_size):
+            print("trigger_output_sentence", trigger_output_sentence)
+            # phase 1: trigger prediction
+            trigger_output_format = self.output_format
+            predicted_triggers = \
+                trigger_output_format.run_inference(
+                    example,
+                    trigger_output_sentence,
+                    entity_types=self.entity_types,
+                    relation_types=self.relation_types,
+                )[0]
+            gt_triggers = set(trigger.to_tuple() for trigger in example.triggers)
+            correct_triggers = predicted_triggers & gt_triggers
+            predicted_triggers_notype = set()
+            gt_triggers_notype = set()
+            # trigger tuple format: (type, start, end) -- resetting all types to the same as 'TYPE'
+            if log_file:
+                with open(log_file, "a") as f:
+                    f.write("id {}\ntriggers {}\n".format(example.id, list(predicted_triggers)))
+            for trig in predicted_triggers:
+                trig_list = list(trig)
+                trig_list[0] = 'TYPE'
+                predicted_triggers_notype.add(tuple(trig_list))
+            for trig in gt_triggers:
+                trig_list = list(trig)
+                trig_list[0] = 'TYPE'
+                gt_triggers_notype.add(tuple(trig_list))
+            correct_triggers_notype = predicted_triggers_notype & gt_triggers_notype
+
+            # phase 2: argument classification
+            all_gt_relations, all_predicted_relations, all_correct_relations = set(), set(), set()
+            for trigger in predicted_triggers:
+                example_argument_single_trigger = copy.deepcopy(example)
+                trigger_type = None
+                for trigger_type in self.entity_types:
+                    if self.entity_types[trigger_type].natural == trigger[0]: break
+                example_argument_single_trigger.triggers = [
+                    Entity(type=self.entity_types[trigger_type], start=trigger[1], end=trigger[2])]
+
+                argument_input_format = INPUT_FORMATS[self.argument_input_format]()
+                argument_output_format = OUTPUT_FORMATS[self.argument_output_format]()
+                example_input = argument_input_format.format_input(example_argument_single_trigger, multitask=True,
+                                                                   task_descriptor=ACE2005EventArgumentDataset.name)
+                example_input_ids = self.tokenizer.batch_encode_plus(
+                    [example_input],
+                    max_length=data_args.max_seq_length,
+                    return_tensors='pt',
+                    padding='max_length',
+                    truncation=True
+                )
+                argument_outputs = model.generate(
+                    example_input_ids['input_ids'].to(device),
+                    max_length=data_args.max_output_seq_length_eval,
+                    num_beams=data_args.num_beams if data_args.num_beams else 1,
+                )
+                idx += 1
+                argument_output = argument_outputs[0]
+                argument_output_sentence = self.tokenizer.decode(argument_output, skip_special_tokens=True,
+                                                                 clean_up_tokenization_spaces=False)
+
+                gt_relations, predicted_relations, correct_relations = \
+                    self.evaluate_argument(argument_output_format, example_argument_single_trigger, example,
+                                           argument_output_sentence, log_file)
+                all_gt_relations = all_gt_relations.union(gt_relations)
+                all_predicted_relations = all_predicted_relations.union(predicted_relations)
+                all_correct_relations = all_correct_relations.union(correct_relations)
+
+            all_predicted_relations_notype = set()
+            all_gt_relations_notype = set()
+            for rel in all_predicted_relations:
+                rel_list = list(rel)
+                rel_list[0] = 'TYPE'
+                all_predicted_relations_notype.add(tuple(rel_list))
+            for rel in all_gt_relations:
+                rel_list = list(rel)
+                rel_list[0] = 'TYPE'
+                all_gt_relations_notype.add(tuple(rel_list))
+
+            all_correct_relations_notype = all_predicted_relations_notype & all_gt_relations_notype
+            res = Counter({
+                'num_sentences': 1,
+                'gt_triggers': len(gt_triggers),
+                'predicted_triggers': len(predicted_triggers),
+                'correct_triggers': len(correct_triggers),
+                'correct_triggers_notype': len(correct_triggers_notype),
+                'predicted_relations': len(all_predicted_relations),
+                'gt_relations': len(all_gt_relations),
+                'correct_relations': len(all_correct_relations),
+                'correct_relations_notype': len(all_correct_relations_notype)
+            })
+
+            results += res
+
+        trigger_precision, trigger_recall, trigger_f1 = get_precision_recall_f1(
+            num_correct=results['correct_triggers'],
+            num_predicted=results['predicted_triggers'],
+            num_gt=results['gt_triggers'],
+        )
+        trigger_precision_notype, trigger_recall_notype, trigger_f1_notype = get_precision_recall_f1(
+            num_correct=results['correct_triggers_notype'],
+            num_predicted=results['predicted_triggers'],
+            num_gt=results['gt_triggers'],
+        )
+        relation_precision, relation_recall, relation_f1 = get_precision_recall_f1(
+            num_correct=results['correct_relations'],
+            num_predicted=results['predicted_relations'],
+            num_gt=results['gt_relations'],
+        )
+        relation_precision_notype, relation_recall_notype, relation_f1_notype = get_precision_recall_f1(
+            num_correct=results['correct_relations_notype'],
+            num_predicted=results['predicted_relations'],
+            num_gt=results['gt_relations'],
+        )
+
+        full_results = {
+            'relation_precision': relation_precision,
+            'relation_recall': relation_recall,
+            'relation_f1': relation_f1,
+            'relation_precision_notype': relation_precision_notype,
+            'relation_recall_notype': relation_recall_notype,
+            'relation_f1_notype': relation_f1_notype,
+            'trigger_precision': trigger_precision,
+            'trigger_recall': trigger_recall,
+            'trigger_f1': trigger_f1,
+            'trigger_precision_notype': trigger_precision_notype,
+            'trigger_recall_notype': trigger_recall_notype,
+            'trigger_f1_notype': trigger_f1_notype,
+        }
+
+        return full_results
+
+
+
 @register_dataset
 class CoNLL12CorefDataset(BaseDataset):
     """
