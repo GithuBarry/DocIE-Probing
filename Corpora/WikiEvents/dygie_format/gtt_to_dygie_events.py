@@ -17,7 +17,9 @@ def find_word_index(text, word, char_i):
             c += 1
             text = text[1:]
         if text[char_i + c:].replace(" ", "").startswith(word.replace(" ", "")):
-            return len(nltk.casual_tokenize(text[:char_i + c]))-1
+            index = len(nltk.casual_tokenize(text[:char_i + c]))
+            assert index >= 0
+            return index
 
     index = len(nltk.casual_tokenize(text[:char_i])) - 1
     assert word.replace(" ", "") in "".join(nltk.casual_tokenize(text)[index:index + len(nltk.casual_tokenize(word))])
