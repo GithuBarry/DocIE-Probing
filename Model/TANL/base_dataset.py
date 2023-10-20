@@ -238,6 +238,47 @@ class BaseDataset(Dataset, ABC):
             collate_fn=default_data_collator,
         )
 
+        if os.getenv("DummyReturn") and os.getenv("SaveHiddenState"):
+            if len(test_data_loader) <= 200:
+                print("skipped validation")
+                return
+
+            print("Running shortcut DummyReturn")
+            for i, inputs in tqdm(enumerate(test_data_loader), total=len(test_data_loader),desc="Encoding Saving Only"):
+                predictions = model.generate(
+                    inputs['input_ids'].to(device),
+                    max_length=data_args.max_output_seq_length_eval,
+                    num_beams=data_args.num_beams if data_args.num_beams else 1,
+                    return_dict_in_generate=True,
+                    output_hidden_states=True
+                )
+                def tuple_to_numpy(x):
+                    return tuple(t.cpu().numpy() if not isinstance(t, tuple) else tuple_to_numpy(t) for t in x)
+                def np_compress_save(file_name, data):
+                    f = gzip.GzipFile(f"{file_name}.npy.gz", "w")
+                    np.save(file=f, arr=data)
+                    f.close()            
+                
+                tmp_i = i
+                
+                folder_name = os.getenv("HIDDENSTATE_FOLDERNAME") if os.getenv("HIDDENSTATE_FOLDERNAME") else "hidden_state"
+                os.makedirs(folder_name, exist_ok = True) 
+
+                prepad = os.getenv("PrePad") if os.getenv("PrePad") else ""
+                prefix = os.path.join(".",folder_name,f"{prepad}output_sentence"+str(tmp_i))
+                if not os.getenv("LAST_LAYER_ONLY"):
+                    np_compress_save(prefix+"_encoder_hidden_states",tuple_to_numpy(predictions.encoder_hidden_states))
+                else:
+                    np_compress_save(prefix+"_encoder_embedding",tuple_to_numpy(predictions.encoder_hidden_states)[-1])
+                if not os.getenv("NO_DECODER_HIDDEN_STATE"):
+                    np_compress_save(prefix+"_decoder_hidden_states",tuple_to_numpy(predictions.decoder_hidden_states))
+                #if predictions.encoder_attentions:
+                #    np.save(prefix+"_encoder_attentions.npy",tuple_to_numpy(predictions.encoder_attentions))
+                #if predictions.cross_attentions:
+                #    np.save(prefix+"_cross_attentions.npy",tuple_to_numpy(predictions.cross_attentions))
+                #np.save(prefix+"_sequences.npy",tuple_to_numpy(predictions.sequences))
+            return
+
         for i, inputs in tqdm(enumerate(test_data_loader), total=len(test_data_loader)):
             predictions = model.generate(
                 inputs['input_ids'].to(device),
@@ -271,6 +312,7 @@ class BaseDataset(Dataset, ABC):
                 #if predictions.cross_attentions:
                 #    np.save(prefix+"_cross_attentions.npy",tuple_to_numpy(predictions.cross_attentions))
                 #np.save(prefix+"_sequences.npy",tuple_to_numpy(predictions.sequences))
+
             
             predictions = predictions.sequences
             for j, (input_ids, label_ids, prediction) in enumerate(

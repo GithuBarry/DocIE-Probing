@@ -23,18 +23,21 @@ conda activate tanl
 # Usage:  for SEED in {1,2,3,4,5}; do export SEED; sbatch --requeue dygie2.sub; done; 
 # for NUM_EPOCHS in 20 15 10 5; do for SEED in {1..5}; do for DataDirOverrideSuffix in 1 2; do export SEED NUM_EPOCHS DataDirOverrideSuffix; sbatch --requeue tanl_hidden.sub; done; done; done
 
+# for NUM_EPOCHS in 20 15 10 5; do for SEED in {1..5};  do export SEED NUM_EPOCHS; sbatch --requeue tanl_hidden.sub; done; done
+
 # export SEED=1
 # export DataDirOverrideSuffix=1
 export SaveHiddenState=1
 # export NUM_EPOCHS=5 #Must specify 
 export DummyReturn=1
-if [[ $DataDirOverrideSuffix -eq 1 ]]; then
-    export prefix=FH
-elif [[ $DataDirOverrideSuffix -eq 2 ]]; then
-    export prefix=SH
-fi
 
-export PrePad=${prefix}EPOCH${NUM_EPOCHS}
+#if [[ $DataDirOverrideSuffix -eq 1 ]]; then
+#    export prefix=FH
+#elif [[ $DataDirOverrideSuffix -eq 2 ]]; then
+#    export prefix=SH
+#fi
+
+export PrePad=wikievents${prefix}EPOCH${NUM_EPOCHS}
 export HIDDENSTATE_FOLDERNAME=${prefix}epoch${NUM_EPOCHS}seed${SEED}
 export NO_DECODER_HIDDEN_STATE=1
 export LAST_LAYER_ONLY=1
@@ -42,5 +45,5 @@ export LAST_LAYER_ONLY=1
 echo "SEED=$SEED, NUM_EPOCHS=$NUM_EPOCHS, DataDirOverrideSuffix=$DataDirOverrideSuffix, prefix=$prefix, PrePad=$PrePad"
 
 
-python3 run_v4_transformers.py muc_event -v --logging_steps 500 --num_train_epochs $NUM_EPOCHS
+python3 run_v4_transformers.py wikievents -v --logging_steps 500 --num_train_epochs $NUM_EPOCHS
 #python3 run_v4_transformers.py muc_event_test --logging_steps 500

@@ -7,5 +7,5 @@
 config_name=$1
 
 allennlp train "training_config/${config_name}.jsonnet" \
-    --serialization-dir "models/${config_name}" \
+    --serialization-dir "models/${config_name}ep${NEPOCH}seed${SEED}" \
     --include-package dygie

@@ -5,7 +5,7 @@ import json
 import logging
 import os
 from collections import OrderedDict
-
+from pathlib import Path
 import numpy as np
 import torch
 from seqeval.metrics import accuracy_score
@@ -208,10 +208,17 @@ class NERTransformer(BaseTransformer):
             outputs = self(**inputs)
             logits = outputs[0][0]
             if hidden_states is None and os.getenv("SaveHiddenState"):
+                prepad = os.getenv("PrePad") if os.getenv("PrePad") else ""
+                file_name = f"{prepad}hiddenstates_{testid}_alllayers.npy.gz" if not os.getenv("LastLayerOnly") else f"{prepad}hiddenstates_{testid}_lastlayer.npy.gz"
+                Path(os.path.join(".",os.getenv("HIDDENSTATE_FOLDERNAME"))).mkdir(exist_ok=True, parents=True)
+
+                file_path = os.path.join(".",os.getenv("HIDDENSTATE_FOLDERNAME"),file_name)
                 hidden_states = outputs[1]
                 hidden_states = np.array([tensor.cpu().numpy() for tensor in hidden_states])
-                prepad = os.getenv("PrePad") if os.getenv("PrePad") else ""
-                f = gzip.GzipFile(f"./{prepad}hiddenstates_{testid}_alllayers.npy.gz", "w")
+                if os.getenv("LastLayerOnly"):
+                    hidden_states = hidden_states[-1:]
+                
+                f = gzip.GzipFile(file_path, "w")
                 np.save(file=f, arr=hidden_states)
                 f.close()
                 if os.getenv("DummyReturn"):
@@ -537,9 +544,14 @@ if __name__ == "__main__":
     args["output_hidden_states"] = True
     global_args = args
     logger.info(args)
+    override_ckpt = os.getenv("OverrideCheckpoint")
 
     checkpoints = list(sorted(glob.glob(os.path.join(args['output_dir'], "*.ckpt"), recursive=True)))
-    if checkpoints:
+    if override_ckpt:
+        print("Using checkpoint:", override_ckpt)
+        model = NERTransformer.load_from_checkpoint(override_ckpt)
+        model.hparams = args
+    elif checkpoints:
         model = NERTransformer.load_from_checkpoint(checkpoints[-1])
         model.hparams = args
     else:

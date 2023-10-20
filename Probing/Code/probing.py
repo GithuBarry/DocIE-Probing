@@ -3,6 +3,8 @@ import json
 import os
 
 from senteval_classifier import *
+truncate = False
+truncate_len = 512
 
 if __name__ == "__main__":
 
@@ -18,7 +20,12 @@ if __name__ == "__main__":
     if xpath[-1] != "/":
         xpath += "/"
     ypath = os.getenv("y")
-    for x in os.listdir(xpath):
+
+    if os.getenv("xfile"):
+        print("xfile",os.getenv("xfile"))
+    xfiles = os.listdir(xpath) if not os.getenv("xfile") else [os.getenv("xfile")]
+    
+    for x in xfiles:
         for y in os.listdir(ypath):
             if (x[-4:] != ".npy" and x[-4:] != ".npz") or y[-4:] != ".npy":
                 continue
@@ -54,10 +61,12 @@ if __name__ == "__main__":
                         example_X = example_X[0]
                     new_X.append(example_X)
                 X = new_X
-                max_length = max([len(x) for x in X])
+                max_length = max([len(x) for x in X]) if not truncate else truncate_len
                 for i in range(len(X)):
                     if len(X[i]) < max_length:
                         X[i] = np.pad(X[i], ((0, max_length - len(X[i])), (0, 0)), 'constant', constant_values=(0))
+                    if len(X[i]) > max_length:
+                        X[i] = X[i][:max_length]
                 X = np.array(X)
             Y = Y.reshape(1700, -1)
             # X = X.reshape(1700, -1)
@@ -135,7 +144,10 @@ if __name__ == "__main__":
 
             print(result)
             # torch.save(mlp_classifier.model.state_dict(), f"./{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}.pt")
-            with open(f'probresult_{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}.json',
-                      'w') as f:
+            truncate_statement = "_truncateYES" if truncate else "" 
+            filename = f'probresult_{y_name}_{x_name}_epoch{epoch_str}_nhid{str(probing_classifier_width)}{truncate_statement}.json'
+
+            file_path = os.path.join(os.getenv("Folder") if os.getenv("Folder") else ".", filename)
+            with open(file_path,'w') as f:
                 json.dump(result, f, indent=4)
             pass

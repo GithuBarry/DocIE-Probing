@@ -299,7 +299,7 @@ def generic_train(model, args):
         dirpath=args['output_dir'], monitor="val_loss", mode="min",
         filename='checkpoint_'+"time={0:.0f}".format(time.time())+'_{epoch:d}_{val_loss:.2f}',
         save_on_train_epoch_end=True,
-        save_top_k=5,
+        save_top_k=20,
         every_n_epochs=1,
         verbose=True,
         save_last = True

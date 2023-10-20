@@ -82,9 +82,9 @@ def read_golds_from_test_file(data_dir, tokenizer, debug=False):
                 break
             line = json.loads(line)
             if "#" not in line["docid"]:
-                docid = int(line["docid"].split("-")[0][-1])*10000 + int(line["docid"].split("-")[-1]) # transform TST1-MUC3-0001 to int(0001)
+                docid = int(line["docid"].split("-")[0][-1].replace("V", "5"))*10000 + int(line["docid"].split("-")[-1]) # transform TST1-MUC3-0001 to int(0001)
             else:
-                docid = int(line["docid"].split("-")[0][-1])*10000 + int(line["docid"].split("-")[-1].split("#")[0]) + (1+int(line["docid"].split("-")[-1].split("#")[1])) *100000
+                docid = int(line["docid"].split("-")[0][-1].replace("V", "5"))*10000 + int(line["docid"].split("-")[-1].split("#")[0]) + (1+int(line["docid"].split("-")[-1].split("#")[1])) *100000
                 # transform TST1-MUC3-0001#1 to 210001
 
             

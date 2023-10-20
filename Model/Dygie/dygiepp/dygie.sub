@@ -18,7 +18,7 @@ cd '/home/zw545/DocIE-Probing/Model/Dygie/dygiepp'
 source /share/apps/anaconda3/2021.05/bin/activate
 conda activate dygiepp
 
-export SaveHiddenState=1
+#export SaveHiddenState=1
 export NEPOCH=16
 export PrePad=EPOCH$NEPOCH
 

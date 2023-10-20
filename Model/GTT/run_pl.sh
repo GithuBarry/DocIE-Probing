@@ -6,7 +6,7 @@ export BERT_MODEL=bert-base-uncased
 
 export BATCH_SIZE=1
 #export NUM_EPOCHS=18
-export SEED=1
+#export SEED=1
 
 #export OUTPUT_DIR_NAME=model_GTT_$NUM_EPOCHS
 export CURRENT_DIR=${PWD}

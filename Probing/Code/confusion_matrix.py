@@ -16,7 +16,7 @@ if __name__ == '__main__':
         ###################
 
         prefix = "probresult"
-        if file[:len(prefix)] == prefix and file[-5:] == ".json":
+        if file.startswith(prefix) and file[-5:] == ".json":
             print(os.path.join(results_path, file))
             file_name = results_path + file[:-5] + ".png"
             if os.path.exists(file_name) and new_only:

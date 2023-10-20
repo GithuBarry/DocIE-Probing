@@ -206,6 +206,7 @@ def main():
 
         # fine-tune the model
         if training_args.do_train:
+            master_seed = int(os.getenv("SEED")) if os.getenv("SEED") else 0
             # load train dataset
             datasets = []
             for dataset_name in dataset_names:
@@ -213,7 +214,7 @@ def main():
                 dataset = load_dataset(
                     dataset_name, data_args, split=data_args.train_split,
                     max_input_length=data_args.max_seq_length, max_output_length=data_args.max_output_seq_length,
-                    tokenizer=tokenizer, seed=ep_idx, train_subset=data_args.train_subset,
+                    tokenizer=tokenizer, seed=ep_idx+master_seed*100, train_subset=data_args.train_subset,
                 )
                 datasets.append(dataset)
 

@@ -69,8 +69,8 @@ class JointERDataset(BaseDataset):
     entity_types = None
     relation_types = None
 
-    natural_entity_types = None     # dictionary from entity types given in the dataset to the natural strings to use
-    natural_relation_types = None   # dictionary from relation types given in the dataset to the natural strings to use
+    natural_entity_types = None  # dictionary from entity types given in the dataset to the natural strings to use
+    natural_relation_types = None  # dictionary from relation types given in the dataset to the natural strings to use
 
     default_output_format = 'joint_er'
 
@@ -235,11 +235,11 @@ class JointERDataset(BaseDataset):
 
         for example, output_sentence in self.generate_output_sentences(data_args, model, device, batch_size):
             new_result = self.evaluate_example(
-                    example=example,
-                    output_sentence=output_sentence,
-                    model=model,
-                    tokenizer=self.tokenizer,
-                )
+                example=example,
+                output_sentence=output_sentence,
+                model=model,
+                tokenizer=self.tokenizer,
+            )
             results += new_result
 
         entity_precision, entity_recall, entity_f1 = get_precision_recall_f1(
@@ -324,6 +324,7 @@ class Conll04Dataset(JointERDataset):
         'Live_In': 'lives in',
         'Located_In': 'located in'
     }
+
 
 @register_dataset
 class DocREDDataset(JointERDataset):
@@ -441,6 +442,7 @@ class DocREDDataset(JointERDataset):
         'P3373': 'sibling',
         'coref': 'coreferent'
     }
+
 
 @register_dataset
 class ADEDataset(JointERDataset):
@@ -631,7 +633,7 @@ class ACE2005REDataset(JointERDataset):
 
                     if len(document['ner'][i]) > 0:
                         entities = [
-                            Entity(type=self.entity_types[entity_type], start=start-offset, end=end-offset+1)
+                            Entity(type=self.entity_types[entity_type], start=start - offset, end=end - offset + 1)
                             for start, end, entity_type in document['ner'][i]
                         ]
 
@@ -640,15 +642,17 @@ class ACE2005REDataset(JointERDataset):
                         skip = False
                         for start1, end1, start2, end2, relation_type in document['relations'][i]:
                             # find entities
-                            if len([e for e in entities if e.start == start1-offset and e.end == end1-offset+1]) > 1 \
+                            if len([e for e in entities if
+                                    e.start == start1 - offset and e.end == end1 - offset + 1]) > 1 \
                                     or \
-                                    len([e for e in entities if e.start == start2-offset and e.end == end2-offset+1]) \
+                                    len([e for e in entities if
+                                         e.start == start2 - offset and e.end == end2 - offset + 1]) \
                                     > 1:
                                 skip = True
                                 break
 
-                            [head] = [e for e in entities if e.start == start1-offset and e.end == end1-offset+1]
-                            [tail] = [e for e in entities if e.start == start2-offset and e.end == end2-offset+1]
+                            [head] = [e for e in entities if e.start == start1 - offset and e.end == end1 - offset + 1]
+                            [tail] = [e for e in entities if e.start == start2 - offset and e.end == end2 - offset + 1]
 
                             relations.append(
                                 Relation(type=self.relation_types[relation_type], head=head, tail=tail)
@@ -717,12 +721,12 @@ class NERDataset(JointERDataset):
             current_entity_type = None
 
             for j, label in enumerate(labels + [None]):
-                previous_label = labels[j-1] if j > 0 else None
+                previous_label = labels[j - 1] if j > 0 else None
                 if (label is None and previous_label is not None) \
                         or (label is not None and previous_label is None) \
                         or (label is not None and previous_label is not None and (
-                            label[2:] != previous_label[2:] or label.startswith('B-') or label.startswith('S-')
-                        )):
+                        label[2:] != previous_label[2:] or label.startswith('B-') or label.startswith('S-')
+                )):
                     if current_entity_start is not None:
                         # close current entity
                         entities.append(Entity(
@@ -776,6 +780,7 @@ class CoNLL03Dataset(NERDataset):
         'PER': 'person',
     }
 
+
 @register_dataset
 class scirexDataset(NERDataset):
     """
@@ -789,6 +794,7 @@ class scirexDataset(NERDataset):
         'Material': 'Material',
         'Metric': 'Metric',
     }
+
 
 @register_dataset
 class OntonotesDataset(NERDataset):
@@ -887,13 +893,12 @@ class SnipsDataset(NERDataset):
                         if tag_type in self.natural_entity_types else tag_type
                     ),
                     start=ii,
-                    end=ii+1,
+                    end=ii + 1,
                 )
                 entities.append(current_entity)
             elif el.startswith('I-'):
                 current_entity.end = ii + 1
         return entities
-
 
     def load_data_single_split(self, split: str, seed: int = None) -> List[InputExample]:
         """
@@ -903,7 +908,7 @@ class SnipsDataset(NERDataset):
         examples = []
 
         with open(file_path, 'r') as f:
-            data = f.readlines()[1:]    # skip header
+            data = f.readlines()[1:]  # skip header
             for id, example in enumerate(data):
                 uid, cid, turn, author, utterance, short_intent, act, slot_labels = example.strip().split('\t')
                 tokens = utterance.split()
@@ -937,7 +942,6 @@ class SnipsDataset(NERDataset):
 
         return examples
 
-
     def evaluate_example(self, example: InputExample, output_sentence: str, model=None, tokenizer=None) -> Counter:
         """
         Evaluate an output sentence on a single example of this dataset.
@@ -967,7 +971,6 @@ class SnipsDataset(NERDataset):
 
         # compute correct intent
         correct_intent = int(predicted_intent == gt_intent.natural)
-
 
         assert len(correct_entities) <= len(predicted_entities)
         assert len(correct_entities) <= len(gt_entities)
@@ -1020,11 +1023,11 @@ class SnipsDataset(NERDataset):
 
         for example, output_sentence in self.generate_output_sentences(data_args, model, device, batch_size):
             new_result = self.evaluate_example(
-                    example=example,
-                    output_sentence=output_sentence,
-                    model=model,
-                    tokenizer=self.tokenizer,
-                )
+                example=example,
+                output_sentence=output_sentence,
+                model=model,
+                tokenizer=self.tokenizer,
+            )
             results += new_result
 
         entity_precision, entity_recall, entity_f1 = get_precision_recall_f1(
@@ -1156,8 +1159,8 @@ class ATISDataset(SnipsDataset):
                 tag_type = el[2:]
                 if '.' in tag_type:
                     natural = ' '.join([self.natural_entity_types[tag_part]
-                            if tag_part in self.natural_entity_types else tag_part
-                            for tag_part in tag_type.split('.')])
+                                        if tag_part in self.natural_entity_types else tag_part
+                                        for tag_part in tag_type.split('.')])
                 else:
                     natural = self.natural_entity_types[tag_type] if tag_type in self.natural_entity_types else tag_type
                 current_entity = Entity(
@@ -1166,7 +1169,7 @@ class ATISDataset(SnipsDataset):
                         natural=natural
                     ),
                     start=ii,
-                    end=ii+1,
+                    end=ii + 1,
                 )
                 entities.append(current_entity)
             elif el.startswith('I-'):
@@ -1347,6 +1350,7 @@ class ACE2005EventTriggerDataset(JointERDataset):
 
         return examples
 
+
 @register_dataset
 class ACE2005EventArgumentDataset(ACE2005EventTriggerDataset):
     """
@@ -1380,7 +1384,7 @@ class ACE2005EventArgumentDataset(ACE2005EventTriggerDataset):
 
                     triggers = [
                         Entity(id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
-                        for j, y in enumerate(x['triggers'][trigger_id:trigger_id+1]) if len(x['triggers']) > 0
+                        for j, y in enumerate(x['triggers'][trigger_id:trigger_id + 1]) if len(x['triggers']) > 0
                     ]
                     assert len(triggers) <= 1, 'no more than 1 trigger'
 
@@ -1460,10 +1464,10 @@ class ACE2005EventArgumentDataset(ACE2005EventTriggerDataset):
 
         for example, output_sentence in self.generate_output_sentences(data_args, model, device, batch_size):
             new_result = self.evaluate_example(
-                    example=example,
-                    output_sentence=output_sentence,
-                    tokenizer=self.tokenizer,
-                )
+                example=example,
+                output_sentence=output_sentence,
+                tokenizer=self.tokenizer,
+            )
             results += new_result
 
         relation_precision, relation_recall, relation_f1 = get_precision_recall_f1(
@@ -1715,6 +1719,7 @@ class ACE2005EventDataset(ACE2005EventArgumentDataset):
 
         return full_results
 
+
 @register_dataset
 class MUCEventTriggerDataset(JointERDataset):
     """
@@ -1779,6 +1784,7 @@ class MUCEventTriggerDataset(JointERDataset):
 
         return examples
 
+
 @register_dataset
 class MUCEventArgumentDataset(MUCEventTriggerDataset):
     """
@@ -1808,11 +1814,11 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
                 # the trigger is the tail, and the entity is the head
                 Relation(
                     type=self.relation_types[y['type']
-                                            ], head=entities[y['head']], tail=triggers[y['tail']]
+                    ], head=entities[y['head']], tail=triggers[y['tail']]
                 )
                 for y in x['relations']
             ]
-            
+
             return [InputExample(
                                     id=id_prefix,
                                     tokens=tokens,
@@ -1831,18 +1837,20 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
                 entities = [
                     Entity(
                         id=j, type=self.entity_types[y['type']], start=y['start'], end=y['end'])
-                    for j, y in enumerate(x['entities']) if any(rel['head'] == j and rel['tail'] == trig_id for rel in x['relations'])
+                    for j, y in enumerate(x['entities']) if
+                    any(rel['head'] == j and rel['tail'] == trig_id for rel in x['relations'])
                 ]
 
                 relations = [
                     Relation(
                         type=self.relation_types[y['type']
-                                                ], head=[ent for ent in entities if ent.id == y['head']][0], tail=triggers[0]
+                        ], head=[ent for ent in entities if ent.id == y['head']][0], tail=triggers[0]
                     )
                     for y in x['relations'] if y['tail'] == trig_id
                 ]
-            
+
                 inputs.append(InputExample(
+<<<<<<< HEAD
                                         id="{} {}".format(id_prefix, trig_id),
                                         tokens=tokens,
                                         entities=entities,
@@ -1851,7 +1859,16 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
                                     ))
             
             return inputs
+=======
+                    id="{} {}".format(x['id'], trig_id),
+                    tokens=tokens,
+                    entities=entities,
+                    triggers=triggers,
+                    relations=relations,
+                ))
+>>>>>>> fe855cdae82f1b34295c23428473507055250539
 
+            return inputs
 
     def load_data_single_split(self, split: str, seed: int = None) -> List[InputExample]:
         """
@@ -1882,7 +1899,8 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
 
         return examples
 
-    def evaluate_example(self, example: InputExample, output_sentence: str, model=None, tokenizer=None, log_file=None) -> Counter:
+    def evaluate_example(self, example: InputExample, output_sentence: str, model=None, tokenizer=None,
+                         log_file=None) -> Counter:
         """
         Evaluate an output sentence on a single example of this dataset.
         """
@@ -1933,7 +1951,8 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
         #     'correct_relations_no_type': len(correct_relations_no_type),
         # })
 
-    def evaluate_dataset(self, data_args: DataTrainingArguments, model, device, batch_size: int, macro: bool = False, log_file: str = None) \
+    def evaluate_dataset(self, data_args: DataTrainingArguments, model, device, batch_size: int, macro: bool = False,
+                         log_file: str = None) \
             -> Dict[str, float]:
         """
         Evaluate model on this dataset.
@@ -1977,6 +1996,7 @@ class MUCEventArgumentDataset(MUCEventTriggerDataset):
 
         return res
         """
+
 
 @register_dataset
 class MUCEventDataset(MUCEventArgumentDataset):
@@ -2036,7 +2056,8 @@ class MUCEventDataset(MUCEventArgumentDataset):
         return examples
 
     def evaluate_argument(self, output_format, example_argument_single_trigger: InputExample, example: InputExample,
-                          argument_output_sentence: str, log_file: str = None) -> Tuple[Set[tuple], Set[tuple], Set[tuple]]:
+                          argument_output_sentence: str, log_file: str = None) -> Tuple[
+        Set[tuple], Set[tuple], Set[tuple]]:
         """
         Perform argument prediction.
         """
@@ -2072,7 +2093,8 @@ class MUCEventDataset(MUCEventArgumentDataset):
 
         return predicted_relations, gt_relations, correct_relations
 
-    def evaluate_dataset(self, data_args: DataTrainingArguments, model, device, batch_size: int, macro: bool = False, log_file: str = None) \
+    def evaluate_dataset(self, data_args: DataTrainingArguments, model, device, batch_size: int, macro: bool = False,
+                         log_file: str = None) \
             -> Dict[str, float]:
         """
         Evaluate model on this dataset.
@@ -2133,8 +2155,8 @@ class MUCEventDataset(MUCEventArgumentDataset):
                     example_input_ids['input_ids'].to(device),
                     max_length=data_args.max_output_seq_length_eval,
                     num_beams=data_args.num_beams if data_args.num_beams else 1,
-                )  
-                idx +=1 
+                )
+                idx += 1
                 argument_output = argument_outputs[0]
                 argument_output_sentence = self.tokenizer.decode(argument_output, skip_special_tokens=True,
                                                                  clean_up_tokenization_spaces=False)
@@ -2210,6 +2232,7 @@ class MUCEventDataset(MUCEventArgumentDataset):
 
         return full_results
 
+
 @register_dataset
 class CoNLL12CorefDataset(BaseDataset):
     """
@@ -2218,7 +2241,7 @@ class CoNLL12CorefDataset(BaseDataset):
     name = 'conll12_coref'
     default_output_format = 'coref'
 
-    documents = None    # list of documents
+    documents = None  # list of documents
 
     def load_data_single_split(self, split: str, seed: int = None) -> List[InputExample]:
         """
@@ -2263,12 +2286,12 @@ class CoNLL12CorefDataset(BaseDataset):
                 chunk_id = 0
                 while pos < len(tokens):
                     # create a chunk starting at this position
-                    chunk_tokens = tokens[pos:pos+chunk_size]
+                    chunk_tokens = tokens[pos:pos + chunk_size]
 
                     chunk_groups = []
                     for group in groups:
                         mentions = [
-                            Entity(start=mention.start-pos, end=mention.end-pos, type=mention.type)
+                            Entity(start=mention.start - pos, end=mention.end - pos, type=mention.type)
                             for mention in group
                             if mention.start >= pos and mention.end <= pos + chunk_size
                         ]
@@ -2371,6 +2394,7 @@ class CoNLL12CorefDataset(BaseDataset):
             for x, v in metric_values.items()
         }
 
+
 class RelationClassificationDataset(JointERDataset):
     """
     Base class for relation classification datasets, implementing NLL inference.
@@ -2414,7 +2438,7 @@ class RelationClassificationDataset(JointERDataset):
                 attention_mask=x['attention_mask'].to(model.device),
                 labels=y['input_ids'].to(model.device)
             )
-            scores.append(res[0].cpu().detach())    # res[0] is the log likelihood
+            scores.append(res[0].cpu().detach())  # res[0] is the log likelihood
 
         scores = np.array(scores)
         min_idx = scores.argmin()
@@ -2434,7 +2458,7 @@ class FewRelFull(RelationClassificationDataset):
     natural_entity_types = {
         'head': 'head',
         'tail': 'tail',
-    }   # fake entity types corresponding to head and tail of a relation
+    }  # fake entity types corresponding to head and tail of a relation
 
     default_input_format = 'rel_input'
     default_output_format = 'rel_output'
@@ -2443,7 +2467,7 @@ class FewRelFull(RelationClassificationDataset):
         """
         Load relation types from the pid2name.json file provided with the dataset.
         """
-        super().load_schema()   # this is to initialize the fake entity types 'head' and 'tail'
+        super().load_schema()  # this is to initialize the fake entity types 'head' and 'tail'
 
         with open(os.path.join(self.data_dir(), 'pid2name.json'), 'r') as f:
             data = json.load(f)
@@ -2535,13 +2559,13 @@ class FewRelEpisodic(FewRelFull):
     default_input_format = 'rel_input'
     default_output_format = 'rel_output'
 
-    target_relation_types = None    # the relation types involved in this episode (there is self.num_ways of them)
+    target_relation_types = None  # the relation types involved in this episode (there is self.num_ways of them)
 
     def load_data_single_split(self, split: str, seed: int = None) -> List[InputExample]:
         """
         Load data for a single split (train, dev, or test).
         """
-        examples_by_type = self.load_data_by_relation_type(split='dev')   # we use the dev set for episodic experiments
+        examples_by_type = self.load_data_by_relation_type(split='dev')  # we use the dev set for episodic experiments
 
         # set few-shot parameters
         num_ways, num_shots, num_queries = self.data_args.num_ways, self.data_args.num_shots, self.data_args.num_query
@@ -2785,7 +2809,7 @@ class CONLL05SRL(NERDataset):
                         if tag_type in self.natural_entity_types else tag_type
                     ),
                     start=ii,
-                    end=ii+1,
+                    end=ii + 1,
                 )
                 if tag_type == 'V':
                     predicate = current_entity
@@ -2882,7 +2906,7 @@ class CONLL12SRL(NERDataset):
                         argument = Entity(
                             id=None,
                             type=EntityType(short=arg_name, natural=self.natural_entity_types[arg_name]
-                                            if arg_name in self.natural_entity_types else arg_name),
+                            if arg_name in self.natural_entity_types else arg_name),
                             start=arg_start_word,
                             end=arg_end_word
                         )

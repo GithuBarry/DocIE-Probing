@@ -55,7 +55,7 @@ class DyGIEPredictor(Predictor):
             if os.getenv("SaveHiddenState"):
                 prepad = os.getenv("PrePad") if os.getenv("PrePad") else ""
                 dockey = dataset.instances[0].fields['metadata'].metadata.doc_key
-                json.dump([str(s) for s in dataset.instances[0].fields['text'][0].tokens], open(f"{prepad}{dockey}", "w+"))
+                #json.dump([str(s) for s in dataset.instances[0].fields['text'][0].tokens], open(f"{prepad}{dockey}", "w+"))
             prediction = model.make_output_human_readable(model(**model_input)).to_json()
         # If we run out of GPU memory, warn user and indicate that this document failed.
         # This way, prediction doesn't grind to a halt every time we run out of GPU.
