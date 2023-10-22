@@ -5,6 +5,10 @@ import os
 from senteval_classifier import *
 truncate = False
 truncate_len = 512
+data_len = 246
+test_len = 20
+dev_len = 20
+train_len = 206
 
 if __name__ == "__main__":
 
@@ -68,15 +72,15 @@ if __name__ == "__main__":
                     if len(X[i]) > max_length:
                         X[i] = X[i][:max_length]
                 X = np.array(X)
-            Y = Y.reshape(1700, -1)
-            # X = X.reshape(1700, -1)
+            Y = Y.reshape(data_len, -1)
+            # X = X.reshape(data_len, -1)
 
             _, _, embedding_dimension = X.shape
             _, output_dimension = Y.shape
 
             assert output_dimension > 1
 
-            X_train, X_val, X_test, y_train, y_val, y_test = X[400:], X[200:400], X[:200], Y[400:], Y[200:400], Y[:200]
+            X_train, X_val, X_test, y_train, y_val, y_test = X[test_len+dev_len:], X[test_len:test_len+dev_len], X[:test_len], Y[test_len+dev_len:], Y[test_len:test_len+dev_len], Y[:test_len]
 
             mlp_classifier = MLP(params=params, inputdim=embedding_dimension, nclasses=output_dimension,
                                  cudaEfficient=not torch.cuda.is_available())

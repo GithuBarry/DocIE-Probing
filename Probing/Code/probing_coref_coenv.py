@@ -7,8 +7,13 @@ from tqdm import tqdm
 from senteval_classifier import *
 truncate = False
 truncate_len = 512
-
+data_len = 246
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+test_len = 20
+dev_len = 20
+trian_len = 206
+
 
 if __name__ == "__main__":
     torch.manual_seed(11)
