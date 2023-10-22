@@ -7,6 +7,7 @@ from tqdm.auto import tqdm
 path_gtt_style_with_trigger = ["../gtt_format/dev.jsonl", "../gtt_format/train.jsonl", "../gtt_format/test.jsonl"]
 dygie_event_path = "../dygie_format/"
 
+
 with open("../gtt_format/EventTypeToRoles.json", 'r') as f:
     event_to_roles = json.load(f)
 
@@ -31,6 +32,7 @@ def get_trigger_ner_tag(incident_type):
 
 
 def process_file(file):
+    max_len = 0
     with open(file, 'r') as f:
         gtt_examples = [json.loads(line) for line in f]
 
@@ -55,18 +57,20 @@ def process_file(file):
                 for mentions in template[key]:
                     index = find_word_index(example['doctext'], mentions[0][0], mentions[0][1])
                     end_index = index + len(nltk.casual_tokenize(mentions[0][0])) - 1
+                    max_len = max((len(nltk.casual_tokenize(mentions[0][0]))), max_len)
                     event.append([index, end_index, key])
                     all_ners_d[(index, end_index)] = [index, end_index, key]
             events.append(event)
 
         event_file.append({"doc_key": example['docid'], "dataset": "WikiEvents", "ner": [list(all_ners_d.values())],
                            "sentences": [full_casual_tokenized], "events": [events]})
-
+    print(max_len)
     with open(os.path.join(dygie_event_path, os.path.basename(file)), "w+") as event_f:
         for item in event_file:
             event_f.write(json.dumps(item) + "\n")
 
 
 if __name__ == '__main__':
+
     for file in path_gtt_style_with_trigger:
         process_file(file)

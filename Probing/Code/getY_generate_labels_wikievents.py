@@ -7,12 +7,15 @@ import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 
 if __name__ == '__main__':
-    dataset_name = "muc1700"
-    muc_1700_input = open("../../Corpora/MUC/muc/processed2/muc_1700_GTT_style-test-dev-train.json")
-    examples = json.load(muc_1700_input)
+    dataset_name = "wikievents246"
+    muc_1700_input = open("../../Corpora/WikiEvents/gtt_format/all-test-dev-train.jsonl")
+    examples = [json.loads(l) for l in muc_1700_input.readlines()]
     muc_1700_input.close()
 
-
+    label_sets = {"num_events": [len(example['templates']) for example in examples],
+                  "num_words": [len(nltk.word_tokenize(example['doctext'])) for example in examples],
+                  "num_sent": [len(nltk.sent_tokenize(example['doctext'])) for example in examples]
+                  }
 
     data = dict()
     for key in label_sets:
@@ -35,4 +38,4 @@ if __name__ == '__main__':
         data[key + "bucket"] = dict(Counter(labels_bucketed_10))
         print(data[key + "bucket"])
 
-    json.dump(data, open("./label_stats.json", "w+"))
+    json.dump(data, open(f"./label_stats_{dataset_name}.json", "w+"))
