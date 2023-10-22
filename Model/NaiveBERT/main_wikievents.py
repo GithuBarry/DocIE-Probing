@@ -3,7 +3,7 @@ import torch, json
 import numpy as np
 from transformers import BertTokenizer, BertModel
 import psutil
-from tqdm import tqdm
+from tqdm.auto import tqdm
 # Check if CUDA is available and set the device accordingly
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -25,7 +25,7 @@ hidden_states_list = [[] for _ in range(13)]
 tokenized= []
 
 # Loop over each text in the list and embed them individually
-for text_idx, text in tqdm(enumerate(text_list)):
+for text_idx, text in tqdm(enumerate(text_list), total=len(text_list)):
     # Truncate the text to 512 tokens
     truncated_text = text
 
@@ -66,7 +66,7 @@ hidden_states_array = [np.array(layer_list) for layer_list in hidden_states_list
 output_dir = 'hidden_states'
 os.makedirs(output_dir, exist_ok=True)
 
-for i, layer_array in enumerate(hidden_states_array):
+for i, layer_array in tqdm(enumerate(hidden_states_array)):
     output_path = os.path.join(output_dir, f'X_raw_layer_{i}_bert-uncased.npy')
     np.save(output_path, layer_array)
     print(f'Saved hidden state array for layer {i} to {output_path}.')
