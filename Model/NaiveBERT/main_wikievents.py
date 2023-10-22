@@ -15,7 +15,7 @@ model.to(device)
 # Define the list of text to be embedded
 dataset_name = "wikievents"
 wikievent_input = open("../../Corpora/WikiEvents/gtt_format/all-test-dev-train.jsonl")
-examples =[json.load(l) for l in wikievent_input.readlines()]
+examples =[json.loads(l) for l in wikievent_input.readlines()]
 wikievent_input.close()
 
 text_list = [example['doctext'] for example in examples]
