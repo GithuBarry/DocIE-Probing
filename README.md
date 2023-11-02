@@ -1,4 +1,4 @@
-# DocIE-Probing (Cleaning Up In Progress)
+# DocIE-Probing (Preview, Cleaning Up In Progress)
  
 **Repo clean up in progress.**  Opening visibility early to allow fellow researchers to understand any content better. You are welcome to use `Issues` to bring up any clarification questions.
 
