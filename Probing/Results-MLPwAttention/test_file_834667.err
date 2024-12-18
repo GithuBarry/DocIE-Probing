@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "./probing_coref_coenv.py", line 22, in <module>
-    for y in os.listdir(annotation_path):
-FileNotFoundError: [Errno 2] No such file or directory: '../XY/1'

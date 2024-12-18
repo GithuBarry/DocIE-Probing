@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "./probing.py", line 66, in <module>
-    _, _, embedding_dimension = X.shape
-ValueError: not enough values to unpack (expected 3, got 1)
