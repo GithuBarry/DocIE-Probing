@@ -356,7 +356,7 @@ def parse_args():
     parser.add_argument('--truncate_len', type=int, default=512,
                         help='Length to truncate sequences to')
     parser.add_argument('--train_len', type=int, default=1300,
-                        help='Number of training examples. 1300 for MUC, 206 for WikiEvents. Expect all embeddings and labels in: order of training, dev, test')
+                        help='Number of training examples. 1300 for MUC, 206 for WikiEvents. Expect all embeddings and labels in: order of test, dev, training')
     parser.add_argument('--dev_len', type=int, default=200,
                         help='Number of validation examples. 200 for MUC, 20 for WikiEvents')
     parser.add_argument('--test_len', type=int, default=200,

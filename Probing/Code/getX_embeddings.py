@@ -52,27 +52,6 @@ def extract_tanl_embeddings(args):
     
     return examples_layers
 
-def extract_gtt_periods(args):
-    """Extract period-specific embeddings from GTT model outputs"""
-    X = np.load(args.input_file)
-    with open(args.period_indices_file) as f:
-        period_indices = json.load(f).values()
-    
-    # Extract vectors for periods
-    new_X = []
-    for i, indices in enumerate(tqdm(period_indices, desc="Processing period indices")):
-        new_vec = [X[i][ii] for ii in indices]
-        new_X.append(np.array(new_vec))
-    
-    # Pad sequences to max length
-    max_len = len(max(new_X, key=lambda x: len(x)))
-    embedding_dim = new_X[0].shape[-1]
-    padded_X = np.zeros([len(new_X), max_len, embedding_dim])
-    
-    for i, x in enumerate(new_X):
-        padded_X[i][0:len(x)] = x
-    
-    return padded_X.reshape((len(padded_X), -1))
 
 def save_embeddings(examples_layers, args):
     """Save extracted embeddings to files"""
@@ -92,7 +71,7 @@ def main():
     
     # Required arguments
     parser.add_argument("--model", type=str, required=True, 
-                        choices=["dygiepp", "GTT", "TANL", "GTT-periods"],
+                        choices=["dygiepp", "GTT", "TANL"],
                         help="Model type to process embeddings for")
     parser.add_argument("--hidden_state_path", type=str, required=True,
                         help="Path to the hidden states directory")
@@ -100,12 +79,11 @@ def main():
                         help="Directory to save output embeddings")
     
     # Optional arguments
-    parser.add_argument("--input_file", type=str,
-                        help="Input file path (required for dygiepp, TANL, and GTT-periods)")
+    parser.add_argument("--muc_file", type=str,
+                        help="Data file path (required for dygiepp, and TANL). Expect a list of document each having key `docid`")
     parser.add_argument("--meta_data", type=str, default="bert-uncased_epoch20",
                         help="Metadata string to include in output filenames")
-    parser.add_argument("--period_indices_file", type=str,
-                        help="JSON file containing period indices (required for GTT-periods)")
+
     
     args = parser.parse_args()
     
@@ -115,8 +93,6 @@ def main():
     # Validate arguments
     if args.model in ["dygiepp", "TANL"] and not args.input_file:
         parser.error(f"{args.model} requires --input_file")
-    if args.model == "GTT-periods" and (not args.input_file or not args.period_indices_file):
-        parser.error("GTT-periods requires both --input_file and --period_indices_file")
     
     # Process embeddings based on model type
     if args.model == "dygiepp":
@@ -130,12 +106,7 @@ def main():
     elif args.model == "TANL":
         examples_layers = extract_tanl_embeddings(args)
         save_embeddings(examples_layers, args)
-    
-    elif args.model == "GTT-periods":
-        padded_X = extract_gtt_periods(args)
-        output_file = os.path.join(args.output_dir, 
-                                 f"X_last_hidden_layer_period_only_{args.model}_{args.meta_data}.npy")
-        np.save(output_file, padded_X)
+
 
 if __name__ == "__main__":
     main()
