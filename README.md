@@ -4,6 +4,8 @@ This repository contains code and data for the paper "Probing Representations fo
 
 The project focuses on analyzing different models' capabilities in document-level event extraction.
 
+**Code Safety Warning**: Some models use outdated dependencies (like older transformers), which has critical vulnerabilities. But for compatibility purposes this repo will not update them. Make sure to use an isolated, separate environment.
+
 ## Repository Structure
 
 ### 1. Corpora
