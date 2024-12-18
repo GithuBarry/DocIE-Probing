@@ -1,7 +1,5 @@
 # DyGIE++ Probing Notes
 
-### by Barry
-
 February 2023
 
 Dygie has involved, but we are using an older version of it.
@@ -61,7 +59,7 @@ python train.py predict
 --cuda-device 0
 --silent
 ```
-
+----
 # Original `Readme` below
 
 # DyGIE++
