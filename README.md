@@ -37,6 +37,8 @@ The repository implements several event extraction models:
 
 - **Naive BERT Baseline**
 
+Models are modified to take environmental variables to save the embedding they used. More elegant solutions could use [transformer_lens](https://github.com/TransformerLensOrg/TransformerLens) or torch hook.
+
 ### 3. Probing
 Contains code and data for analyzing model representations:
 
@@ -47,8 +49,8 @@ Contains code and data for analyzing model representations:
   - `confusion_matrix.py`: Visualization and analysis tools
   - Additional utilities and analysis notebooks
 
-- *X_Embeddings/*: Contains extracted embeddings from different models
-  - But due to its size (>1GB), not included in the Github repo
+- **X_Embeddings/**: Contains extracted embeddings from different models
+  - bfloat16 version included in the Github repo
 - **Y_labels/**: Contains processed labels for both MUC and WikiEvents
 - **Y_labels_Tokenizer_Specific/**: Model-specific label processing
 
@@ -64,12 +66,3 @@ Contains code and data for analyzing model representations:
 - Comprehensive probing framework for analyzing model representations
 - Support for both full text and sentence-level processing
 - Tools for data preprocessing, model training, and analysis
-
-## Notes for Users
-
-- Each model directory contains its own README with specific setup instructions
-- The repository supports both the MUC and WikiEvents datasets with various preprocessing options
-- The probing framework allows analysis of different aspects of model representations
-- Tools are provided for both training new models and analyzing existing ones
-
-This repository provides a complete framework for experimenting with document-level event extraction and analyzing model behaviors through probing tasks.
