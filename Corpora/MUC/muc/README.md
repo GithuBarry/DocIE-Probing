@@ -3,7 +3,7 @@
     .
     ├── processed      # preprocessed dataset
     │   ├── .          # Processed JSON line files  
-    ├── processed2     # Concatenated jsonl files in `processed` to one JSON
+    ├── concatenated     # Concatenated jsonl files in `processed` to one JSON
     ├── scripts        # Scripts for preprocessing
     └── raw_files      # Raw files & scripts from MUC-{3,4}
         ├── muc34.tar.gz         # original folder for the MUC-{3,4}, 1992
