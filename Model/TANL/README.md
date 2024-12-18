@@ -1,4 +1,4 @@
-# Probing Notes by Barry
+# Probing Notes 
 
 Added "np.save" in `base_dataset.py
 `run_old_transformers.py` and `run_new_transformers.py` will both save `.npy` files to the directories.
@@ -21,12 +21,9 @@ sbatch command used on G2:
 #SBATCH --gres=gpu:titanrtx:1                  # Type/number of GPUs needed
 
 #titanrtx
-cd '/home/zw545/DocIE-Probing/Model/TANL'
-source /share/apps/anaconda3/2021.05/bin/activate
-conda activate tanl
-python3 run_old_transformers.py muc_event --num_train_epochs 20 --logging_steps 500 --per_device_eval_batch_size 1 --per_device_train_batch_size 1
+python3 run_v4_transformers.py muc_event --num_train_epochs 20 --logging_steps 500 --per_device_eval_batch_size 1 --per_device_train_batch_size 1
 ```
-
+----
 # TANL: Structured Prediction as Translation between Augmented Natural Languages
 
 Code for the paper "[Structured Prediction as Translation between Augmented Natural Languages](http://arxiv.org/abs/2101.05779)" (ICLR 2021) and [fine-tuned multi-task model](#fine-tuned-multi-task-model).
